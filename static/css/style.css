@@ -1,0 +1,72 @@
+body{
+    background-image: url("FrontPage.png");
+    background-size:cover ;
+    background-position-y: -70px ;
+    height: 100%;
+    width: 100%;
+    max-width: 90%;
+    background-color: black;
+    font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.text {
+    width: 70%;
+    font-size: 75px;
+    font-weight: bold;
+    position: absolute;
+    top: 270px;
+    left: 20px;
+    line-height: 10px;
+}
+
+.fixed-text{
+    color: white;
+}
+.typed-wrap {
+    display: inline-block;
+    min-width: 500px;   /* keeps layout stable */
+}
+
+/* Typed text stays natural width */
+.auto-type {
+    color: green;
+}
+
+/* Cursor now sticks to letters */
+.typed-cursor {
+    color: white;
+    display: inline-block;
+}
+
+.start-btn{
+    position: absolute;
+    bottom: 180px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 30%;
+    left: 60px;
+    height: 100px;
+    background-color: #d9d9d966;
+    font-size: 50px;
+    border: 1px solid black;
+    border-radius: 30px;
+    box-shadow: 5px 5px 40px black;
+    color: #686666;
+    transition: all .6s;
+}
+
+.start-btn:hover{
+    transform: scale(1.1);
+}
+
+.logo{
+    width: 50%;
+    height: 100px;
+    position: fixed;
+    top : 30px;
+    left: -70px;
+    background-image: url("main-logo.png");
+    background-size: cover;
+    background-position-y: -220px ;
+    
+}
