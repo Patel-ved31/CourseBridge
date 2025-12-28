@@ -28,21 +28,34 @@
 
         <div class="form-floating ">
           <input type="email" name="email" class="form-control email-field" id="floatingEmail" placeholder="name@example.com"/>
-          <label for="floatingEmail">Email address</label>
+          <label for="floatingEmail">Enter Email</label>
         </div>
 
-        <div class="btn btn-dark w-100 otp-btn" id="sendOtp" onclick="sendOTP()">Varify OTP</div>
+        <div class="btn btn-dark w-100 otp-btn" id="sendOtp" onclick="sendOTP()">Send OTP</div>
       </div>
 
       <div class="otp-box">
         <p class="just-text">Varify OTP</p>
 
         <div class="form-floating ">
-          <input type="text" name="varify-otp" class="form-control otp-varify-field mb-5" id="floating-opt-varify" placeholder="XXXXXX"/>
-          <label for="floating-opt-varify">Enter OTP XXXXXX</label>
+          <input type="text" name="varify-otp" class="form-control otp-varify-field mb-5" id="floating-opt-varify" placeholder="xxxxxx"/>
+          <label for="floating-opt-varify">xxxxxx</label>
         </div>
 
         <div class="btn btn-dark w-100 otp-btn" id="varifyOtp" onclick="verifyOTP()">Varify OTP</div>
+
+        <p class="text-center text-muted mt-3 fs-3" id="timerText">
+          Resend OTP in 30s
+        </p>
+
+        <button
+          class="btn btn-outline-dark w-100 mt-3"
+          id="resendBtn"
+          onclick="resendOTP()"
+          disabled
+        >
+          Resend OTP
+        </button>
       </div>
 
       <form class="detail-form" action="/sign-up" method="POST">

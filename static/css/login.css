@@ -1,36 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-      margin: 0;
-      padding: 0;
-      height: 100vh; 
-      display: flex;
-      align-items: center;
-    }
-
-.box1{
-    width: 50%;
-    height: 100%;
-    background-image: url("login_photo.jpeg");
-    background-size: cover;
-    background-position-x: -130px;
-    justify-content: flex-start;
-    border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
 }
 
-.logo{
-    /* justify-content: flex-end; */
-    height: 30%;
-    background-image: url("logo.jpeg");
-    background-size: cover;
+.left {
+    background-color: #e8f2dc;
+    background-image: url("Login-page-img.png");
+    background-repeat: no-repeat;
     background-position: center;
-    align-items: flex-end;
+    background-size: cover;
 }
 
-.username {
-    padding: 5px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: flex-end; 
-    align-items: center;
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
+.logo {
+  max-width: 160px; 
+  width: 100%;
+  height: auto;
+  margin-bottom: 30px;
+}
 
+.form-box {
+  width: 100%;
+  max-width: 500px;
+}
+.login-form{
+  width: 100%;
+}
+
+.form-control{
+    background-color: #dadada;
+    border-radius: 15px;
+}
+button{
+    height: 60px;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+  }
+}

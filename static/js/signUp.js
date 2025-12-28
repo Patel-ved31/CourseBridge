@@ -1,36 +1,68 @@
-function sendOTP() {
-  fetch("/send-otp", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      email: document.getElementById("floatingEmail").value
-    })
-  })
-  .then(res => res.json())
-  .then(data => console.log(data.message));
+let timer = null;
+let timeLeft = 30;
 
-  emailBox = document.querySelector(".email-varify");
-  emailBox.style.display = "none";
+function startTimer() {
+  const timerText = document.getElementById("timerText");
+  const resendBtn = document.getElementById("resendBtn");
 
-  otpdigitBox = document.querySelector(".otp-box");
-  otpdigitBox.style.display = "block";
+  if (timer) clearInterval(timer);
+  timeLeft = 30;
 
+  resendBtn.disabled = true;
+  timerText.innerText = `Resend OTP in ${timeLeft}s`;
+
+  timer = setInterval(() => {
+    timeLeft--;
+    timerText.innerText = `Resend OTP in ${timeLeft}s`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      timer = null;
+      timerText.innerText = "You can resend OTP now";
+      resendBtn.disabled = false;
+    }
+  }, 1000);
 }
 
-function verifyOTP() {
-  fetch("/verify-otp", {
+function sendOTP() {
+  const email = document.getElementById("floatingEmail").value;
+
+  fetch("/send-otp", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      otp: document.getElementById("floating-opt-varify").value
-    })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email })
   })
   .then(res => res.json())
-  .then(data => console.log(data.message));
+  .then(data => {
+    console.log(data.message);
 
-  otpdigitBox = document.querySelector(".otp-box");
-  otpdigitBox.style.display = "none";
+    document.querySelector(".email-varify").style.display = "none";
+    document.querySelector(".otp-box").style.display = "block";
 
-  formBox = document.querySelector(".detail-form");
-  formBox.style.display = "block";
+    startTimer();
+  });
+}
+
+/* VERIFY OTP */
+function verifyOTP() {
+  const otp = document.getElementById("floating-opt-varify").value;
+
+  fetch("/verify-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ otp: otp })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.message === "true") {
+      document.querySelector(".otp-box").style.display = "none";
+      document.querySelector(".detail-form").style.display = "block";
+    } else {
+      alert("Invalid OTP");
+    }
+  });
+}
+
+function resendOTP() {
+  sendOTP();
 }

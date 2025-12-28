@@ -1,61 +1,61 @@
-# from flask import Flask,request,redirect,url_for,session,Response , render_template
+# # from flask import Flask,request,redirect,url_for,session,Response , render_template
 
-# app = Flask(__name__)
-"""
-app.secret_key = "supersecret"
+# # app = Flask(__name__)
+# """
+# app.secret_key = "supersecret"
 
-#home page
-@app.route("/" , methods=["GET" , "POST"])
-def login() :
-    if request.method == "POST" :
-        userName = request.form.get("username")
-        userPass = request.form.get("password")
+# #home page
+# @app.route("/" , methods=["GET" , "POST"])
+# def login() :
+#     if request.method == "POST" :
+#         userName = request.form.get("username")
+#         userPass = request.form.get("password")
 
-        if userName == "admin" and userPass == "123" :
-            session["user"] = userName
-            return redirect(url_for("welcome"))
-        else :
-            return Response("in-valid , try again" , mimetype="text/plain")
+#         if userName == "admin" and userPass == "123" :
+#             session["user"] = userName
+#             return redirect(url_for("welcome"))
+#         else :
+#             return Response("in-valid , try again" , mimetype="text/plain")
     
-    return '''
-            <h2> Login page </h2>
-            <form method="POST">
-            Username : <input type="text" name="username" placeholder="Enter name" />
-            Password : <input type="password"  name="password" placeholder="Enter password" />
-            <input type="submit" value="submit">
-            </form>
-'''
+#     return '''
+#             <h2> Login page </h2>
+#             <form method="POST">
+#             Username : <input type="text" name="username" placeholder="Enter name" />
+#             Password : <input type="password"  name="password" placeholder="Enter password" />
+#             <input type="submit" value="submit">
+#             </form>
+# '''
 
-@app.route("/welcome")
-def welcome() :
-    if "user" in session :
-        return f'''
-                <h2> Welcome , {session["user"]}! </h2>
-                <a href={url_for("logout")}> logout </a>
-                '''
+# @app.route("/welcome")
+# def welcome() :
+#     if "user" in session :
+#         return f'''
+#                 <h2> Welcome , {session["user"]}! </h2>
+#                 <a href={url_for("logout")}> logout </a>
+#                 '''
     
-    return redirect(url_for("login"))
+#     return redirect(url_for("login"))
 
-@app.route("/logout")
-def logout() :
-    session.pop("user" , None)
-    return redirect(url_for("login"))
+# @app.route("/logout")
+# def logout() :
+#     session.pop("user" , None)
+#     return redirect(url_for("login"))
 
 
-@app.route("/")
-def login() :
-    return render_template("login.html")
+# @app.route("/")
+# def login() :
+#     return render_template("login.html")
 
-@app.route("/go" , methods=["POST"])
-def go():
-    username = request.form.get("username")
-    password = request.form.get("password")
+# @app.route("/go" , methods=["POST"])
+# def go():
+#     username = request.form.get("username")
+#     password = request.form.get("password")
 
-    if username == "ved123" and password == "1234" :
-        return render_template("welcome.html" , name = username)
+#     if username == "ved123" and password == "1234" :
+#         return render_template("welcome.html" , name = username)
     
-    return "invalid details"
-    """
+#     return "invalid details"
+#     """
 
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
@@ -65,15 +65,27 @@ import smtplib
 app = Flask(__name__)
 CORS(app)
 
+
+
+@app.route("/")
+def FirstPage():
+    return render_template("index.html")
+
+# open login page
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+# open signUp page
+@app.route("/signUp")
+def signUp():
+    return render_template("signUp.html")
+
 saved_otp = ""
 
 EMAIL = "pved311206@gmail.com"
 PASSWORD = "sswngwuuqotonmrj"
-
-@app.route("/")
-def home():
-    return render_template("Sign-Up-page/signUp.html")
-
+# send otp through email --> --> page : signUp
 @app.route("/send-otp", methods=["POST"])
 def send_otp():
     global saved_otp
@@ -88,21 +100,18 @@ def send_otp():
         server.login(EMAIL, PASSWORD)
         server.sendmail(EMAIL, email, message)
 
-    return jsonify({"message": "OTP sent successfully 📧"})
+    return jsonify({"message": "success"})
 
+# check otp --> page : signUp
 @app.route("/verify-otp", methods=["POST"])
 def verify_otp():
     otp = request.json["otp"]
     if otp == saved_otp:
-        return jsonify({"message": "OTP Verified ✅"})
-    return jsonify({"message": "Invalid OTP ❌"})
+        return jsonify({"message": "true"})
+    return jsonify({"message": "false"})
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
 
 # @app.route("/sign-up" , methods=["POST" , "GET"])
 # def submit():
@@ -112,4 +121,5 @@ if __name__ == "__main__":
 #     if name != "" :
 #         return render_template("Sign-Up-page/demo.html" , name=name , password=password , email=email)
 #     return "enter name"
+
 
