@@ -24,18 +24,20 @@
       <div class="logo"></div>
 
       <div class="email-varify">
-        <p class="just-text">Varify By Email</p>
+        <p class="just-text">Verify By Email</p>
 
         <div class="form-floating ">
           <input type="email" name="email" class="form-control email-field" id="floatingEmail" placeholder="name@example.com"/>
           <label for="floatingEmail">Enter Email</label>
         </div>
 
+          <p class="Error" style="color: red;"></p>
+
         <div class="btn btn-dark w-100 otp-btn" id="sendOtp" onclick="sendOTP()">Send OTP</div>
       </div>
 
       <div class="otp-box">
-        <p class="just-text">Varify OTP</p>
+        <p class="just-text">Verify OTP</p>
 
         <div class="form-floating ">
           <input type="text" name="varify-otp" class="form-control otp-varify-field mb-5" id="floating-opt-varify" placeholder="xxxxxx"/>
@@ -58,33 +60,39 @@
         </button>
       </div>
 
-      <form class="detail-form" action="/sign-up" method="POST">
+      <form class="detail-form" method="POST">
 
-        <input type="hidden" name="email" id="hiddenEmail">
+        <input type="hidden"  name="email" id="hiddenEmail">
 
         <div class="form-floating  mb-3">
           <input type="text" name="username" class="form-control user-field" id="floatingUsername" placeholder="username"/>
           <label for="floatingUsername">username</label>
         </div>
+        <p class="UserNameError" style="color: red;"></p>
+
+
         <div class="form-floating  mb-3">
           <input type="password" name="password" class="form-control pass-field" id="floatingPassword" placeholder="Password"/>
           <label for="floatingPassword">Password</label>
         </div>
+        <p class="PasswordError" style="color: red;"></p>
+
         
         <div class="form-check fs-3 pe-5 form-check-inline">
-            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
+            <input class="form-check-input" value="learner" type="radio" name="radioDefault" id="radioDefault1">
             <label class="form-check-label text-secondary" for="radioDefault1">
                 Learner
             </label>
         </div>
+
         <div class="form-check fs-3 form-check-inline">
-            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked>
+            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" value="creator" checked>
             <label class="form-check-label text-secondary" for="radioDefault2">
                 Creator
             </label>
         </div>
         <br>
-        <button type="submit" class="btn btn-dark w-100 mt-5 submit-btn">Submit</button>
+        <button type="button" onclick="submitForm(event)" class="btn btn-dark w-100 mt-5 submit-btn">Submit</button>
       </form>
     </div>
 

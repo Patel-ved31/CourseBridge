@@ -61,6 +61,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import random
 import smtplib
+from db import get_db
 
 app = Flask(__name__)
 CORS(app)
@@ -78,6 +79,52 @@ def login():
 @app.route("/signUp")
 def signUp():
     return render_template("signUp.html")
+
+@app.route("/check-details" , methods=["POST"])
+def check_user() :
+    username = request.json["username"]
+    password = request.json["password"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE username = ? AND password = ?",
+        (username, password)
+    )
+
+    user = cursor.fetchone()
+    conn.close()
+
+    print(user)
+
+    if user:
+        return jsonify({"success": True, "message": "✅ Login successful"})
+    else:
+        return jsonify({"success": False, "message": "❌ Invalid username or password"})
+
+@app.route("/check-email" , methods=["POST"] )
+def check_email() :
+    email = request.json["email"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email = ?",
+        (email,)
+    )
+
+    user = cursor.fetchone()
+    conn.close()
+
+    # print(user)
+    if user:
+        return jsonify({"success": False, "message": "Email already exists"})
+    else:
+        return jsonify({"success": True, "message": "Email available"})
+
+
 
 saved_otp = ""
 
@@ -108,16 +155,37 @@ def verify_otp():
         return jsonify({"message": "true"})
     return jsonify({"message": "false"})
 
+@app.route("/register" , methods=["POST"])
+def submit():
+    name = request.json["username"]
+    password = request.json["password"]
+    email = request.json["email"]
+    role = request.json["role"]
+    
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO users (username, email, password, role)
+            VALUES (?, ?, ?, ?)
+            """,
+            (name, email, password, role)
+        )
+
+        conn.commit()
+        return jsonify({"message": "✅ User registered successfully"})
+    except Exception:
+        return jsonify({"message": "❌ Email already exists"})
+    finally:
+        conn.close()
+
 if __name__ == "__main__":
     app.run(debug=True)
 
-# @app.route("/sign-up" , methods=["POST" , "GET"])
-# def submit():
-#     name = request.form.get("username")
-#     password = request.form.get("password")
-#     email = request.form.get("email")
-#     if name != "" :
-#         return render_template("Sign-Up-page/demo.html" , name=name , password=password , email=email)
-#     return "enter name"
+
+
+    
 
 
