@@ -2,11 +2,11 @@ let timer = null;
 let timeLeft = 30;
 
 function startTimer() {
-  const timerText = document.getElementById("timerText");
-  const resendBtn = document.getElementById("resendBtn");
-
   if (timer) clearInterval(timer);
   timeLeft = 30;
+
+  const timerText = document.getElementById("timerText");
+  const resendBtn = document.getElementById("resendBtn");
 
   resendBtn.disabled = true;
   timerText.innerText = `Resend OTP in ${timeLeft}s`;
@@ -29,32 +29,31 @@ function sendOTP() {
 
   fetch("/send-otp", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: email })
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ email })
   })
   .then(res => res.json())
-  .then(data => {
-    console.log(data.message);
-
+  .then(() => {
     document.querySelector(".email-varify").style.display = "none";
     document.querySelector(".otp-box").style.display = "block";
-
     startTimer();
   });
 }
 
-/* VERIFY OTP */
 function verifyOTP() {
   const otp = document.getElementById("floating-opt-varify").value;
 
   fetch("/verify-otp", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ otp: otp })
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ otp })
   })
   .then(res => res.json())
   .then(data => {
     if (data.message === "true") {
+      document.getElementById("hiddenEmail").value =
+        document.getElementById("floatingEmail").value;
+
       document.querySelector(".otp-box").style.display = "none";
       document.querySelector(".detail-form").style.display = "block";
     } else {
