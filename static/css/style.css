@@ -1,75 +1,172 @@
-
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body{
-    background-image: url("FrontPage.png");
-    background-size:cover ;
-    background-position-y: -70px ;
-    height: 100%;
-    width: 100%;
-    max-width: 90%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: black;
-    font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: #e7e7e7;
+    min-height: 100vh;
+    line-height: 1.5;
 }
-.text {
-    width: 70%;
-    font-size: 75px;
-    font-weight: bold;
+/* GRADIENT AND LAYER BLUR EFFECT */
+.img-gradient{
     position: absolute;
-    top: 270px;
-    left: 20px;
-    line-height: 10px;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
+    z-index: -1;
 }
-
-.fixed-text{
-    color: white;
-}
-.typed-wrap {
-    display: inline-block;
-    min-width: 500px;   /* keeps layout stable */
-}
-
-/* Typed text stays natural width */
-.auto-type {
-    color: green;
-}
-
-/* Cursor now sticks to letters */
-.typed-cursor {
-    color: white;
-    display: inline-block;
-}
-
-.start-btn{
+.layer-blur{
+    height: 0;
+    width: 30rem;
     position: absolute;
-    bottom: 180px;
+    top: 20%;
+    right: 0;
+    box-shadow: 0 0 700px 15px white;
+    rotate: -30deg;
+    z-index: -1;
+}
+
+/* container */
+.container{
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    overflow: hidden;
+}
+/* header */
+header{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    width: 30%;
-    left: 60px;
-    height: 100px;
-    background-color: #d9d9d966;
-    font-size: 50px;
-    border: 1px solid black;
-    border-radius: 30px;
-    /* box-shadow: 5px 5px 40px black; */
-    /* this is not use full */
-    color: #686666;
-    transition: all .6s;
+    padding: 1rem 5rem;
+    z-index: 999;
+}
+header h1{
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 300;
+}
+nav{
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-left: -5%;
+
+}
+
+nav a{
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+    transition: color 0.2s ease;
     text-decoration: none;
+    color: inherit;
 }
 
-.start-btn:hover{
-    transform: scale(1.1);
+nav a:hover{
+    color: #a7a7a7;
 }
 
-.logo{
-    width: 50%;
-    height: 100px;
-    position: fixed;
-    top : 30px;
-    left: -70px;
-    background-image: url("main-logo.png");
-    background-size: cover;
-    background-position-y: -220px ;
-    
+.btn-signUp{
+    background-color: #a7a7a7;
+    color: black;
+    padding: .8rem 2rem;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+.btn-signUp:hover{
+    background-color: white;
+}
+
+/* main */
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(90vh - 6rem);
+}
+
+.content{
+    max-width: 40rem;
+    margin-left: 3%;
+    z-index: 999;
+}
+
+.tag-box{
+    position: relative;
+    width: 18rem;
+    height: 2.5rem;
+    border-radius: 50px;
+    background: linear-gradient(to right , #656565 , #7f42a7 , #6600c5 , #5300a0 , #757575 , #656565);
+    background-size: 200%;
+    animation: animationGradient 2.5s linear infinite;
+    box-shadow: 0 0  15px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes animationGradient {
+    to{
+        background-position: 200%;
+    }
+}
+
+.tag-box .tag{
+    position: absolute;
+    inset: 3px 3px 3px 3px;
+    background-color: black;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+.tag-box .tag:hover{
+    color: #5300a0;
+}
+
+.content h1{
+    font-size: 3rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin: 2rem 0;
+    text-shadow: 0 0 10px rgba(128, 128, 128, 0.614);
+}
+
+.description{
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 8%;
+    max-width: 35rem;
+    color: gray;
+}
+
+.btn-signIn{
+    text-decoration: none;
+    background-color: lightgray;
+    color: black;
+    padding: 0.6rem 2.5rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: background-color 0.2s ease;
+}
+.btn-signIn:hover{
+    background-color: gray;
+}
+
+.design-3d{
+    position: absolute;
+    top: 30px;
+    right: -400px;
+    z-index: -1;
 }

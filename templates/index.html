@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,68 @@
         <p>Get Start</p>
         <p> <i class="bi bi-arrow-right"></i> </p>
     </a>
+
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <img class="img-gradient" src="{{ url_for('static', filename='css/gradient.png') }}" alt="...">
+
+    <div class="layer-blur"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">CourseBridge</h1>
+
+            <nav>
+                <a href="#">About</a>
+                <a href="#">Features</a>
+                <a href="#">Resourses</a>
+                <a href="#">Contect</a>
+            </nav>
+
+            <a class="btn-signUp" href="signUp.html">SIGN UP</a>
+        </header>
+        <main>
+            <div class="content">
+                <div class="tag-box">
+                    <div class="tag">EduConnect &wedbar;</div>
+                </div>
+                <h1>
+                    <span class="fixed-text">A Platform to <span class="typed-wrap">
+                    <span class="auto-type" style="color: #6600c5;"></span>
+                    </span></span> 
+                    <p style="color: white;">and Grow Together.</p>
+                </h1>
+
+                <p class="description">
+                    A digital learning platform where creators publish courses and learners discover skills to grow
+                </p>
+
+                <div class="button">
+                    <a href="{{ url_for('login') }}" class="btn-signIn">GetStarted &gt;</a>
+                </div>
+            </div>
+        </main>
+
+    
+    <spline-viewer class="design-3d" url="https://prod.spline.design/PvdCRAnsIjNFoGHY/scene.splinecode"></spline-viewer>
+
+    </div>
+
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"></script>
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

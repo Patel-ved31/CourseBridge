@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -50,5 +50,57 @@
   </div>
 </div>
   <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | CourseBridge</title>
+  <!-- <link rel="stylesheet" href="login.css"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+
+</head>
+<body>
+
+    <img class="img-gradient" src="gradient.png" alt="...">
+    <div class="layer-blur"></div>
+
+
+<div class="auth-container">
+
+    <!-- LEFT : 3D ANIMATION -->
+    <spline-viewer class="design-3d" url="https://prod.spline.design/PvdCRAnsIjNFoGHY/scene.splinecode"></spline-viewer>   
+
+    <header>
+        <h1 class="logo-text">
+            CourseBridge
+        </h1>
+    </header>
+
+  <!-- RIGHT : LOGIN FORM -->
+  <div class="auth-right">
+    <h1>Welcome Back</h1>
+    <p class="sub-text">Login to continue learning and growing.</p>
+
+    <form>
+      <input type="text" id="name" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+
+      <button type="button" onclick="signIn()">Login</button>
+
+      <p class="switch">
+        Don’t have an account? <a href="{{ url_for('signUp') }}">Sign up</a>
+      </p>
+    </form>
+  </div>
+
+</div>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"></script>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+
 </body>
 </html>
