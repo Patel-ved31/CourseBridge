@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -98,4 +98,87 @@
 
     <script src="{{ url_for('static', filename='js/signUp.js') }}"></script>
   </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up | CourseBridge</title>
+  <!-- <link rel="stylesheet" href="signUp.css"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/signUp.css') }}" />
+
+</head>
+<body>
+    <img class="img-gradient" src="gradient.png" alt="...">
+    <div class="layer-blur"></div>
+
+    
+    <div class="auth-container">
+
+    <header>
+        <h1 class="logo-text">
+            CourseBridge
+        </h1>
+    </header>
+
+  <!-- LEFT : 3D ANIMATION -->
+    <spline-viewer class="design-3d" url="https://prod.spline.design/PvdCRAnsIjNFoGHY/scene.splinecode"></spline-viewer>   
+
+  <!-- RIGHT : SIGNUP FLOW -->
+  <div class="auth-right">
+
+    <h1>Create Account</h1>
+    <p class="sub-text">Verify your email to join CourseBridge.</p>
+
+    <!-- STEP 1 : EMAIL VERIFY -->
+    <div class="email-varify">
+      <input type="email" id="floatingEmail" placeholder="Email address">
+      <p class="Error"></p>
+      <button type="button" onclick="sendOTP()">Send OTP</button>
+    </div>
+
+    <!-- STEP 2 : OTP VERIFY -->
+    <div class="otp-box" style="display:none;">
+      <input type="text" id="floating-opt-varify" placeholder="Enter OTP">
+      <button type="button" onclick="verifyOTP()">Verify OTP</button>
+
+      <p id="timerText">Resend OTP in 30s</p>
+      <button id="resendBtn" onclick="resendOTP()" disabled>Resend OTP</button>
+    </div>
+
+    <!-- STEP 3 : USER DETAILS -->
+    <form class="detail-form" style="display:none;" onsubmit="submitForm(event)">
+      <input type="hidden" id="hiddenEmail">
+
+      <input type="text" id="floatingUsername" placeholder="Username">
+      <p class="UserNameError"></p>
+
+      <input type="password" id="floatingPassword" placeholder="Password">
+      <p class="PasswordError"></p>
+
+      <div class="role-box">
+        <label>
+          <input type="radio" name="radioDefault" value="Learner"> Learner
+        </label>
+        <label>
+          <input type="radio" name="radioDefault" value="Creator"> Creator
+        </label>
+      </div>
+      <p class="RoleError"></p>
+
+      <button type="submit">Create Account</button>
+
+      <p class="switch">
+        Already have an account? <a href="/login">Login</a>
+      </p>
+    </form>
+
+  </div>
+</div>
+
+<!-- <script src="signUp.js"></script> -->
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"></script>
+
+<script src="{{ url_for('static', filename='js/signUp.js') }}"></script>
+</body>
 </html>
