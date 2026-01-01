@@ -1,62 +1,3 @@
-# # from flask import Flask,request,redirect,url_for,session,Response , render_template
-
-# # app = Flask(__name__)
-# """
-# app.secret_key = "supersecret"
-
-# #home page
-# @app.route("/" , methods=["GET" , "POST"])
-# def login() :
-#     if request.method == "POST" :
-#         userName = request.form.get("username")
-#         userPass = request.form.get("password")
-
-#         if userName == "admin" and userPass == "123" :
-#             session["user"] = userName
-#             return redirect(url_for("welcome"))
-#         else :
-#             return Response("in-valid , try again" , mimetype="text/plain")
-    
-#     return '''
-#             <h2> Login page </h2>
-#             <form method="POST">
-#             Username : <input type="text" name="username" placeholder="Enter name" />
-#             Password : <input type="password"  name="password" placeholder="Enter password" />
-#             <input type="submit" value="submit">
-#             </form>
-# '''
-
-# @app.route("/welcome")
-# def welcome() :
-#     if "user" in session :
-#         return f'''
-#                 <h2> Welcome , {session["user"]}! </h2>
-#                 <a href={url_for("logout")}> logout </a>
-#                 '''
-    
-#     return redirect(url_for("login"))
-
-# @app.route("/logout")
-# def logout() :
-#     session.pop("user" , None)
-#     return redirect(url_for("login"))
-
-
-# @app.route("/")
-# def login() :
-#     return render_template("login.html")
-
-# @app.route("/go" , methods=["POST"])
-# def go():
-#     username = request.form.get("username")
-#     password = request.form.get("password")
-
-#     if username == "ved123" and password == "1234" :
-#         return render_template("welcome.html" , name = username)
-    
-#     return "invalid details"
-#     """
-
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import random
@@ -89,14 +30,12 @@ def check_user() :
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT * FROM users WHERE username = ? AND password = ?",
+        "SELECT * FROM users WHERE username = %s AND password = %s",
         (username, password)
     )
 
     user = cursor.fetchone()
     conn.close()
-
-    print(user)
 
     if user:
         return jsonify({"success": True, "message": "✅ Login successful"})
@@ -111,7 +50,7 @@ def check_email() :
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT * FROM users WHERE email = ?",
+        "SELECT * FROM users WHERE email = %s",
         (email,)
     )
 
@@ -123,8 +62,6 @@ def check_email() :
         return jsonify({"success": False, "message": "Email already exists"})
     else:
         return jsonify({"success": True, "message": "Email available"})
-
-
 
 saved_otp = ""
 
@@ -169,7 +106,7 @@ def submit():
         cursor.execute(
             """
             INSERT INTO users (username, email, password, role)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
             """,
             (name, email, password, role)
         )
@@ -180,6 +117,35 @@ def submit():
         return jsonify({"message": "❌ Email already exists"})
     finally:
         conn.close()
+
+@app.route("/courses", methods=["GET"])
+def get_courses():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, title, description, category, price, thumbnail
+        FROM courses
+        ORDER BY created_at DESC
+    """)
+
+    courses = cursor.fetchall()
+    conn.close()
+
+    course_list = []
+    for c in courses:
+        course_list.append({
+            "id": c[0],
+            "title": c[1],
+            "description": c[2],
+            "category": c[3],
+            "price": c[4],
+            "thumbnail": c[5]
+        })
+
+    return jsonify(course_list)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
