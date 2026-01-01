@@ -64,15 +64,18 @@
 </head>
 <body>
 
-    <img class="img-gradient" src="gradient.png" alt="...">
+    <img class="img-gradient" src="{{ url_for('static', filename='css/gradient.png') }}" alt="...">
     <div class="layer-blur"></div>
 
+    <div class="back-btn">
+      <a href="{{ url_for('FirstPage') }}" class="arrow"> Home</a>
+    </div>
 
 <div class="auth-container">
 
     <!-- LEFT : 3D ANIMATION -->
     <spline-viewer class="design-3d" url="https://prod.spline.design/PvdCRAnsIjNFoGHY/scene.splinecode"></spline-viewer>   
-
+ 
     <header>
         <h1 class="logo-text">
             CourseBridge

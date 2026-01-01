@@ -208,7 +208,7 @@ function sendOTP() {
   //   document.querySelector(".otp-box").style.display = "block";
   //   startTimer();
   // });
-    const email = document.getElementById("floatingEmail").value;
+  const email = document.getElementById("floatingEmail").value;
   fetch("/check-email", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

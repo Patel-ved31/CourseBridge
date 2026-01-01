@@ -146,3 +146,23 @@ button:hover {
     bottom: -50px;
     z-index: -1;
 }
+
+.back-btn{
+  background-color: transparent;
+  padding: 0.5rem 2rem;
+  border: none;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}
+
+.arrow{
+  color: #Dadada;
+  text-decoration: none;
+  font-size: 1rem ;
+  transition: background-color .3s ease;
+}
+
+.arrow:hover{
+  color: white;
+}
