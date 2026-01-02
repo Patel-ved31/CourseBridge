@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/Home.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="head-part">
+        <header>
+          <h1 class="logo">CourseBridge</h1>
+
+          <div class="search">
+            <div class="search-box">
+              <span class="search-icon">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" id="search" placeholder="Search course" />
+            </div>
+
+            <div id="suggestions"></div>
+          </div>
+
+          <nav>
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Resourses</a>
+            <a href="#">Contect</a>
+          </nav>
+        </header>
+      </div>
+
+      <div class="user-box">
+        <p class="user-text">Welcome,<span> {{name}}! </span></p>
+        <p class="slogan">Explore new skills and grow your knowledge.</p>
+
+        <spline-viewer
+          class="animation"
+          url="https://prod.spline.design/TcXA9gwuHkVeWNy8/scene.splinecode"
+        ></spline-viewer>
+      </div>
+
+      <div class="category">
+        <a href="#" class="category1 box">
+          <p>
+            Web <br />
+            Development
+          </p>
+        </a>
+
+        <a href="#" class="category2 box">
+          <p>
+            Data <br />
+            Science
+          </p>
+        </a>
+        <a href="#" class="category3 box">
+          <p>
+            Design <br />
+            Menagment
+          </p>
+        </a>
+        <a href="#" class="category4 box">
+          <p>
+            Machin <br />
+            Learning
+          </p>
+        </a>
+        <a href="#" class="category5 box">
+          <p>
+            DSA <br />
+            With Java
+          </p>
+        </a>
+      </div>
+    </div>
+
+    <script
+      type="module"
+      src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"
+    ></script>
+
+    <script src="{{ url_for('static', filename='js/Home.js') }}"></script>
+  </body>
+</html>

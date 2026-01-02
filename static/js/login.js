@@ -16,7 +16,7 @@ function signIn(){
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            alert(data.message)
+            window.location.href = "/Home";
         }else{
             document.querySelector(".Error").innerText = "Invalid username or password";
 

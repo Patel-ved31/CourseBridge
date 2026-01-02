@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template,session
 from flask_cors import CORS
 import random
 import smtplib
@@ -6,7 +6,7 @@ from db import get_db
 
 app = Flask(__name__)
 CORS(app)
-
+app.secret_key = "coursebridge_secret"
 @app.route("/")
 def FirstPage():
     return render_template("index.html")
@@ -38,6 +38,7 @@ def check_user() :
     conn.close()
 
     if user:
+        session["username"] = user[1]
         return jsonify({"success": True, "message": "✅ Login successful"})
     else:
         return jsonify({"success": False, "message": "❌ Invalid username or password"})
@@ -118,6 +119,10 @@ def submit():
     finally:
         conn.close()
 
+@app.route("/Home" , methods=["GET"])
+def Home():
+    return render_template("Home.html" , name=session["username"])
+
 @app.route("/courses", methods=["GET"])
 def get_courses():
     conn = get_db()
@@ -145,6 +150,24 @@ def get_courses():
 
     return jsonify(course_list)
 
+@app.route("/search")
+def search():
+    quary = request.args.get("q")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT title FROM courses WHERE title ILIKE %s",
+        ( "%" + quary + "%"  ,)
+    )
+
+    result = [row[0] for row in cursor.fetchall() ]
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(result)
 
 
 if __name__ == "__main__":
