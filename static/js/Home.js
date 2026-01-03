@@ -47,3 +47,13 @@ searchInput.addEventListener("keyup", () => {
       });
     });
 });
+
+
+document.querySelectorAll(".box").forEach(box => {
+  box.addEventListener("click", () => {
+    const category = box.dataset.value;
+
+    // redirect to course page with category
+    window.location.href = `/courseList?category=${encodeURIComponent(category)}`;
+  });
+});

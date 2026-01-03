@@ -169,6 +169,32 @@ def search():
 
     return jsonify(result)
 
+@app.route("/courseList")
+def courseList():
+    category = request.args.get("category")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM courses
+        WHERE category = %s
+        """,
+        (category,)
+    )
+
+    courses = cursor.fetchall()
+    conn.close()
+
+    print(courses)
+
+    return render_template(
+        "courseList.html",
+        courses=courses
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)

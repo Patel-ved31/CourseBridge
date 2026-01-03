@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/courseList.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="head-part">
+        <header>
+          <h1 class="logo">CourseBridge</h1>
+
+          <div class="search">
+            <div class="search-box">
+              <span class="search-icon">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" id="search" placeholder="Search course" />
+            </div>
+
+            <div id="suggestions"></div>
+          </div>
+
+          <nav>
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Resourses</a>
+            <a href="#">Contect</a>
+          </nav>
+        </header>
+      </div>
+
+      <div class="content">
+        {% for course in courses %}
+        <div class="course1 box">
+          <div class="course-img" style="background-color: aqua;"></div>
+          <div class="course-content">
+            <p class="course-title"> {{course[2]}} </p>
+            <p class="course-des">{{course[3]}}</p>
+            <p class="course-price"> {{course[5]}}  </p>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- <div class="course2 box">
+          <div class="course-img" style="background-color: yellow;"></div>
+          <div class="course-content">
+            <p class="course-title">Lorem ipsum dolor sit amet.</p>
+            <p class="course-des">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia autem ullam minus molestiae minima.</p>
+            <p class="course-price"> ₹ 999  </p>
+          </div>
+        </div>
+        <div class="course3 box">
+          <div class="course-img" style="background-color: burlywood;"></div>
+          <div class="course-content">
+            <p class="course-title">Lorem ipsum dolor sit amet.</p>
+            <p class="course-des">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia autem ullam minus molestiae minima.</p>
+            <p class="course-price"> ₹ 999  </p>
+          </div>
+        </div>
+        <div class="course4 box">
+          <div class="course-img" style="background-color: bisque;"></div>
+          <div class="course-content">
+            <p class="course-title">Lorem ipsum dolor sit amet.</p>
+            <p class="course-des">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia autem ullam minus molestiae minima.</p>
+            <p class="course-price"> ₹ 999  </p>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
