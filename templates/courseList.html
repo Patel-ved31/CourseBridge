@@ -41,12 +41,12 @@
 
       <div class="content">
         {% for course in courses %}
-        <div class="course1 box">
+        <div class="course1 box" data-value="{{ course[0] }}">
           <div class="course-img" style="background-color: aqua;"></div>
           <div class="course-content">
             <p class="course-title"> {{course[2]}} </p>
             <p class="course-des">{{course[3]}}</p>
-            <p class="course-price"> {{course[5]}}  </p>
+            <p class="course-price"> ₹{{course[5]}}  </p>
           </div>
         </div>
         {% endfor %}
