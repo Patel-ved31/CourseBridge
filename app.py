@@ -39,6 +39,8 @@ def check_user() :
 
     if user:
         session["username"] = user[1]
+        session["id"] = user[0]
+        session["role"] = user[4]
         return jsonify({"success": True, "message": "✅ Login successful"})
     else:
         return jsonify({"success": False, "message": "❌ Invalid username or password"})
@@ -121,7 +123,7 @@ def submit():
 
 @app.route("/Home" , methods=["GET"])
 def Home():
-    return render_template("Home.html" , name=session["username"])
+    return render_template("Home.html" , name=session["username"] , id = session["id"] , role = session["role"])
 
 @app.route("/courses", methods=["GET"])
 def get_courses():
@@ -195,6 +197,24 @@ def courseList():
         courses=courses
     )
 
+@app.route("/creator_profile")
+def creator_profile():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM courses
+        WHERE creator_id = %s
+        """,
+        (session["id"],)
+    )
+
+    courses = cursor.fetchall()
+    conn.close()
+
+    return render_template("creator_profile.html" , name=session["username"] , courses =courses)
 
 if __name__ == "__main__":
     app.run(debug=True)

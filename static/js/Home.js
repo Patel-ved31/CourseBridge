@@ -57,3 +57,12 @@ document.querySelectorAll(".box").forEach(box => {
     window.location.href = `/courseList?category=${encodeURIComponent(category)}`;
   });
 });
+
+function profile(){
+  let name = document.querySelector(".user-name").dataset.value;
+  let role = document.querySelector(".user-role").dataset.value;
+
+  if(role === "Creator"){
+    window.location.href = `/creator_profile`;
+  }
+}

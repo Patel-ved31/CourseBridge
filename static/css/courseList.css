@@ -129,23 +129,25 @@ nav a:hover{
     margin: 10px;
     width: 90%;
     background-color: white;
-    height: 250px;
+    height: 220px;
     display: flex;
     gap: 30px;
-    background-color: #333;
+    background-color: rgba(255, 255, 255, 0.105); /* Glass card */
+    border: 1px solid rgba(255, 255, 255, 0.05);
     color: white;
     border-radius: 20px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 .box:hover{
-    box-shadow: 0 0 20px white;
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .course-img{
-    width: 30%;
-    margin: 20px;
-    border-radius: 10px;
+    width: 23%;
+    border-radius: 15px 0 0 15px;
 }
 
 .course-content{
