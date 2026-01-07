@@ -5,7 +5,7 @@ const searchInput = document.getElementById("search");
 const suggestionsBox = document.getElementById("suggestions");
 
 // run this when user types anything
-searchInput.addEventListener("keyup", () => {
+searchInput.addEventListener("keyup", (e) => {
   // get typed value
   let value = searchInput.value;
 
@@ -15,6 +15,11 @@ searchInput.addEventListener("keyup", () => {
     suggestionsBox.innerHTML = "";
     suggestionsBox.style.border = "0";
     return;
+  }
+
+  if(e.key === "Enter" ){
+    window.location.href =
+      `/courseList?course=${encodeURIComponent(value)}`;
   }
 
   // send typed text to flask
@@ -52,9 +57,12 @@ searchInput.addEventListener("keyup", () => {
 document.querySelectorAll(".box").forEach(box => {
   box.addEventListener("click", () => {
     const category = box.dataset.value;
-
+    if (category == "other") {
+      window.location.href = `/all_courses`;
+      return;
+    }
     // redirect to course page with category
-    window.location.href = `/courseList?category=${encodeURIComponent(category)}`;
+    window.location.href = `/categoryList?category=${encodeURIComponent(category)}`;
   });
 });
 
@@ -66,3 +74,14 @@ function profile(){
     window.location.href = `/creator_profile`;
   }
 }
+// console.log(document.querySelectorAll("#suggestions > div"))
+document.getElementById("suggestions").addEventListener("click", function (e) {
+  if (e.target.tagName === "DIV") {
+    const course = e.target.innerText.trim();
+
+    window.location.href =
+      `/courseList?course=${encodeURIComponent(course)}`;
+  }
+});
+
+

@@ -23,6 +23,7 @@ body{
     width: 100%;
     height: 100px;
     background-color: black;
+    z-index: 1000;
 }
 header{
     padding: 1rem 5rem;
@@ -133,11 +134,14 @@ nav a:hover{
     display: flex;
     gap: 30px;
     background-color: rgba(255, 255, 255, 0.105); /* Glass card */
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.273);
     color: white;
     border-radius: 20px;
     transition: all 0.3s ease;
     cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
 }
 .box:hover{
     transform: translateY(-5px);
@@ -145,13 +149,26 @@ nav a:hover{
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.course-img{
-    width: 23%;
-    border-radius: 15px 0 0 15px;
+.course-img {
+  width: 350px;
+  /* min-width: 320px; */
+  /* height: 100%; */
+  background-color: pink;
+  overflow: hidden;
+  border-radius: 20px 0 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.course-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* 🔥 THIS IS THE KEY */
 }
 
 .course-content{
-      margin: 20px;
+    margin: 20px;
 }
 
 .course-title{
@@ -167,4 +184,16 @@ nav a:hover{
     font-size: 22px;
     color: #00ff0d;
     margin: 20px 0;
+}
+
+.bookmark{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
 }

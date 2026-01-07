@@ -2,7 +2,15 @@ from flask import Flask, request, jsonify, render_template,session
 from flask_cors import CORS
 import random
 import smtplib
+import os
 from db import get_db
+from werkzeug.utils import secure_filename
+
+# make file for thumbnail image
+UPLOAD_FOLDER = "static/uploads/thumbnails"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
 app = Flask(__name__)
 CORS(app)
@@ -171,8 +179,8 @@ def search():
 
     return jsonify(result)
 
-@app.route("/courseList")
-def courseList():
+@app.route("/categoryList")
+def categoryList():
     category = request.args.get("category")
 
     conn = get_db()
@@ -180,22 +188,94 @@ def courseList():
 
     cursor.execute(
         """
-        SELECT *
-        FROM courses
-        WHERE category = %s
+        SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        WHERE t2.category ILIKE %s
         """,
-        (category,)
+        ("%" + category + "%" ,)
     )
 
     courses = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT course_id 
+        FROM bookmarks
+        where user_id = %s
+        """
+        , (session["id"],)
+    )
+    bookmarks = cursor.fetchall()
     conn.close()
 
-    print(courses)
 
     return render_template(
         "courseList.html",
-        courses=courses
+        courses=courses,
+        bookmarks=[b[0] for b in bookmarks]
     )
+
+@app.route("/courseList")
+def courseList():
+    query = request.args.get("course")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        WHERE t2.title ILIKE %s
+        """,
+        ("%" + query + "%" ,)
+    )
+
+    courses = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT course_id 
+        FROM bookmarks
+        where user_id = %s
+        """
+        , (session["id"],)
+    )
+    bookmarks = cursor.fetchall()
+    conn.close()
+
+    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
+
+@app.route("/all_courses")
+def all_courses():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        """
+    )
+
+    courses = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT course_id 
+        FROM bookmarks
+        where user_id = %s
+        """
+        , (session["id"],)
+    )
+    bookmarks = cursor.fetchall()
+
+    conn.close()
+
+    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
 
 @app.route("/creator_profile")
 def creator_profile():
@@ -215,6 +295,96 @@ def creator_profile():
     conn.close()
 
     return render_template("creator_profile.html" , name=session["username"] , courses =courses)
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# ---------- ADD COURSE ----------
+@app.route("/add-course", methods=["POST"])
+def add_course():
+    title = request.form.get("title")
+    description = request.form.get("description")
+    category = request.form.get("category")
+    price = request.form.get("price")
+    image = request.files.get("thumbnail")
+    link = request.form.get("link")
+
+    if not image or image.filename == "":
+        return jsonify({"message": "No image selected"}), 400
+
+    if not allowed_file(image.filename):
+        return jsonify({"message": "Invalid image type"}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # 1️⃣ Insert course first
+    cursor.execute("""
+        INSERT INTO courses (creator_id , title, description, category, price , course_link)
+        VALUES (%s , %s, %s, %s, %s , %s)
+        RETURNING id
+    """, (session["id"] ,title, description, category, price , link))
+
+    course_id = cursor.fetchone()[0]
+
+    # 2️⃣ Save image as course_id.png
+    filename = secure_filename(f"{course_id}.png")
+    image_path = os.path.join(UPLOAD_FOLDER, filename)
+    image.save(image_path)
+
+    # 3️⃣ Save filename in DB (optional but recommended)
+    cursor.execute("""
+        UPDATE courses
+        SET thumbnail = %s
+        WHERE id = %s
+    """, (filename, course_id))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Course added successfully ✅"})
+
+@app.route("/add-bookmark" , methods=["POST"])
+def add_bookmark():
+    course_id = request.json["course_id"]
+    user_id = session["id"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO bookmarks (user_id, course_id)
+        VALUES (%s, %s)
+        """,
+        (user_id, course_id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Course bookmarked successfully ✅"})
+
+@app.route("/remove-bookmark" , methods=["POST"])
+def remove_bookmark():
+    course_id = request.json["course_id"]
+    user_id = session["id"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        DELETE FROM bookmarks
+        WHERE user_id = %s AND course_id = %s
+        """,
+        (user_id, course_id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Bookmark removed successfully ✅"})
 
 if __name__ == "__main__":
     app.run(debug=True)

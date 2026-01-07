@@ -12,6 +12,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   </head>
   <body>
     <div class="container">
@@ -40,8 +41,8 @@
       </div>
       <div class="main-section">
         <div class="user-details">
-          <div class="photo"></div>
-          <div class="user-name"> {{name}} </div>
+          <div class="photo"><i class="bi bi-person"></i></div>
+          <div class="user-name">{{name}}</div>
         </div>
 
         <div class="heading">
@@ -51,85 +52,110 @@
 
         <div class="content">
           {% for course in courses %}
-        <div class="course1 box" data-value="{{ course[0] }}">
-          <div class="course-img" style="background-color: rgb(204, 0, 255);"></div>
-          <div class="course-content">
-            <p class="course-title"> {{course[2]}} </p>
-            <p class="course-des">{{course[3]}}</p>
-            <p class="course-price"> ₹{{course[5]}}  </p>
+          <div class="course1 box" data-value="{{ course[0] }}">
+            <div class="course-img">
+              <img
+                src="{{ url_for('static', filename='uploads/thumbnails/' + course[6]) }}"
+                alt="Course thumbnail"
+              />
+            </div>
+            <div class="course-content">
+              <p class="course-title">{{course[2]}}</p>
+              <p class="course-des"></p>
+              <p class="course-price">₹{{course[5]}}</p>
+            </div>
           </div>
-        </div>
-        {% endfor %}
+          {% endfor %}
         </div>
       </div>
 
-      <form class="add-course" action="">
-        <h2>Add New Course</h2>
+      <form class="add-course" id="addCourseForm" enctype="multipart/form-data">
+        <div class="details-box">
+          <h2>Add New Course</h2>
 
-        <div class="form-group">
-          <label for="title"
-            >Course Title <span style="color: #ef4444">*</span></label
-          >
-          <input
-            type="text"
-            id="title"
-            name="title"
-            required
-            maxlength="150"
-            placeholder="e.g., Python for Beginners"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            placeholder="What will students learn?"
-          ></textarea>
-        </div>
-
-        <div class="form-row">
           <div class="form-group">
-            <label for="category">Category</label>
+            <label for="title"
+              >Course Title <span style="color: #ef4444">*</span></label
+            >
             <input
               type="text"
-              id="category"
-              name="category"
-              list="category-options"
-              maxlength="50"
-              placeholder="Select or type..."
+              id="title"
+              name="title"
+              required
+              maxlength="150"
+              placeholder="e.g., Python for Beginners"
             />
-            <datalist id="category-options">
-              <option value="Web Development"></option>
-              <option value="Data Science"></option>
-              <option value="Digital Electronics"></option>
-              <option value="Design"></option>
-            </datalist>
           </div>
 
           <div class="form-group">
-            <label for="price">Price (₹)</label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              min="0"
-              placeholder="999"
-            />
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="What will students learn?"
+            ></textarea>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="thumbnail">Course Thumbnail</label>
-          <input type="file" id="thumbnail" name="thumbnail" accept="image/*" />
-        </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category">Category</label>
+              <input
+                type="text"
+                id="category"
+                name="category"
+                list="category-options"
+                maxlength="50"
+                placeholder="Select or type..."
+              />
+              <datalist id="category-options">
+                <option value="Web Development"></option>
+                <option value="Data Science"></option>
+                <option value="Digital Electronics"></option>
+                <option value="Design"></option>
+              </datalist>
+            </div>
 
-        <button type="submit" class="submit-btn">Publish Course</button>
+            <div class="form-group">
+              <label for="price">Price (₹)</label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                min="0"
+                placeholder="999"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="thumbnail">Course Thumbnail</label>
+              <input
+                type="file"
+                id="thumbnail"
+                name="thumbnail"
+                accept="image/*"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="link"
+                >Course Link <span style="color: #ef4444">*</span></label
+              >
+              <input
+                type="text"
+                id="link"
+                name="link"
+                required
+                placeholder="https://www.youtube.com"
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Publish Course</button>
+        </div>
       </form>
     </div>
 
-        <script src="{{ url_for('static', filename='js/creator_profile.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/creator_profile.js') }}"></script>
   </body>
 </html>

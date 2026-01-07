@@ -40,15 +40,44 @@
       </div>
 
       <div class="content">
-        {% for course in courses %}
-        <div class="course1 box" data-value="{{ course[0] }}">
-          <div class="course-img" style="background-color: rgb(204, 0, 255);"></div>
-          <div class="course-content">
-            <p class="course-title"> {{course[2]}} </p>
-            <p class="course-des">{{course[3]}}</p>
-            <p class="course-price"> ₹{{course[5]}}  </p>
+        {% for course in courses %} 
+          {% if course[5] not in bookmarks %}
+          <div class="course1 box" data-value="{{ course[5] }}">
+            <div class="course-img">
+              <img
+                src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
+                alt="Course thumbnail"
+              />
+            </div>
+            <div class="course-content">
+              <p class="course-title">{{course[2]}}</p>
+              <p class="course-des">{{course[0]}}</p>
+              <p class="course-price">₹{{course[3]}}</p>
+            </div>
+
+            <button type="button" class="bookmark" data-value="1">
+              <i class="bi bi-bookmark"></i>
+            </button>
           </div>
-        </div>
+          {% else %}
+          <div class="course1 box" data-value="{{ course[5] }}">
+            <div class="course-img">
+              <img
+                src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
+                alt="Course thumbnail"
+              />
+            </div>
+            <div class="course-content">
+              <p class="course-title">{{course[2]}}</p>
+              <p class="course-des">{{course[0]}}</p>
+              <p class="course-price">₹{{course[3]}}</p>
+            </div>
+
+            <button type="button" class="bookmark" data-value="2">
+              <i class="bi bi-bookmark-fill"></i>
+            </button>
+          </div>
+          {% endif %} 
         {% endfor %}
         <!-- <div class="course2 box">
           <div class="course-img" style="background-color: yellow;"></div>
@@ -76,6 +105,7 @@
         </div> -->
       </div>
     </div>
-    <script src="script.js"></script>
+
+    <script src="{{ url_for('static', filename='js/courseList.js') }}"></script>
   </body>
 </html>
