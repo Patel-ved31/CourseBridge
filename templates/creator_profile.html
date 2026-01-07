@@ -20,17 +20,6 @@
         <header>
           <h1 class="logo">CourseBridge</h1>
 
-          <div class="search">
-            <div class="search-box">
-              <span class="search-icon">
-                <i class="bi bi-search"></i>
-              </span>
-              <input type="text" id="search" placeholder="Search course" />
-            </div>
-
-            <div id="suggestions"></div>
-          </div>
-
           <nav>
             <a href="#">About</a>
             <a href="#">Features</a>
@@ -46,27 +35,58 @@
         </div>
 
         <div class="heading">
-          <p>Your Courses</p>
+          <p>
+            <span class="uploaded-course active">Your Course</span>
+            <span class="bookmarked-course">Bookmark</span>
+          </p>
           <button class="add-btn">+ Add</button>
         </div>
 
-        <div class="content">
-          {% for course in courses %}
-          <div class="course1 box" data-value="{{ course[0] }}">
+        <div class="user-courses">
+          <div class="content">
+            {% for course in courses %}
+            <div class="course1 box" data-value="{{ course[0] }}">
+              <div class="course-img">
+                <img
+                  src="{{ url_for('static', filename='uploads/thumbnails/' + course[6]) }}"
+                  alt="Course thumbnail"
+                />
+              </div>
+              <div class="course-content">
+                <p class="course-title">{{course[2]}}</p>
+                <p class="course-des"></p>
+                <p class="course-price">₹{{course[5]}}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="user-bookmarks">
+          <div class="content">
+            {% for course in bookmarks %}
+            <div class="course1 box" data-value="{{ course[5] }}">
             <div class="course-img">
               <img
-                src="{{ url_for('static', filename='uploads/thumbnails/' + course[6]) }}"
+                src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
                 alt="Course thumbnail"
               />
             </div>
             <div class="course-content">
               <p class="course-title">{{course[2]}}</p>
-              <p class="course-des"></p>
-              <p class="course-price">₹{{course[5]}}</p>
+              <p class="course-des">{{course[0]}}</p>
+              <p class="course-price">₹{{course[3]}}</p>
             </div>
+
+            <button type="button" class="bookmark" data-value="1">
+              <i class="bi bi-bookmark-fill"></i>
+            </button>
           </div>
           {% endfor %}
+          </div>
         </div>
+
+
       </div>
 
       <form class="add-course" id="addCourseForm" enctype="multipart/form-data">

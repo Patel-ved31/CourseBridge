@@ -72,6 +72,8 @@ function profile(){
 
   if(role === "Creator"){
     window.location.href = `/creator_profile`;
+  }else{
+    window.location.href = `/learner_profile`;
   }
 }
 // console.log(document.querySelectorAll("#suggestions > div"))

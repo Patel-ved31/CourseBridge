@@ -14,6 +14,9 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
 app = Flask(__name__)
 CORS(app)
+
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 app.secret_key = "coursebridge_secret"
 @app.route("/")
 def FirstPage():
@@ -209,7 +212,6 @@ def categoryList():
     bookmarks = cursor.fetchall()
     conn.close()
 
-
     return render_template(
         "courseList.html",
         courses=courses,
@@ -292,9 +294,47 @@ def creator_profile():
     )
 
     courses = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t1.id  , t2.title , t2.price , t2.thumbnail , t2.id
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        INNER JOIN bookmarks as t3
+        on t3.course_id = t2.id
+        WHERE t3.user_id = %s
+        """
+        , (session["id"],)
+    )
+    bookmarks = cursor.fetchall()
+
     conn.close()
 
-    return render_template("creator_profile.html" , name=session["username"] , courses =courses)
+    return render_template("creator_profile.html" , name=session["username"] , courses =courses , bookmarks=bookmarks)
+
+@app.route("/learner_profile")
+def learner_profile():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t1.id  , t2.title , t2.price , t2.thumbnail , t2.id
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        INNER JOIN bookmarks as t3
+        on t3.course_id = t2.id
+        WHERE t3.user_id = %s
+        """
+        , (session["id"],)
+    )
+    bookmarks = cursor.fetchall()
+
+    print(bookmarks)
+
+    conn.close()
+
+    return render_template("learner_profile.html" , name=session["username"] , bookmarks=bookmarks)
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS

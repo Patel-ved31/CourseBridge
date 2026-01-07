@@ -52,3 +52,53 @@ document.getElementById("addCourseForm").addEventListener("submit", function (e)
     alert("Something went wrong");
   });
 });
+
+// show creator uploaded courses
+document.querySelector(".uploaded-course").addEventListener("click", () => {
+  if (document.querySelector(".user-courses").style.display === "block") {
+    return;
+  }
+    let course =  document.querySelector(".user-courses");
+    let bookmark =  document.querySelector(".user-bookmarks");
+
+    bookmark.style.display = "none";
+    course.style.display = "block"; 
+
+    document.querySelector(".uploaded-course").classList.add("active");
+    document.querySelector(".bookmarked-course").classList.remove("active");
+});
+// show creator bookmarked courses
+document.querySelector(".bookmarked-course").addEventListener("click", () => {
+  if (document.querySelector(".user-bookmarks").style.display === "block") {
+    return;
+  }
+    let course =  document.querySelector(".user-courses");
+    let bookmark =  document.querySelector(".user-bookmarks");
+
+    course.style.display = "none";
+    bookmark.style.display = "block";
+
+    document.querySelector(".uploaded-course").classList.remove("active");
+    document.querySelector(".bookmarked-course").classList.add("active");
+});
+
+// remove bookmark
+document.querySelectorAll(".bookmark").forEach( bookmarkBtn => {
+  bookmarkBtn.addEventListener( "click" , () => {
+        fetch("/remove-bookmark", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                course_id: bookmarkBtn.parentElement.dataset.value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            bookmarkBtn.parentElement.style.display = "none";
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    } 
+  );
+});
