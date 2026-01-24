@@ -39,3 +39,11 @@ document.querySelectorAll(".bookmark").forEach( bookmarkBtn => {
     } );
 });
 
+document.querySelectorAll(".box").forEach( box => {
+  box.addEventListener( "click" , () => {
+    if(event.target.classList.contains("bookmark") || event.target.classList.contains("bi") ){
+        return;
+    }
+    window.location.href =`/fullCoursePage?course_id=${encodeURIComponent(box.dataset.value)}`;
+    } );
+});

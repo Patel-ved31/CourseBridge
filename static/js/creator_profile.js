@@ -65,7 +65,7 @@ document.querySelector(".uploaded-course").addEventListener("click", () => {
     course.style.display = "block"; 
 
     document.querySelector(".uploaded-course").classList.add("active");
-    document.querySelector(".bookmarked-course").classList.remove("active");
+    document.querySelector(".bookmarked-course").classList.remove("active"); 
 });
 // show creator bookmarked courses
 document.querySelector(".bookmarked-course").addEventListener("click", () => {

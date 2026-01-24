@@ -426,6 +426,136 @@ def remove_bookmark():
 
     return jsonify({"message": "Bookmark removed successfully ✅"})
 
+@app.route("/fullCoursePage")
+def full_course():
+
+    course_id = request.args.get("course_id")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t2.title , t2.description , t2.category , t2.price , t2.thumbnail , t2.course_link
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        WHERE t2.id = %s
+        """,
+        (course_id,)
+    )
+
+    course = cursor.fetchone()
+    conn.close()
+
+    user_id = session.get("id")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT id
+        FROM bookmarks
+        WHERE user_id = %s AND course_id = %s
+        """,
+        (user_id,course_id)
+    )
+    bookmark = cursor.fetchone()
+    conn.close()
+
+    if bookmark:
+        is_bookmarked = True
+    else:
+        is_bookmarked = False
+
+    # check for user review in that course
+    conn = get_db()
+    cursor = conn.cursor()
+
+    user_review = None
+    already_review = False
+    review_details = None
+
+    cursor.execute(
+        """
+        SELECT t1.username , t2.rating , t2.comment 
+        FROM review as t2 INNER JOIN users as t1
+        on t1.id = t2.user_id
+        WHERE t2.course_id = %s AND t1.id = %s
+        """, 
+        (course_id,session["id"])
+    )
+
+    user_review = cursor.fetchall()
+    conn.close()
+
+    if user_review :
+        already_review = True
+        review_details = user_review[0]
+    else :
+        already_review = False
+
+    
+    # for all review
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t2.rating , t2.comment 
+        FROM review as t2 INNER JOIN users as t1
+        on t1.id = t2.user_id
+        WHERE t2.course_id = %s AND t1.id != %s
+        """, 
+        (course_id,session["id"])
+    )
+
+    reviews = cursor.fetchall()
+    conn.close()
+
+    
+    return render_template(
+        "fullCoursePage.html",
+        creator_name=course[0],
+        title=course[1],
+        description=course[2],
+        category=course[3],
+        price=course[4],
+        thumbnail=course[5],
+        course_link=course[6],
+        is_bookmarked=is_bookmarked,
+        reviews=reviews,
+        course_id=course_id,
+        user_review=review_details,
+        already_review = already_review
+    )
+
+@app.route("/submit-review", methods=["POST"])
+def submit_review():
+    course_id = request.json["course_id"]
+    rating = request.json["rating"]
+    comment = request.json["comment"]
+    user_id = session["id"]
+
+    print(course_id, rating, comment, user_id)
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO review (user_id, course_id, rating, comment)
+        VALUES (%s, %s, %s, %s)
+        """,
+        (user_id, course_id, rating, comment)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Review submitted successfully ✅"})
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
