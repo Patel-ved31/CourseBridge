@@ -121,6 +121,7 @@ nav a:hover{
     margin: 10px;
     border-radius: 10px;
     font-size: 20px;
+    transition: all 0.3s ease-in;
 }
 
 #suggestions div:hover{

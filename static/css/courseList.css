@@ -100,23 +100,29 @@ nav a:hover{
 }
 
 #suggestions{
-    /* border: 1px solid white; */
     position: absolute;
     top: 80px;
     z-index: 999;
-    background-color: white;
     color: black;
     margin-left: 40px;
     width: 45%;
+    background-color: #2e2d2d;
+    filter: blur(3);
+    color: white;
 }
 
 #suggestions div{
     padding: 8px;
     cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+    transition: all 0.3s ease-in;
 }
 
 #suggestions div:hover{
-    background-color: #f0f0f0;
+    background-color: #5b5959;
 }
 .content{
     width: 100%;

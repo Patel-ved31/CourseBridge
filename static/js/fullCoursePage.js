@@ -1,6 +1,71 @@
+// get search input box
+const searchInput = document.getElementById("search");
+
+// get suggestions div
+const suggestionsBox = document.getElementById("suggestions");
+
+// run this when user types anything
+searchInput.addEventListener("keyup", (e) => {
+  // get typed value
+  let value = searchInput.value;
+
+  // if input is empty
+  if (value.length === 0) {
+    // clear suggestions
+    suggestionsBox.innerHTML = "";
+    suggestionsBox.style.border = "0";
+    return;
+  }
+
+  if(e.key === "Enter" ){
+    window.location.href =
+      `/courseList?course=${encodeURIComponent(value)}`;
+  }
+
+  // send typed text to flask
+  fetch(`/search?q=${value}`)
+    // convert flask response to json
+    .then((response) => response.json())
+
+    // data = list received from flask
+    .then((data) => {
+      // clear old results
+      suggestionsBox.innerHTML = "";
+
+
+      // loop through each result
+      data.forEach((item) => {
+        // create new div
+        let div = document.createElement("div");
+
+        // put text inside div
+        div.textContent = item;
+
+        // when user clicks suggestion
+        div.onclick = () => {
+          searchInput.value = item;
+          suggestionsBox.innerHTML = "";
+        };
+
+        // add div to suggestions box
+        suggestionsBox.appendChild(div);
+      });
+    });
+});
+
+// console.log(document.querySelectorAll("#suggestions > div"))
+document.getElementById("suggestions").addEventListener("click", function (e) {
+  if (e.target.tagName === "DIV") {
+    const course = e.target.innerText.trim();
+
+    window.location.href =
+      `/courseList?course=${encodeURIComponent(course)}`;
+  }
+});
+
 document.querySelector(".bookmark").addEventListener("click", function() {
-    icon = this.querySelector("i");
-    if (this.dataset.value === "1") {
+    icon = this.querySelector(".bookmark i");
+    if (this.dataset.value === "0") {
         fetch("/add-bookmark", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -12,7 +77,7 @@ document.querySelector(".bookmark").addEventListener("click", function() {
         .then(data => {
             icon.classList.remove("bi-bookmark");
             icon.classList.add("bi-bookmark-fill");
-            this.dataset.value = "2";
+            this.dataset.value = "1";
         })
         .catch(err => {
             console.error(err);
@@ -29,7 +94,7 @@ document.querySelector(".bookmark").addEventListener("click", function() {
         .then(data => {
             icon.classList.remove("bi-bookmark-fill");
             icon.classList.add("bi-bookmark");
-            this.dataset.value = "1";
+            this.dataset.value = "0";
         })
         .catch(err => {
             console.error(err);

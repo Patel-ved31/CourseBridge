@@ -123,6 +123,7 @@ nav a:hover{
     margin: 10px;
     border-radius: 10px;
     font-size: 20px;
+    transition: all 0.3s ease-in;
 }
 
 #suggestions div:hover{
@@ -208,7 +209,6 @@ nav a:hover{
     border-radius: 10px;
     font-size: 1.2rem;
     font-weight: 600;
-    cursor: pointer;
     border: none;
     transition: 0.3s ease;
 }
@@ -224,6 +224,10 @@ nav a:hover{
     width: 190px;
     background-color: #041df9;
     color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1.25rem;
+    cursor: pointer;
 }
 
 .bookmark{
@@ -232,7 +236,8 @@ nav a:hover{
     color: #dadada;
     display: flex;
     gap: 20px;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+    cursor: pointer;
 }
 hr{
     margin: 30px -10px 10px -10px;
