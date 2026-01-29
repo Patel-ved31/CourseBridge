@@ -33,10 +33,13 @@ header{
     align-items: center;
     width: 100%;
 }
-header h1{
-    margin: 0;
-    font-size: 3rem;
-    font-weight: 300;
+header h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: -50px;
 }
 nav{
     display: flex;
@@ -169,7 +172,7 @@ nav a:hover{
 .animation{
     position: absolute;
     top: 30px;
-    right: -300px;
+    right: -450px;
     background-color: transparent;
     transform: scale(1.4);
 }

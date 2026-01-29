@@ -45,10 +45,13 @@ header{
     padding: 1rem 5rem;
     z-index: 999;
 }
-header h1{
-    margin: 0;
-    font-size: 3rem;
-    font-weight: 300;
+header h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: -50px;
 }
 nav{
     display: flex;
@@ -169,4 +172,119 @@ main{
     top: 30px;
     right: -400px;
     z-index: -1;
+}
+
+/* ===========================
+   TABLET (≤ 1024px)
+=========================== */
+@media (max-width: 1024px) {
+
+  header {
+    padding: 1rem 2.5rem;
+  }
+
+  nav {
+    gap: 2rem;
+    margin-left: 0;
+  }
+
+  .content {
+    max-width: 36rem;
+    margin-left: 2%;
+  }
+
+  .content h1 {
+    font-size: 2.5rem;
+  }
+
+  .design-3d {
+    right: -600px;
+    transform: scale(0.9);
+  }
+}
+
+
+/* ===========================
+   MOBILE (≤ 768px)
+=========================== */
+@media (max-width: 768px) {
+
+  header {
+    padding: 1rem 1.5rem;
+  }
+
+  nav {
+    display: none; /* hide nav on mobile */
+  }
+
+  .btn-signUp {
+    padding: 0.6rem 1.6rem;
+    font-size: 0.9rem;
+  }
+
+  main {
+    min-height: auto;
+    margin-top: 4rem;
+  }
+
+  .content {
+    max-width: 100%;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .tag-box {
+    margin: 0 auto;
+  }
+
+  .content h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .description {
+    font-size: 1.05rem;
+    margin: 1.5rem auto 3rem;
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+  }
+
+  .design-3d {
+    position: relative;
+    right: 0;
+    top: 0;
+    transform: scale(0.7);
+    margin-top: 3rem;
+  }
+}
+
+
+/* ===========================
+   SMALL MOBILE (≤ 480px)
+=========================== */
+@media (max-width: 480px) {
+
+  header h1 {
+    font-size: 2.2rem;
+  }
+
+  .content h1 {
+    font-size: 1.9rem;
+  }
+
+  .btn-signIn {
+    font-size: 1rem;
+    padding: 0.6rem 2rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+  }
+
+  .design-3d {
+    transform: scale(0.6);
+  }
 }
