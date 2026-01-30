@@ -102,3 +102,7 @@ document.querySelectorAll(".bookmark").forEach( bookmarkBtn => {
     } 
   );
 });
+
+function goToHome(){
+  window.location.href = `/Home`;
+}

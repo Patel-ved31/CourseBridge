@@ -89,6 +89,8 @@ def send_otp():
     email = data.get("email")
     saved_otp = str(random.randint(100000, 999999))
 
+    print(saved_otp)
+
     message = f"Your OTP is {saved_otp}"
 
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
@@ -436,7 +438,7 @@ def full_course():
 
     cursor.execute(
         """
-        SELECT t1.username , t2.title , t2.description , t2.category , t2.price , t2.thumbnail , t2.course_link
+        SELECT t1.username , t2.title , t2.description , t2.category , t2.price , t2.thumbnail , t2.course_link,t2.creator_id
         FROM courses as t2 INNER JOIN users as t1
         on t1.id = t2.creator_id
         WHERE t2.id = %s
@@ -527,7 +529,8 @@ def full_course():
         reviews=reviews,
         course_id=course_id,
         user_review=review_details,
-        already_review = already_review
+        already_review = already_review,
+        creator_id=course[7]
     )
 
 @app.route("/submit-review", methods=["POST"])
@@ -555,6 +558,40 @@ def submit_review():
 
     return jsonify({"message": "Review submitted successfully ✅"})
 
+
+@app.route("/creatorCourse")
+def creator_course():
+    creator = request.args.get("creator")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
+        FROM courses as t2 INNER JOIN users as t1
+        on t1.id = t2.creator_id
+        WHERE t2.creator_id = %s
+        """,
+        (creator ,)
+    )
+
+    print("===============")
+
+    courses = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT course_id 
+        FROM bookmarks
+        where user_id = %s
+        """
+        , (session["id"],)
+    )
+    bookmarks = cursor.fetchall()
+    conn.close()
+
+    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
 
 if __name__ == "__main__":
     app.run(debug=True)

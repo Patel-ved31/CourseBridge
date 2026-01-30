@@ -55,6 +55,7 @@ header h1 {
   position: absolute;
   top: 20px;
   right: 40px;
+  z-index: 100;
 }
 
 .arrow {
@@ -123,7 +124,8 @@ input[type="password"] {
   border-bottom: 2px solid #444;
   color: #fff;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease-in;
+  border-radius: 10px;
 }
 
 input::placeholder {
@@ -134,8 +136,6 @@ input:focus {
   outline: none;
   border-bottom-color: #a855f7;
 }
-
-
 
 /* ---------------- ERROR TEXT ---------------- */
 .Error {

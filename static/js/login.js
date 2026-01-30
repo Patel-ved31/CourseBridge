@@ -1,3 +1,4 @@
+
 function signIn(){
     let nameInput = document.getElementById("name");
     let passInput = document.getElementById("password");
@@ -5,6 +6,16 @@ function signIn(){
     let name = nameInput.value.trim();
     let password = passInput.value.trim();
 
+    if (name == ""){
+        document.querySelector(".Error").innerText = "USERNAME MUST NOT BE EMPTY";
+        return;
+    }
+
+    if(password == ""){
+        document.querySelector(".Error").innerText = "PASSWORD MUST NOT BE EMPTY";
+        return;
+    }
+    
     fetch("/check-details", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -18,7 +29,7 @@ function signIn(){
         if (data.success) {
             window.location.href = "/Home";
         }else{
-            document.querySelector(".Error").innerText = "Invalid username or password";
+            document.querySelector(".Error").innerText = "INVALID USERNAME OR PASSWORD";
 
             document.getElementById("name").value = "";
             document.getElementById("password").value = "";

@@ -42,6 +42,7 @@ header h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: -50px;
+  cursor: pointer;
 }
 nav{
     display: flex;
@@ -177,7 +178,11 @@ nav a:hover{
     display: flex;
     align-items: center;
     gap: 30px;
+    z-index: 100;
+    cursor: pointer;
 }
+
+
 
 .photo {
   width: 60px;
@@ -196,6 +201,10 @@ nav a:hover{
     font-size: 1.5rem;
     font-weight: 600;
     color: #dadadab5;
+}
+
+.user-name:hover{
+    color: white;
 }
 
 .buttons{

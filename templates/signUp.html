@@ -33,7 +33,7 @@
     <p class="sub-text">Verify your email to join CourseBridge.</p>
 
     <!-- STEP 1 : EMAIL VERIFY -->
-    <div class="email-varify">
+    <div class="email-varify" style="display: none;">
       <input type="email" id="floatingEmail" placeholder="Email address">
       <p class="Error"></p>
       <button type="button" onclick="sendOTP()">Send OTP</button>
@@ -41,7 +41,19 @@
 
     <!-- STEP 2 : OTP VERIFY -->
     <div class="otp-box" style="display:none;">
-      <input type="text" id="floating-opt-varify" placeholder="Enter OTP">
+
+      <div class="otp-number">
+        <input type="text" onkeypress="otp(this , event)" name="one" id="one" placeholder="X">
+        <input type="text" onkeypress="otp(this , event)"  name="two" id="two" placeholder="X">
+        <input type="text" onkeypress="otp(this , event)"  name="three" id="three" placeholder="X">
+        <input type="text" onkeypress="otp(this , event)"  name="four" id="four" placeholder="X">
+        <input type="text" onkeypress="otp(this , event)"  name="five" id="five" placeholder="X">
+        <input type="text" onkeypress="otp(this , event)"  name="six" id="six" placeholder="X">
+      </div>
+
+      <div class="error" style="color: red;"></div>
+
+
       <button type="button" onclick="verifyOTP()">Verify OTP</button>
 
       <p id="timerText">Resend OTP in 30s</p>
@@ -49,7 +61,7 @@
     </div>
 
     <!-- STEP 3 : USER DETAILS -->
-    <form class="detail-form" style="display:none;" onsubmit="submitForm(event)">
+    <form class="detail-form" style="display:block;" onsubmit="submitForm(event)">
       <input type="hidden" id="hiddenEmail">
 
       <input type="text" id="floatingUsername" placeholder="Username">
@@ -59,12 +71,16 @@
       <p class="PasswordError"></p>
 
       <div class="role-box">
-        <label>
-          <input type="radio" name="radioDefault" value="Learner"> Learner
-        </label>
-        <label>
-          <input type="radio" name="radioDefault" value="Creator"> Creator
-        </label>
+        <div >
+        <input type="radio" id="Learner" name="radioDefault" value="Learner" checked> 
+        <label for="Learner">Learner</label>
+        </div>
+
+        <div>
+        <input type="radio" id="Creator" name="radioDefault" value="Creator">
+        <label for="Creator">Creator</label>
+        </div>
+        
       </div>
       <p class="RoleError"></p>
 

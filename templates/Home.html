@@ -23,7 +23,7 @@
     <div class="container">
       <div class="head-part">
         <header>
-          <h1 class="logo">CourseBridge</h1>
+          <h1 class="logo" onclick="location.reload();">CourseBridge</h1>
 
           <div class="search">
             <div class="search-box">
@@ -62,6 +62,7 @@
 
       <div class="category">
         <div data-value="Web Development" class="category1 box">
+          <img class="icons" src="{{ url_for('static', filename='css/website.png') }}" alt=".">
           <p>
             Web <br />
             Development
@@ -69,17 +70,20 @@
         </div>
 
         <div data-value="Data Science" class="category2 box">
+          <img class="icons" src="{{ url_for('static', filename='css/dataScience.png') }}" alt=".">
           <p>
             Data <br />
             Science
           </p>
         </div>
         <div data-value="Programming" class="category3 box">
+          <img class="icons" src="{{ url_for('static', filename='css/programming.png') }}" alt=".">
           <p>
             Programming
           </p>
         </div>
         <div data-value="Machin Learning" class="category4 box">
+          <img class="icons" src="{{ url_for('static', filename='css/ML.jpg') }}" alt=".">
           <p>
             Machin <br />
             Learning
@@ -87,7 +91,7 @@
         </div>
         <div data-value="other" class="category5 box">
           <p>
-            other
+            All <br> Courses
           </p>
         </div>
       </div>

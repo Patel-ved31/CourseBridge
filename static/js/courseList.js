@@ -112,3 +112,7 @@ document.querySelectorAll(".box").forEach( box => {
     window.location.href =`/fullCoursePage?course_id=${encodeURIComponent(box.dataset.value)}`;
     } );
 });
+
+function goToHome(){
+  window.location.href = `/Home`;
+}

@@ -1,3 +1,24 @@
+function otp(input, e) {
+
+  if(input.value.length === 1){
+    input.value = "";
+    // return;
+  }
+
+  if (!/^[0-9]$/.test(e.key)) {
+    e.preventDefault();
+    return;
+  }
+
+  setTimeout(() => {
+    if (input.value.length === 1) {
+      const next = input.nextElementSibling;
+      if (next) next.focus();
+    }
+  }, 0);
+}
+
+
 let timer = null;
 let timeLeft = 30;
 
@@ -11,6 +32,8 @@ function startTimer() {
 
   resendBtn.disabled = true;
   timerText.innerText = `Resend OTP in ${timeLeft}s`;
+  resendBtn.style.backgroundColor = "transparent"
+  resendBtn.style.color = "#a855f7"
 
   timer = setInterval(() => {
     timeLeft--;
@@ -21,50 +44,23 @@ function startTimer() {
       timer = null;
       timerText.innerText = "You can resend OTP now";
       resendBtn.disabled = false;
+      resendBtn.style.backgroundColor = "#a855f7"
+      resendBtn.style.color = "#000"
+
     }
   }, 1000);
 }
 
 /* ---------------- SEND OTP ---------------- */
 function sendOTP() {
-  // const email = document.getElementById("floatingEmail").value.trim();
-  // const errorBox = document.querySelector(".Error");
-
-  // errorBox.innerText = "";
-
-  // if (email.length === 0) {
-  //   errorBox.innerText = "Please enter your email";
-  //   return;
-  // }
-
-  // fetch("/check-email", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ email })
-  // })
-  // .then(res => res.json())
-  // .then(data => {
-  //   if (!data.success) {
-  //     errorBox.innerText = "This email already exists";
-  //     return;
-  //   }
-
-  //   return fetch("/send-otp", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ email })
-  //   });
-  // })
-  // .then(res => {
-  //   if (!res) return;
-  //   return res.json();
-  // })
-  // .then(() => {
-  //   document.querySelector(".email-varify").style.display = "none";
-  //   document.querySelector(".otp-box").style.display = "block";
-  //   startTimer();
-  // });
   const email = document.getElementById("floatingEmail").value;
+
+  if (!email || !email.includes("@")) {
+  document.querySelector(".Error").innerText = "Enter valid email";
+  return;
+}
+
+
   fetch("/check-email", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -92,7 +88,18 @@ function sendOTP() {
 
 /* ---------------- VERIFY OTP ---------------- */
 function verifyOTP() {
-  const otp = document.getElementById("floating-opt-varify").value.trim();
+  const otp =
+    document.getElementById("one").value +
+    document.getElementById("two").value +
+    document.getElementById("three").value +
+    document.getElementById("four").value +
+    document.getElementById("five").value +
+    document.getElementById("six").value;
+
+  if (otp.length !== 6) {
+    alert("Please enter complete OTP");
+    return;
+  }
 
   fetch("/verify-otp", {
     method: "POST",

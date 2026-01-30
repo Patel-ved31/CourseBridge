@@ -17,7 +17,7 @@
     <div class="container">
       <div class="head-part">
         <header>
-          <h1 class="logo">CourseBridge</h1>
+          <h1 class="logo" onclick="goToHome()">CourseBridge</h1>
 
           <div class="search">
             <div class="search-box">
@@ -48,9 +48,9 @@
         </div>
         <div class="course-content">
           <h2 class="course-title">{{title}}</h2>
-          <div class="user-details">
+          <div class="user-details" data-value="{{creator_id}}" onclick="fullPage(this)">
             <div class="photo"><i class="bi bi-person"></i></div>
-            <div class="user-name">{{creator_name}}</div>
+            <div class="user-name" >{{creator_name}}</div>
           </div>
 
           <div class="buttons">

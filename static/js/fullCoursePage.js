@@ -140,3 +140,12 @@ document.querySelector("#submit-review").addEventListener("click", function() {
         console.error(err);
     }); 
 });
+
+
+function fullPage(x){
+    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+}
+
+function goToHome(){
+  window.location.href = `/Home`;
+}
