@@ -5,7 +5,8 @@
   <title>Sign Up | CourseBridge</title>
   <!-- <link rel="stylesheet" href="signUp.css"> -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/signUp.css') }}" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  
 </head>
 <body>
     <img class="img-gradient" src="{{ url_for('static', filename='css/gradient.png') }}" alt="...">
@@ -33,10 +34,10 @@
     <p class="sub-text">Verify your email to join CourseBridge.</p>
 
     <!-- STEP 1 : EMAIL VERIFY -->
-    <div class="email-varify" style="display: none;">
+    <div class="email-varify">
       <input type="email" id="floatingEmail" placeholder="Email address">
       <p class="Error"></p>
-      <button type="button" onclick="sendOTP()">Send OTP</button>
+      <button type="button" class="send-otp-btn" onclick="sendOTP(this)">Send OTP</button>
     </div>
 
     <!-- STEP 2 : OTP VERIFY -->
@@ -54,19 +55,21 @@
       <div class="error" style="color: red;"></div>
 
 
-      <button type="button" onclick="verifyOTP()">Verify OTP</button>
+      <button type="button" class="varify-btn" onclick="verifyOTP()">Verify OTP</button>
 
       <p id="timerText">Resend OTP in 30s</p>
       <button id="resendBtn" onclick="resendOTP()" disabled>Resend OTP</button>
     </div>
 
     <!-- STEP 3 : USER DETAILS -->
-    <form class="detail-form" style="display:block;" onsubmit="submitForm(event)">
+    <form class="detail-form" style="display:none;" onsubmit="submitForm(event)">
       <input type="hidden" id="hiddenEmail">
 
+      <span><i class="bi bi-person"></i></span>
       <input type="text" id="floatingUsername" placeholder="Username">
       <p class="UserNameError"></p>
 
+      <span><i class="bi bi-key"></i></span>
       <input type="password" id="floatingPassword" placeholder="Password">
       <p class="PasswordError"></p>
 
@@ -84,7 +87,19 @@
       </div>
       <p class="RoleError"></p>
 
-      <button type="submit">Create Account</button>
+      <div class="form-group">
+        <label for="thumbnail">Profile Picture</label>
+        <input
+          type="file"
+          id="thumbnail"
+          name="thumbnail"
+          accept="image/*"
+        />
+      </div>
+      <p class="ProfileError"></p>
+
+
+      <button class="submit-btn" type="submit">Create Account</button>
 
       <p class="switch">
         Already have an account? <a href="/login">Login</a>

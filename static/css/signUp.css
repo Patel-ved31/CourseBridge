@@ -37,7 +37,7 @@ header{
 }
 header h1 {
   font-size: 3rem;
-  font-weight: 600;
+  font-weight: 700;
   background: linear-gradient(to right, #fff, #94a3b8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -77,11 +77,11 @@ header h1 {
   justify-content: center;
   gap: 10px;
   position: absolute;
-  top: 15%;
+  top: 12%;
   right: 100px;
   border-radius: 50px;
   width: 700px;
-  height: 600px;
+  height: 700px;
   box-shadow: 0 0 15px white;
   background: linear-gradient(
     135deg,
@@ -112,6 +112,55 @@ input {
   font-size: 1rem;
 }
 
+#floatingEmail{
+  width: 100%;
+  padding: 12px 10px;
+  margin-bottom: 28px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #444;
+  color: #fff;
+  font-size: 18px;
+  transition: all 0.2s ease-in;
+}
+
+#floatingEmail:focus{
+  border-color: #a855f7;
+}
+
+.send-otp-btn{
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  background: #a855f7;
+  color: #000000;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+span{
+  position: relative;
+}
+
+span i{
+  position: absolute;
+  transform: translateY(10px);
+  font-size: 25px;
+  margin-left: 10px;
+  color: #a855f7;
+}
+
+.otp-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
 .otp-number{
   display: flex;
   margin-bottom: 20px;
@@ -123,6 +172,7 @@ input {
   text-align: center;
   width: 45px;
   height: 50px;
+  border: none;
   border: 2px solid #ffffffa2;
 }
 
@@ -131,16 +181,17 @@ input:focus {
   border-color: #a855f7;
 }
 
-button {
+.otp-box button {
   width: 100%;
   padding: 14px;
-  margin-top: 10px;
+  margin: 15px 0;
   background: #a855f7;
   color: #000;
   font-weight: bold;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 button:hover {
@@ -169,30 +220,27 @@ button:hover {
   cursor: pointer;
 }
 .role-box div input{
-  transform: translateY(8px);
+  transform: translateY(8px)  scale(1.5);
   cursor: pointer;
 }
 
-input[type="text"],
-input[type="password"] {
+#floatingUsername ,
+#floatingPassword{
   width: 100%;
-  padding: 12px 5px;
+  padding: 12px 50px;
   margin-bottom: 28px;
   background: transparent;
   border: none;
   border-bottom: 2px solid #444;
   color: #fff;
   font-size: 16px;
-  transition: all 0.4s ease-in;
+  transition: all 0.2s ease-in;
 }
 
-input::placeholder {
-  color: #888;
-}
 
-input:focus {
-  outline: none;
-  border-bottom-color: #a855f7;
+#floatingUsername:focus ,
+#floatingPassword:focus {
+  border-color: #a855f7;
 }
 
 
@@ -221,6 +269,19 @@ input:focus {
     z-index: -1;
 }
 
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  background: #a855f7;
+  color: #000000;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 .back-btn{
   background-color: transparent;
   padding: 0.5rem 2rem;
@@ -239,4 +300,28 @@ input:focus {
 
 .arrow:hover{
   color: white;
+}
+
+input[type="file"] {
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.112);
+  border-radius: 12px;
+  width: 100%;
+  color: #cbd5e1;
+  margin: 20px 4px;
+  font-size: 0.9rem;
+}
+
+input[type="file"]::file-selector-button {
+  background: #334155;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.form-group label{
+  font-size: 1.3rem;
 }

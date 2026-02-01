@@ -52,11 +52,15 @@ function startTimer() {
 }
 
 /* ---------------- SEND OTP ---------------- */
-function sendOTP() {
+function sendOTP(x) {
+
+  x.innerText = "Sending....."
+  
   const email = document.getElementById("floatingEmail").value;
 
   if (!email || !email.includes("@")) {
   document.querySelector(".Error").innerText = "Enter valid email";
+  x.innerText = "Send OTP"
   return;
 }
 
@@ -82,6 +86,7 @@ function sendOTP() {
           });
       } else {
         document.querySelector(".Error").innerText = "this email already exist";
+          x.innerText = "Send OTP"
       }
     });
 }
@@ -149,6 +154,8 @@ function submitForm(event) {
   const password = document.getElementById("floatingPassword").value.trim();
   const email = document.getElementById("hiddenEmail").value;
   const roleInput = document.querySelector('input[name="radioDefault"]:checked');
+  const profile = document.getElementById("thumbnail").files[0];
+
 
   document.querySelector(".UserNameError").innerText = "";
   document.querySelector(".PasswordError").innerText = "";
@@ -178,20 +185,27 @@ function submitForm(event) {
     return;
   }
 
+  if(!profile){
+    document.querySelector(".ProfileError").innerText = 
+    "please upload valid Profile Picture"
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("username", name);
+  formData.append("password", password);
+  formData.append("email", email);
+  formData.append("role", roleInput.value);
+  formData.append("profile", profile);
+
   fetch("/register", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: name,
-      password: password,
-      email: email,
-      role: roleInput.value
-    })
+    body: formData
   })
   .then(res => res.json())
   .then(data => {
-    alert(data.message);
-    // optional redirect
-    // window.location.href = "/login";
+    if(data.message){
+      window.location.href = `/Home`;
+    }
   });
 }

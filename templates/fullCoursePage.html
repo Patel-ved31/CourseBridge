@@ -49,7 +49,9 @@
         <div class="course-content">
           <h2 class="course-title">{{title}}</h2>
           <div class="user-details" data-value="{{creator_id}}" onclick="fullPage(this)">
-            <div class="photo"><i class="bi bi-person"></i></div>
+            <div class="photo">
+            <img src="{{ url_for('static', filename='uploads/profilePIC/' + creator_id + '.png') }}" alt="..">
+            </div>
             <div class="user-name" >{{creator_name}}</div>
           </div>
 
@@ -106,7 +108,9 @@
          {% else %}
           <!-- user already review box -->
           <div class="review-container already-reviewed">
-            <div class="photo"><i class="bi bi-person"></i></div>
+            <div class="photo">
+              <img src="{{ url_for('static', filename='uploads/profilePIC/' + user_photo ) }}" alt="..">
+            </div>
 
             <div class="review-item">
               <div class="reviewer-name">
@@ -130,7 +134,9 @@
           <div class="review-list">
             {% for review in reviews %}
             <div class="review-container">
-              <div class="photo"><i class="bi bi-person"></i></div>
+              <div class="photo">
+                <img src="{{ url_for('static', filename='uploads/profilePIC/' + review[3] ) }}" alt="..">
+              </div>
 
               <div class="review-item">
                 <div class="reviewer-name">

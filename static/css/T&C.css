@@ -1,0 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+body {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.92),
+    rgba(2, 6, 23, 0.95)
+  );
+  color: #e5e7eb;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Layout */
+.terms-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.terms-sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, #0f172a, #020617);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 30px 20px;
+}
+
+.logo{
+  font-size: 2.3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
+}
+
+.terms-sidebar ul {
+  list-style: none;
+}
+
+.terms-sidebar li {
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: all 0.3s ease;
+}
+
+.terms-sidebar li:hover {
+  background: rgba(99,102,241,0.15);
+  color: #fff;
+}
+
+.terms-sidebar li.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(99,102,241,0.4);
+}
+
+.exit-btn{
+    color: #cbd5f5;
+    position: absolute;
+    bottom: 10%;
+    left: 4%;
+    font-size: 1.3rem;
+    text-decoration: none;
+    letter-spacing: 3px;
+}
+
+#arrow{
+    font-size: 1.7rem;
+    color: #a855f7;
+}
+
+/* Content Area */
+.terms-content {
+  flex: 1;
+  padding: 60px;
+  overflow-y: auto;
+}
+
+/* Content Card */
+#contentBox {
+  max-width: 900px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 50px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+/* Headings */
+#contentBox h1 {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+#contentBox h2 {
+  font-size: 1.4rem;
+  margin: 30px 0 12px;
+  color: #c7d2fe;
+}
+
+/* Text */
+#contentBox p {
+  font-size: 1.05rem;
+  color: #cbd5f5;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+/* Lists */
+#contentBox ul {
+  margin-left: 20px;
+}
+
+#contentBox li {
+  margin-bottom: 10px;
+  color: #e5e7eb;
+}
+
+/* Scrollbar */
+.terms-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terms-content::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 10px;
+}

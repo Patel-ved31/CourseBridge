@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template,session
+from flask import Flask, request, jsonify, render_template,session,url_for
 from flask_cors import CORS
 import random
 import smtplib
@@ -9,6 +9,9 @@ from werkzeug.utils import secure_filename
 # make file for thumbnail image
 UPLOAD_FOLDER = "static/uploads/thumbnails"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+UPLOAD_FOLDER_PROFILE = "static/uploads/profilePIC"
+os.makedirs(UPLOAD_FOLDER_PROFILE, exist_ok=True)
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
@@ -32,6 +35,15 @@ def login():
 def signUp():
     return render_template("signUp.html")
 
+@app.route("/Documentation") 
+def Docs():
+    return render_template("Docs.html")
+
+@app.route("/Terms&Conditions")
+def T_C():
+    return render_template("T&C.html")
+
+
 @app.route("/check-details" , methods=["POST"])
 def check_user() :
     username = request.json["username"]
@@ -52,6 +64,7 @@ def check_user() :
         session["username"] = user[1]
         session["id"] = user[0]
         session["role"] = user[4]
+        session["profile_pic"] = user[5]
         return jsonify({"success": True, "message": "✅ Login successful"})
     else:
         return jsonify({"success": False, "message": "❌ Invalid username or password"})
@@ -110,10 +123,17 @@ def verify_otp():
 
 @app.route("/register" , methods=["POST"])
 def submit():
-    name = request.json["username"]
-    password = request.json["password"]
-    email = request.json["email"]
-    role = request.json["role"]
+    name = request.form.get("username")
+    password = request.form.get("password")
+    email = request.form.get("email")
+    role = request.form.get("role")
+    profile = request.files.get("profile")
+
+    if not profile or profile.filename == "":
+        return jsonify({"message": "No image selected"}), 400
+    
+    if not allowed_file(profile.filename):
+        return jsonify({"message": "Invalid image type"}), 400
     
     try:
         conn = get_db()
@@ -123,20 +143,46 @@ def submit():
             """
             INSERT INTO users (username, email, password, role)
             VALUES (%s, %s, %s, %s)
+            RETURNING id
             """,
             (name, email, password, role)
         )
 
+        user_id = cursor.fetchone()[0]
+        print(user_id)
+
+        # 2️⃣ Save image as user_id.png
+        filename = secure_filename(f"{user_id}.png")
+        image_path = os.path.join(UPLOAD_FOLDER_PROFILE, filename)
+        profile.save(image_path)
+
+        # 3️⃣ Save filename in DB (optional but recommended)
+        cursor.execute("""
+        UPDATE users
+        SET profile_pic = %s
+        WHERE id = %s
+        """, (filename, user_id))
+
         conn.commit()
-        return jsonify({"message": "✅ User registered successfully"})
+
+        session["username"] = name
+        session["id"] = user_id
+        session["role"] = role
+        session["profile_pic"] = filename
+
+        return jsonify({"message": True})
+       
     except Exception:
-        return jsonify({"message": "❌ Email already exists"})
+        return jsonify({"message": False})
     finally:
         conn.close()
 
 @app.route("/Home" , methods=["GET"])
 def Home():
-    return render_template("Home.html" , name=session["username"] , id = session["id"] , role = session["role"])
+    if(session["username"] and session["role"] and session["id"] and session["profile_pic"] ) :
+        return render_template("Home.html" , name=session["username"] , id = session["id"] , role = session["role"])
+    else :
+        return jsonify("firstlyy login")
 
 @app.route("/courses", methods=["GET"])
 def get_courses():
@@ -312,7 +358,7 @@ def creator_profile():
 
     conn.close()
 
-    return render_template("creator_profile.html" , name=session["username"] , courses =courses , bookmarks=bookmarks)
+    return render_template("creator_profile.html" , name=session["username"] , courses =courses , bookmarks=bookmarks,profile=session["profile_pic"])
 
 @app.route("/learner_profile")
 def learner_profile():
@@ -336,7 +382,7 @@ def learner_profile():
 
     conn.close()
 
-    return render_template("learner_profile.html" , name=session["username"] , bookmarks=bookmarks)
+    return render_template("learner_profile.html" , name=session["username"] , bookmarks=bookmarks,profile=session["profile_pic"])
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -477,10 +523,11 @@ def full_course():
     user_review = None
     already_review = False
     review_details = None
+    user_photo = None
 
     cursor.execute(
         """
-        SELECT t1.username , t2.rating , t2.comment 
+        SELECT t1.username , t2.rating , t2.comment , t1.profile_pic
         FROM review as t2 INNER JOIN users as t1
         on t1.id = t2.user_id
         WHERE t2.course_id = %s AND t1.id = %s
@@ -494,6 +541,7 @@ def full_course():
     if user_review :
         already_review = True
         review_details = user_review[0]
+        user_photo = str(session["id"]) + ".png"
     else :
         already_review = False
 
@@ -504,7 +552,7 @@ def full_course():
 
     cursor.execute(
         """
-        SELECT t1.username , t2.rating , t2.comment 
+        SELECT t1.username , t2.rating , t2.comment , t1.profile_pic
         FROM review as t2 INNER JOIN users as t1
         on t1.id = t2.user_id
         WHERE t2.course_id = %s AND t1.id != %s
@@ -530,7 +578,8 @@ def full_course():
         course_id=course_id,
         user_review=review_details,
         already_review = already_review,
-        creator_id=course[7]
+        creator_id=str(course[7]),
+        user_photo=user_photo
     )
 
 @app.route("/submit-review", methods=["POST"])
@@ -576,8 +625,6 @@ def creator_course():
         (creator ,)
     )
 
-    print("===============")
-
     courses = cursor.fetchall()
 
     cursor.execute(
@@ -592,6 +639,8 @@ def creator_course():
     conn.close()
 
     return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
