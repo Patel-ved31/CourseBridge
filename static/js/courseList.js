@@ -113,6 +113,10 @@ document.querySelectorAll(".box").forEach( box => {
     } );
 });
 
+function goToFullPage(x){
+    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+}
+
 function goToHome(){
   window.location.href = `/Home`;
 }

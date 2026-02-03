@@ -27,21 +27,25 @@
           <h1 class="logo" onclick="goToHome()">CourseBridge</h1>
 
           <nav>
+            <a href="{{ url_for('manageAcc') }}">Manage Account</a>
+            <a href="#">
             <div class="dropdown">
               <button
-                class="btn bg-transparent text-light dropdown-toggle"
+                class="btn bg-transparent text-light dropdown-toggle fs-5"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                style="display: flex; justify-content: center; align-items: center;"
               >
-                Subscriptions
+              <p id="sub-toggle">Subscriptions</p>
               </button>
               <ul class="dropdown-menu  ">
                 {% for Subscription in subscriptions %}
-                <li><button class="dropdown-item text-light fs-5 p-3" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
+                <li><button class="dropdown-item text-light fs-4 p-3" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
                 {% endfor %}
               </ul>
             </div>
+            </a>
             <a href="{{ url_for('FirstPage') }}" class="logout">
               <i class="bi bi-box-arrow-right"> </i>
               <p>logout</p>
@@ -59,8 +63,8 @@
 
         <div class="heading">
           <p>
-            <span class="uploaded-course active">Your Course</span>
-            <span class="bookmarked-course">Bookmark</span>
+            <span class="uploaded-course active">Your Courses</span>
+            <span class="bookmarked-course">Bookmarks</span>
           </p>
           <button class="add-btn">+ Add</button>
         </div>

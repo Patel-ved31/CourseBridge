@@ -48,6 +48,8 @@ def T_C():
     return render_template("T&C.html")
 
 
+
+
 @app.route("/check-details" , methods=["POST"])
 def check_user() :
     username = request.json["username"]
@@ -252,6 +254,22 @@ def search():
 
 @app.route("/categoryList")
 def categoryList():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     category = request.args.get("category")
 
     conn = get_db()
@@ -283,11 +301,28 @@ def categoryList():
     return render_template(
         "courseList.html",
         courses=courses,
-        bookmarks=[b[0] for b in bookmarks]
+        bookmarks=[b[0] for b in bookmarks],
+        subscriptions=subscriptions
     )
 
 @app.route("/courseList")
 def courseList():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     query = request.args.get("course")
 
     conn = get_db()
@@ -316,10 +351,26 @@ def courseList():
     bookmarks = cursor.fetchall()
     conn.close()
 
-    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
+    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
 @app.route("/all_courses")
 def all_courses():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     conn = get_db()
     cursor = conn.cursor()
 
@@ -345,7 +396,7 @@ def all_courses():
 
     conn.close()
 
-    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
+    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
 @app.route("/creator_profile")
 def creator_profile():
@@ -528,7 +579,6 @@ def remove_bookmark():
 
 @app.route("/fullCoursePage")
 def full_course():
-
     course_id = request.args.get("course_id")
 
     conn = get_db()
@@ -654,7 +704,7 @@ def full_course():
         already_review = already_review,
         creator_id=str(course[7]),
         user_photo=user_photo,
-        already_subscription = already_sub
+        already_subscription = already_sub,
     )
 
 @app.route("/sub" , methods=["POST"])
@@ -727,6 +777,22 @@ def submit_review():
 
 @app.route("/creatorCourse")
 def creator_course():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     creator = request.args.get("creator")
 
     conn = get_db()
@@ -755,9 +821,101 @@ def creator_course():
     bookmarks = cursor.fetchall()
     conn.close()
 
-    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks])
+    return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
+#manage account
+@app.route("/manageAcc")
+def manageAcc():
 
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT password , email FROM users
+        WHERE id = %s
+        """,
+        (session["id"],)
+    )
+
+    details=cursor.fetchone()
+
+    conn.close()
+    
+    return render_template(
+    "account.html" , 
+    username=session["username"],
+    password = details[0],
+    profile_pic = session["profile_pic"],
+    email = details[1],
+    role = session["role"]
+    )
+
+@app.route("/changeName" , methods=["POST"])
+def changeName():
+    name = request.json["newName"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT * from users 
+        where username = %s
+        """,
+        (name , )
+    )
+
+    has_name = cursor.fetchone()
+
+    if has_name :
+        return  jsonify({"message": "UserName Not available"})
+    
+    cursor.execute(
+        """
+        UPDATE users SET username = %s WHERE id = %s
+        """,
+        (name , session["id"])
+    )
+
+    conn.commit()
+    conn.close()
+
+    session["username"] = name
+
+    return  jsonify({"message": "True"})
+
+@app.route("/changePass" , methods=["POST"])
+def changePass():
+    password = request.json["newPass"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT * from users 
+        where password = %s
+        """,
+        (password , )
+    )
+
+    has_pass = cursor.fetchone()
+
+    if has_pass :
+        return  jsonify({"message": "Passworde Not available"})
+    
+    cursor.execute(
+        """
+        UPDATE users SET password = %s WHERE id = %s
+        """,
+        (password , session["id"])
+    )
+
+    conn.commit()
+    conn.close()
+
+    return  jsonify({"message": "True"})
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/courseList.css') }}"
     />
@@ -14,7 +20,7 @@
     />
   </head>
   <body>
-    <div class="container">
+    <div class="container1">
       <div class="head-part">
         <header>
           <h1 class="logo" onclick="goToHome()">CourseBridge</h1>
@@ -31,10 +37,27 @@
           </div>
 
           <nav>
-            <a href="#">About</a>
-            <a href="#">Features</a>
-            <a href="#">Resourses</a>
-            <a href="#">Contect</a>
+            <div class="dropdown">
+              <button
+                class="btn bg-transparent text-light dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="display: flex; justify-content: center; align-items: center;"
+              >
+                <p id="sub-toggle">Subscriptions</p>
+
+              </button>
+              <ul class="dropdown-menu  ">
+                {% for Subscription in subscriptions %}
+                <li><button class="dropdown-item text-light fs-5 p-2" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <a href="{{ url_for('FirstPage') }}" class="logout">
+              <i class="bi bi-box-arrow-right"> </i>
+              <p>logout</p>
+            </a>
           </nav>
         </header>
       </div>
@@ -107,5 +130,11 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/courseList.js') }}"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

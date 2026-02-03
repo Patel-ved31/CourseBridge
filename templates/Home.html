@@ -45,19 +45,19 @@
           </div>
 
           <nav>
-            <a href="#">About</a>
             <div class="dropdown">
               <button
                 class="btn bg-transparent text-light dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                style="display: flex; justify-content: center; align-items: center;"
               >
-                Subscriptions
+                <p id="sub-toggle">Subscriptions</p>
               </button>
               <ul class="dropdown-menu  ">
                 {% for Subscription in subscriptions %}
-                <li><button class="dropdown-item text-light fs-5 p-3" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
+                <li><button class="dropdown-item text-light fs-5 p-2" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
                 {% endfor %}
               </ul>
             </div>
