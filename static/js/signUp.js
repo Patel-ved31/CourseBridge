@@ -52,8 +52,9 @@ function startTimer() {
 }
 
 /* ---------------- SEND OTP ---------------- */
-function sendOTP(x) {
+function sendOTP() {
 
+  let x = document.querySelector(".send-otp-btn")
   x.innerText = "Sending....."
   
   const email = document.getElementById("floatingEmail").value;
