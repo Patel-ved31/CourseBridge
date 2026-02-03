@@ -149,3 +149,51 @@ function fullPage(x){
 function goToHome(){
   window.location.href = `/Home`;
 }
+
+function sub(x){
+    let creator_id = parseInt(x.dataset.value);
+
+    fetch("/sub", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            creator_id : creator_id
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        x.classList.add("already-sub")
+        x.classList.remove("not-sub")
+
+        x.innerText = "Subscribed"
+
+        location.reload()
+    })
+    .catch(err => {
+        console.error(err);
+    }); 
+}
+
+function unsub(x){
+    let creator_id = parseInt(x.dataset.value);
+
+    fetch("/unsub", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            creator_id : creator_id
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        x.classList.remove("already-sub")
+        x.classList.add("not-sub")
+
+        x.innerText = "Subscribe"
+
+        location.reload()
+    })
+    .catch(err => {
+        console.error(err);
+    }); 
+}

@@ -48,11 +48,19 @@
         </div>
         <div class="course-content">
           <h2 class="course-title">{{title}}</h2>
-          <div class="user-details" data-value="{{creator_id}}" onclick="fullPage(this)">
-            <div class="photo">
-            <img src="{{ url_for('static', filename='uploads/profilePIC/' + creator_id + '.png') }}" alt="..">
+          <div class="user-details"  >
+            <div class="photo" data-value="{{creator_id}}" onclick="fullPage(this)">
+            <img  src="{{ url_for('static', filename='uploads/profilePIC/' + creator_id + '.png') }}" alt="..">
             </div>
-            <div class="user-name" >{{creator_name}}</div>
+            <div data-value="{{creator_id}}" onclick="fullPage(this)" class="user-name" >{{creator_name}}</div>
+
+            <div class="subscription">
+              {% if already_subscription %}
+              <button type="button" class="already-sub" data-value="{{creator_id}}" onclick="unsub(this)">Subscribed</button>
+              {% else %}
+              <button type="button" class="not-sub" onclick="sub(this)" data-value="{{creator_id}}">Subscribe</button>
+              {% endif %}
+            </div>
           </div>
 
           <div class="buttons">

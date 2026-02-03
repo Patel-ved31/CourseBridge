@@ -1,9 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/Home.css') }}"
@@ -12,18 +19,19 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  </head>
-  <body>
 
+    
+    
+  </head>
+  <body style="background-color: black;">
     <div class="user-name" data-value="{{ name }}"></div>
     <div class="user-id" data-value="{{ id }}"></div>
     <div class="user-role" data-value="{{ role }}"></div>
 
-    <div class="container">
+    <div class="container1">
       <div class="head-part">
         <header>
-          <h1 class="logo" onclick="location.reload();">CourseBridge</h1>
+          <h1 class="logo" onclick="location.reload()">CourseBridge</h1>
 
           <div class="search">
             <div class="search-box">
@@ -38,21 +46,34 @@
 
           <nav>
             <a href="#">About</a>
-            <a href="#">Features</a>
-            <a href="#">Resourses</a>
-            <a href="{{ url_for('FirstPage') }}">
-             
-              <i class="bi bi-box-arrow-right"> </i> 
+            <div class="dropdown">
+              <button
+                class="btn bg-transparent text-light dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Subscriptions
+              </button>
+              <ul class="dropdown-menu  ">
+                {% for Subscription in subscriptions %}
+                <li><button class="dropdown-item text-light fs-5 p-3" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <a href="{{ url_for('FirstPage') }}" class="logout">
+              <i class="bi bi-box-arrow-right"> </i>
               <p>logout</p>
-              
             </a>
           </nav>
         </header>
       </div>
 
-
       <div class="profile-box">
-          <button type="button" onclick="profile()" class="btn-Profile" href="#"> <i class="bi bi-person"></i> <p>Profile</p> </button>
+        <button type="button" onclick="profile()" class="button-Profile" href="#">
+          <i class="bi bi-person"></i>
+          <p>Profile</p>
+        </button>
       </div>
 
       <div class="user-box">
@@ -67,7 +88,11 @@
 
       <div class="category">
         <div data-value="Web Development" class="category1 box">
-          <img class="icons" src="{{ url_for('static', filename='css/website.png') }}" alt=".">
+          <img
+            class="icons"
+            src="{{ url_for('static', filename='css/website.png') }}"
+            alt="."
+          />
           <p>
             Web <br />
             Development
@@ -75,20 +100,30 @@
         </div>
 
         <div data-value="Data Science" class="category2 box">
-          <img class="icons" src="{{ url_for('static', filename='css/dataScience.png') }}" alt=".">
+          <img
+            class="icons"
+            src="{{ url_for('static', filename='css/dataScience.png') }}"
+            alt="."
+          />
           <p>
             Data <br />
             Science
           </p>
         </div>
         <div data-value="Programming" class="category3 box">
-          <img class="icons" src="{{ url_for('static', filename='css/programming.png') }}" alt=".">
-          <p>
-            Programming
-          </p>
+          <img
+            class="icons"
+            src="{{ url_for('static', filename='css/programming.png') }}"
+            alt="."
+          />
+          <p>Programming</p>
         </div>
         <div data-value="Machin Learning" class="category4 box">
-          <img class="icons" src="{{ url_for('static', filename='css/ML.jpg') }}" alt=".">
+          <img
+            class="icons"
+            src="{{ url_for('static', filename='css/ML.jpg') }}"
+            alt="."
+          />
           <p>
             Machin <br />
             Learning
@@ -96,7 +131,8 @@
         </div>
         <div data-value="other" class="category5 box">
           <p>
-            All <br> Courses
+            All <br />
+            Courses
           </p>
         </div>
       </div>
@@ -108,5 +144,11 @@
     ></script>
 
     <script src="{{ url_for('static', filename='js/Home.js') }}"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

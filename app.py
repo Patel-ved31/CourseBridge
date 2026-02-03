@@ -35,6 +35,10 @@ def login():
 def signUp():
     return render_template("signUp.html")
 
+@app.route("/About")
+def about():
+    return render_template("about.html")
+
 @app.route("/Documentation") 
 def Docs():
     return render_template("Docs.html")
@@ -179,8 +183,24 @@ def submit():
 
 @app.route("/Home" , methods=["GET"])
 def Home():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     if(session["username"] and session["role"] and session["id"] and session["profile_pic"] ) :
-        return render_template("Home.html" , name=session["username"] , id = session["id"] , role = session["role"])
+        return render_template("Home.html" , name=session["username"] , id = session["id"] , role = session["role"] , subscriptions=subscriptions)
     else :
         return jsonify("firstlyy login")
 
@@ -495,6 +515,28 @@ def full_course():
     course = cursor.fetchone()
     conn.close()
 
+    # check for subscription
+    conn = get_db()
+    cursor = conn.cursor()
+
+    already_sub = False
+
+    cursor.execute(
+        """
+        SELECT t1.user_id , t1.creator_id FROM subscription as t1
+        INNER JOIN courses as t2
+        ON t1.creator_id = t2.creator_id
+        WHERE t1.user_id = %s AND t2.id = %s
+        """,
+        (session["id"] , course_id)
+    )
+
+    sub = cursor.fetchone()
+    conn.close()
+
+    if sub :
+        already_sub = True
+
     user_id = session.get("id")
 
     conn = get_db()
@@ -579,8 +621,51 @@ def full_course():
         user_review=review_details,
         already_review = already_review,
         creator_id=str(course[7]),
-        user_photo=user_photo
+        user_photo=user_photo,
+        already_subscription = already_sub
     )
+
+@app.route("/sub" , methods=["POST"])
+def sub():
+    creator_id = request.json["creator_id"]
+    user_id = session["id"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO subscription (user_id, creator_id)
+        VALUES (%s, %s)
+        """,
+        (user_id, creator_id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "subscription done"})
+
+@app.route("/unsub" , methods=["POST"])
+def unsub():
+    creator_id = request.json["creator_id"]
+    user_id = session["id"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        DELETE FROM subscription 
+        WHERE user_id = %s AND creator_id =%s
+        """,
+        (user_id, creator_id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "unsubscription done"})
 
 @app.route("/submit-review", methods=["POST"])
 def submit_review():

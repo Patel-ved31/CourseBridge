@@ -219,6 +219,27 @@ nav a:hover{
     color: white;
 }
 
+.already-sub , .not-sub{
+    width: 140px;
+    /* height: 35px; */
+    font-size: 20px;
+    margin-left: 20px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    background-color: #dadada;
+    /* transition: all 0.3s ease-in; */
+    border: 2px solid white;
+    color: black;
+}
+
+
+.already-sub{
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
 .buttons{
     display: flex;
     align-items: center;

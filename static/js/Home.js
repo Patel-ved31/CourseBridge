@@ -86,6 +86,8 @@ document.getElementById("suggestions").addEventListener("click", function (e) {
   }
 });
 
-
+function goToFullPage(x){
+    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+}
 
 
