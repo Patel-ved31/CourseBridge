@@ -349,6 +349,22 @@ def all_courses():
 
 @app.route("/creator_profile")
 def creator_profile():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     conn = get_db()
     cursor = conn.cursor()
 
@@ -378,10 +394,26 @@ def creator_profile():
 
     conn.close()
 
-    return render_template("creator_profile.html" , name=session["username"] , courses =courses , bookmarks=bookmarks,profile=session["profile_pic"])
+    return render_template("creator_profile.html" , name=session["username"] , courses =courses , bookmarks=bookmarks,profile=session["profile_pic"],subscriptions=subscriptions)
 
 @app.route("/learner_profile")
 def learner_profile():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT t1.username , t2.creator_id 
+        FROM subscription as t2 INNER JOIN
+        users as t1 ON t1.id = t2.creator_id
+        where t2.user_id = %s
+    """,
+    (session["id"],)
+    )
+
+    subscriptions = cursor.fetchall()
+    conn.close()
+
     conn = get_db()
     cursor = conn.cursor()
 
@@ -402,7 +434,7 @@ def learner_profile():
 
     conn.close()
 
-    return render_template("learner_profile.html" , name=session["username"] , bookmarks=bookmarks,profile=session["profile_pic"])
+    return render_template("learner_profile.html" , name=session["username"] , bookmarks=bookmarks,profile=session["profile_pic"],subscriptions=subscriptions)
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS

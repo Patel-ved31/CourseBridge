@@ -133,13 +133,14 @@ body {
 .team-row-card {
   display: flex;
   width: 100%;
-  min-height: 220px;
+  height: 250px;
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.45);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
 }
 
 .team-row-card:hover {
@@ -149,8 +150,8 @@ body {
 
 /* LEFT IMAGE (≈25%) */
 .team-photo {
-  width: 20%;
-  min-width: 220px;
+  /* width: 20%; */
+  min-width: 250px;
   background: #020617;
 }
 
@@ -166,6 +167,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* margin-left: 20px; */
 }
 
 .team-details h3 {

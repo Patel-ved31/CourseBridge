@@ -61,7 +61,6 @@ document.querySelectorAll(".box").forEach(box => {
       window.location.href = `/all_courses`;
       return;
     }
-    // redirect to course page with category
     window.location.href = `/categoryList?category=${encodeURIComponent(category)}`;
   });
 });

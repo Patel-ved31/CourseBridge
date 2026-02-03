@@ -115,3 +115,7 @@ document.querySelectorAll(".box").forEach( box => {
 function goToHome(){
   window.location.href = `/Home`;
 }
+
+function goToFullPage(x){
+    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+}

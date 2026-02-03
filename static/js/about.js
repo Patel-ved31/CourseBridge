@@ -73,33 +73,33 @@ const data = {
           <h3>Patel Ved Pankajbhai</h3>
           <p class="role">Team Leader</p>
           <p class="bio">
-              A passionate full-stack developer focused on building scalable web platforms with clean architecture, modern UI, and real-world problem solving at the core.
+              A passionate full-stack developer focused on building scalable web platforms with clean architecture, Strong Backend , and real-world problem solving at the core.
           </p>
         </div>
       </div>
 
       <div class="team-row-card">
         <div class="team-photo">
-          <img src="IMAGE_URL_2" alt="Team member">
+          <img src="/static/css/jeelProfile.jpeg"  alt="Team member">
         </div>
         <div class="team-details">
-          <h3>NAME_2</h3>
-          <p class="role">SPECIALIZATION_2</p>
+          <h3>Finaviya Jeelkumar Janakbhai</h3>
+          <p class="role">UI handeler</p>
           <p class="bio">
-            Focused on backend logic, databases, and performance optimization.
+           A passionate UI engineer focused on building modern and scalable web interfaces with clean design systems, responsive layouts, and user-centric experience at the core.
           </p>
         </div>
       </div>
 
       <div class="team-row-card">
         <div class="team-photo">
-          <img src="IMAGE_URL_3" alt="Team member">
+          <img src="/static/css/rutviProfile.jpeg" alt="Team member">
         </div>
         <div class="team-details">
-          <h3>NAME_3</h3>
-          <p class="role">SPECIALIZATION_3</p>
+          <h3>Rutvi Vasoya</h3>
+          <p class="role">Database handeler</p>
           <p class="bio">
-            Creative mind behind UI/UX, animations, and visual consistency.
+            A passionate database management specialist focused on maintaining secure, optimized, and reliable data systems with efficiency and scalability at the core.
           </p>
         </div>
       </div>
