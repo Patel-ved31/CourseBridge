@@ -2,7 +2,8 @@ const sections = {
   overview: document.querySelector(".overview"),
   name: document.querySelector(".change-name"),
   password: document.querySelector(".change-password"),
-  profile: document.querySelector(".change-profilePic")
+  profile: document.querySelector(".change-profilePic"),
+  delete: document.querySelector(".delete-acc"),
 };
 
 const buttons = document.querySelectorAll(".menu-item");
@@ -130,4 +131,28 @@ function changePassword(){
     .catch(err => {
         console.error(err);
     }); 
+}
+
+
+function deleteAccount(){
+    let confirmation = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+
+    if (confirmation) {
+        fetch("/deleteAccount", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        })
+        .then(res => res.json()) 
+        .then(data => {
+            if(data.message === "True"){
+                alert("Your account has been deleted.");
+                window.location.href = "/";
+            }else{
+                alert("There was an error deleting your account. Please try again later.");
+            } 
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
 }

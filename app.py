@@ -917,6 +917,50 @@ def changePass():
 
     return  jsonify({"message": "True"})
 
+@app.route("/deleteAccount" , methods=["POST"])
+def deleteAccount():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        DELETE FROM users WHERE id = %s
+        """,
+        (session["id"],)
+    )
+
+    conn.commit()
+
+    cursor.execute(
+        """
+        DELETE FROM courses WHERE creator_id = %s
+        """,
+        (session["id"],)
+    )
+    conn.commit()
+
+    cursor.execute(
+        """
+        DELETE FROM bookmarks WHERE user_id = %s
+        """,
+        (session["id"],)
+    )
+    conn.commit()
+
+    cursor.execute(
+        """
+        DELETE FROM subscription WHERE user_id = %s OR creator_id = %s
+        """,
+        (session["id"], session["id"])
+    )
+
+    conn.commit()
+    conn.close()
+
+    session.clear()
+
+    return jsonify({"message": "True"})
+
 if __name__ == "__main__":
     app.run(debug=True)
 
