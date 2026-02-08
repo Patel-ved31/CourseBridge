@@ -112,6 +112,28 @@ document.querySelectorAll(".box").forEach( box => {
     } );
 });
 
+// delete course
+document.querySelectorAll(".delete-btn").forEach( deleteBtn => {
+  deleteBtn.addEventListener( "click" , () => {
+        fetch("/delete-course", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                course_id: deleteBtn.dataset.value
+            })
+        })  
+        .then(res => res.json())
+        .then(data => {
+            deleteBtn.parentElement.style.display = "none";
+        })
+        .catch(err => {
+            console.error(err);
+        }
+    );
+    }
+  );
+});
+
 function goToHome(){
   window.location.href = `/Home`;
 }

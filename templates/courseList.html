@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -30,7 +30,15 @@
               <span class="search-icon">
                 <i class="bi bi-search"></i>
               </span>
-              <input type="text" id="search" placeholder="Search course" />
+              <input
+                type="text"
+                id="search"
+                placeholder="Search course"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+              />
             </div>
 
             <div id="suggestions"></div>
@@ -43,14 +51,26 @@
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                style="display: flex; justify-content: center; align-items: center;"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
               >
                 <p id="sub-toggle">Subscriptions</p>
-
               </button>
-              <ul class="dropdown-menu  ">
+              <ul class="dropdown-menu">
                 {% for Subscription in subscriptions %}
-                <li><button class="dropdown-item text-light fs-5 p-2" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
+                <li>
+                  <button
+                    class="dropdown-item text-light fs-5 p-2"
+                    onclick="goToFullPage(this)"
+                    type="button"
+                    data-value="{{ Subscription[1] }}"
+                  >
+                    {{ Subscription[0] }}
+                  </button>
+                </li>
                 {% endfor %}
               </ul>
             </div>
@@ -63,45 +83,43 @@
       </div>
 
       <div class="content">
-        {% for course in courses %} 
-          {% if course[5] not in bookmarks %}
-          <div class="course1 box" data-value="{{ course[5] }}">
-            <div class="course-img">
-              <img
-                src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
-                alt="Course thumbnail"
-              />
-            </div>
-            <div class="course-content">
-              <p class="course-title">{{course[2]}}</p>
-              <p class="course-des">{{course[0]}}</p>
-              <p class="course-price">₹{{course[3]}}</p>
-            </div>
-
-            <button type="button" class="bookmark" data-value="1">
-              <i class="bi bi-bookmark"></i>
-            </button>
+        {% for course in courses %} {% if course[5] not in bookmarks %}
+        <div class="course1 box" data-value="{{ course[5] }}">
+          <div class="course-img">
+            <img
+              src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
+              alt="Course thumbnail"
+            />
           </div>
-          {% else %}
-          <div class="course1 box" data-value="{{ course[5] }}">
-            <div class="course-img">
-              <img
-                src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
-                alt="Course thumbnail"
-              />
-            </div>
-            <div class="course-content">
-              <p class="course-title">{{course[2]}}</p>
-              <p class="course-des">{{course[0]}}</p>
-              <p class="course-price">₹{{course[3]}}</p>
-            </div>
-
-            <button type="button" class="bookmark" data-value="2">
-              <i class="bi bi-bookmark-fill"></i>
-            </button>
+          <div class="course-content">
+            <p class="course-title">{{course[2]}}</p>
+            <p class="course-des">{{course[0]}}</p>
+            <p class="course-price">₹{{course[3]}}</p>
           </div>
-          {% endif %} 
-        {% endfor %}
+
+          <button type="button" class="bookmark" data-value="1">
+            <i class="bi bi-bookmark"></i>
+          </button>
+        </div>
+        {% else %}
+        <div class="course1 box" data-value="{{ course[5] }}">
+          <div class="course-img">
+            <img
+              src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
+              alt="Course thumbnail"
+            />
+          </div>
+          <div class="course-content">
+            <p class="course-title">{{course[2]}}</p>
+            <p class="course-des">{{course[0]}}</p>
+            <p class="course-price">₹{{course[3]}}</p>
+          </div>
+
+          <button type="button" class="bookmark" data-value="2">
+            <i class="bi bi-bookmark-fill"></i>
+          </button>
+        </div>
+        {% endif %} {% endfor %}
         <!-- <div class="course2 box">
           <div class="course-img" style="background-color: yellow;"></div>
           <div class="course-content">

@@ -25,6 +25,10 @@ app.secret_key = "coursebridge_secret"
 def FirstPage():
     return render_template("index.html")
 
+@app.route("/select_account")
+def select_account():
+    return render_template("account_Select.html")
+
 # open login page
 @app.route("/login")
 def login():
@@ -46,6 +50,20 @@ def Docs():
 @app.route("/Terms&Conditions")
 def T_C():
     return render_template("T&C.html")
+
+@app.route("/set-details" , methods=["POST"])
+def set_details() :
+    name = request.json["username"]
+    id = request.json["id"]
+    role = request.json["role"]
+    profile_pic = request.json["profile_pic"]
+
+    session["username"] = name
+    session["id"] = id
+    session["role"] = role
+    session["profile_pic"] = profile_pic
+
+    return jsonify({"success": True, "message": "✅ Login successful" , "id": id , "username": name , "role": role , "profile_pic": profile_pic})
 
 
 
@@ -71,7 +89,7 @@ def check_user() :
         session["id"] = user[0]
         session["role"] = user[4]
         session["profile_pic"] = user[5]
-        return jsonify({"success": True, "message": "✅ Login successful"})
+        return jsonify({"success": True, "message": "✅ Login successful" , "id": user[0] , "username": user[1] , "role": user[4] , "profile_pic": user[5]})
     else:
         return jsonify({"success": False, "message": "❌ Invalid username or password"})
 
@@ -176,7 +194,7 @@ def submit():
         session["role"] = role
         session["profile_pic"] = filename
 
-        return jsonify({"message": True})
+        return jsonify({"message": True , "id": user_id , "username": name , "role": role , "profile_pic": filename})
        
     except Exception:
         return jsonify({"message": False})
@@ -203,8 +221,6 @@ def Home():
 
     if(session["username"] and session["role"] and session["id"] and session["profile_pic"] ) :
         return render_template("Home.html" , name=session["username"] , id = session["id"] , role = session["role"] , subscriptions=subscriptions)
-    else :
-        return jsonify("firstlyy login")
 
 @app.route("/courses", methods=["GET"])
 def get_courses():
@@ -949,6 +965,14 @@ def deleteAccount():
 
     cursor.execute(
         """
+        DELETE FROM review WHERE user_id = %s
+        """,
+        (session["id"],)
+    )
+    conn.commit()
+
+    cursor.execute(
+        """
         DELETE FROM subscription WHERE user_id = %s OR creator_id = %s
         """,
         (session["id"], session["id"])
@@ -958,6 +982,42 @@ def deleteAccount():
     conn.close()
 
     session.clear()
+
+    return jsonify({"message": "True"})
+
+@app.route("/delete-course", methods=["POST"])
+def deleteCourse():
+    course_id = request.json["course_id"]
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        DELETE FROM courses WHERE id = %s
+        """,
+        (course_id,)
+    )
+
+    conn.commit()
+
+    cursor.execute(
+        """
+        DELETE FROM bookmarks WHERE course_id = %s
+        """,
+        (course_id,)
+    )
+    conn.commit()
+
+    cursor.execute(
+        """
+        DELETE FROM review WHERE course_id = %s
+        """,
+        (course_id,)
+    )
+    conn.commit()
+
+    conn.close()
 
     return jsonify({"message": "True"})
 

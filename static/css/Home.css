@@ -52,7 +52,7 @@ nav{
 
 }
 
-nav a{
+nav a , .logout {
     font-size: 1rem;
     letter-spacing: 0.1rem;
     transition: color 0.2s ease;
@@ -60,7 +60,7 @@ nav a{
     color: inherit;
 }
 
-nav a:hover{
+nav a:hover , .logout:hover{
     color: #a7a7a7;
 }
 
@@ -113,6 +113,8 @@ nav a:hover{
     background-color: #2e2d2d;
     filter: blur(3);
     color: white;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 /* .search:has(#suggestions:hover) .search-box {
@@ -128,6 +130,7 @@ nav a:hover{
     border-radius: 10px;
     font-size: 20px;
     transition: all 0.3s ease-in;
+    z-index: 200;
 }
 
 #suggestions div:hover{
@@ -135,10 +138,11 @@ nav a:hover{
     background-color: #5b5959;
 }
 
-nav a {
+nav a , .logout{
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
 .dropdown-menu{
@@ -168,7 +172,7 @@ nav a {
   color: #a7a7a7;
 }
 
-nav a i{
+nav .logout i{
     font-size: 2rem;
     color: rgb(170, 0, 255) ;
     transform: scaleY(1.3);
@@ -176,6 +180,7 @@ nav a i{
 
 .logout p{
     transform: translateY(8px);
+    font-size: 1.15rem;
 }
 
 .user-box{

@@ -7,7 +7,11 @@
 }
 
 body {
-  background: linear-gradient(180deg, rgba(15,23,42,.95), rgba(2,6,23,.98));
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.92),
+    rgba(2, 6, 23, 0.95)
+  );
   color: #e5e7eb;
   height: 100vh;
 }
@@ -66,11 +70,20 @@ body {
 
 .exit {
   margin-top: auto;
-  color: #9ca3af;
+  color: #ffffff;
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 1.5rem;
+  position: relative;
+  bottom: -10%;
+  margin: auto;
+}
+
+i {
+  font-size: 1.8rem;
+  color: #a501fd;
 }
 
 /* CONTENT */
@@ -87,7 +100,7 @@ body {
 
 /* CARD */
 .card {
-  background: rgba(30,41,59,.9);
+  background: rgb(29, 44, 80);
   border-radius: 18px;
   padding: 30px;
   margin-bottom: 30px;
@@ -104,8 +117,8 @@ body {
 .photo-box {
   width: 160px;
   height: 160px;
+  /* overflow: hidden;/ */
   border-radius: 50%;
-  overflow: hidden;
   cursor: pointer;
   position: relative;
   margin-bottom: 40px;
@@ -114,16 +127,19 @@ body {
 .photo-box img {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
 }
 
 .photo-box i {
   position: absolute;
   bottom: 10px;
-  right: 10px;
-  background: #6366f1;
+  right: -10px;
+  background: #dc63f1;
   padding: 8px;
   border-radius: 50%;
+  color: black;
+  font: 1.2rem;
 }
 
 /* INFO ROW */
@@ -135,8 +151,8 @@ body {
 
 .box p {
   width: 180px;
-  color: #cbd5f5;
-  font-size: 1.1rem;
+  color: #f2f5ff;
+  font-size: 1.5rem;
 }
 
 .field {
@@ -159,7 +175,7 @@ body {
 input {
   width: 100%;
   padding: 14px;
-  background: rgba(2,6,23,.9);
+  background: rgba(4, 10, 41, 0.9);
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 10px;
   color: white;

@@ -29,7 +29,7 @@
           
         </nav>
 
-        <a href="{{ url_for('FirstPage') }}" class="exit">
+        <a href="{{ url_for('Home') }}" class="exit">
           <span><i id="arrow" class="bi bi-box-arrow-left"></i></span>
           <span>Exit</span>
         </a>
@@ -49,8 +49,6 @@
                 <div class="username field" onclick="show('changeName')"> {{username}}
                     <i class="bi bi-pencil"></i>
                 </div>
-
-                
             </div>
 
             <div class="box">
@@ -71,8 +69,6 @@
                 <p>Role : </p>
                 <div class="role field">{{role}}</div>
             </div>
-
-
          </div>
 
          <div class="change-name card" style="display: none;">

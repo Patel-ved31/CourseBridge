@@ -89,4 +89,40 @@ function goToFullPage(x){
     window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }
 
+function logout(){
+  let currAcc = (localStorage.getItem("currAcc"));
+  currAcc = parseInt(currAcc)
+
+  
+
+  let totalAcc = localStorage.getItem("totalAcc");
+
+  totalAcc = parseInt(totalAcc);
+
+  localStorage.removeItem("currAcc");
+
+  for (let i = currAcc; i < totalAcc; i++) {
+    name = localStorage.getItem(`name${i + 1}`);
+    profile_pic = localStorage.getItem(`profile_pic${i + 1}`);
+    role = localStorage.getItem(`role${i + 1}`);
+    id = localStorage.getItem(`id${i + 1}`);
+
+    localStorage.setItem(`name${i}`, name);
+    localStorage.setItem(`profile_pic${i}`, profile_pic);
+    localStorage.setItem(`role${i}`, role);
+    localStorage.setItem(`id${i}`, id);
+
+  }
+
+  localStorage.removeItem(`id${totalAcc}`);
+  localStorage.removeItem(`name${totalAcc}`);
+  localStorage.removeItem(`profile_pic${totalAcc}`);
+  localStorage.removeItem(`role${totalAcc}`);
+
+  totalAcc = totalAcc - 1;
+  localStorage.setItem("totalAcc", totalAcc);
+
+  window.location.href = `/`;
+}
+
 

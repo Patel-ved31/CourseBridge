@@ -1,6 +1,5 @@
 function otp(input, e) {
-
-  if(input.value.length === 1){
+  if (input.value.length === 1) {
     input.value = "";
     // return;
   }
@@ -18,7 +17,6 @@ function otp(input, e) {
   }, 0);
 }
 
-
 let timer = null;
 let timeLeft = 30;
 
@@ -32,8 +30,8 @@ function startTimer() {
 
   resendBtn.disabled = true;
   timerText.innerText = `Resend OTP in ${timeLeft}s`;
-  resendBtn.style.backgroundColor = "transparent"
-  resendBtn.style.color = "#a855f7"
+  resendBtn.style.backgroundColor = "transparent";
+  resendBtn.style.color = "#a855f7";
 
   timer = setInterval(() => {
     timeLeft--;
@@ -44,27 +42,24 @@ function startTimer() {
       timer = null;
       timerText.innerText = "You can resend OTP now";
       resendBtn.disabled = false;
-      resendBtn.style.backgroundColor = "#a855f7"
-      resendBtn.style.color = "#000"
-
+      resendBtn.style.backgroundColor = "#a855f7";
+      resendBtn.style.color = "#000";
     }
   }, 1000);
 }
 
 /* ---------------- SEND OTP ---------------- */
 function sendOTP() {
+  let x = document.querySelector(".send-otp-btn");
+  x.innerText = "Sending.....";
 
-  let x = document.querySelector(".send-otp-btn")
-  x.innerText = "Sending....."
-  
   const email = document.getElementById("floatingEmail").value;
 
   if (!email || !email.includes("@")) {
-  document.querySelector(".Error").innerText = "Enter valid email";
-  x.innerText = "Send OTP"
-  return;
-}
-
+    document.querySelector(".Error").innerText = "Enter valid email";
+    x.innerText = "Send OTP";
+    return;
+  }
 
   fetch("/check-email", {
     method: "POST",
@@ -87,7 +82,7 @@ function sendOTP() {
           });
       } else {
         document.querySelector(".Error").innerText = "this email already exist";
-          x.innerText = "Send OTP"
+        x.innerText = "Send OTP";
       }
     });
 }
@@ -110,20 +105,20 @@ function verifyOTP() {
   fetch("/verify-otp", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ otp })
+    body: JSON.stringify({ otp }),
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.message === "true") {
-      document.getElementById("hiddenEmail").value =
-        document.getElementById("floatingEmail").value;
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message === "true") {
+        document.getElementById("hiddenEmail").value =
+          document.getElementById("floatingEmail").value;
 
-      document.querySelector(".otp-box").style.display = "none";
-      document.querySelector(".detail-form").style.display = "block";
-    } else {
-      alert("Invalid OTP");
-    }
-  });
+        document.querySelector(".otp-box").style.display = "none";
+        document.querySelector(".detail-form").style.display = "block";
+      } else {
+        alert("Invalid OTP");
+      }
+    });
 }
 
 /* ---------------- RESEND OTP ---------------- */
@@ -154,9 +149,10 @@ function submitForm(event) {
   const name = document.getElementById("floatingUsername").value.trim();
   const password = document.getElementById("floatingPassword").value.trim();
   const email = document.getElementById("hiddenEmail").value;
-  const roleInput = document.querySelector('input[name="radioDefault"]:checked');
+  const roleInput = document.querySelector(
+    'input[name="radioDefault"]:checked',
+  );
   const profile = document.getElementById("thumbnail").files[0];
-
 
   document.querySelector(".UserNameError").innerText = "";
   document.querySelector(".PasswordError").innerText = "";
@@ -186,9 +182,9 @@ function submitForm(event) {
     return;
   }
 
-  if(!profile){
-    document.querySelector(".ProfileError").innerText = 
-    "please upload valid Profile Picture"
+  if (!profile) {
+    document.querySelector(".ProfileError").innerText =
+      "please upload valid Profile Picture";
     return;
   }
 
@@ -201,12 +197,31 @@ function submitForm(event) {
 
   fetch("/register", {
     method: "POST",
-    body: formData
+    body: formData,
   })
-  .then(res => res.json())
-  .then(data => {
-    if(data.message){
-      window.location.href = `/Home`;
-    }
-  });
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message) {
+
+        let totalAcc = localStorage.getItem("totalAcc");
+
+        if (!totalAcc){
+            totalAcc = 0;
+        }else{
+            totalAcc = parseInt(totalAcc);
+        }
+        totalAcc = totalAcc + 1;
+
+        localStorage.setItem("totalAcc", totalAcc);
+
+        localStorage.setItem(`id${totalAcc}`, data.id);
+        localStorage.setItem(`name${totalAcc}`, data.username);
+        localStorage.setItem(`profile_pic${totalAcc}`, data.profile_pic);
+        localStorage.setItem(`role${totalAcc}`, data.role);
+
+        localStorage.setItem("currAcc" , totalAcc)
+
+        window.location.href = `/Home`;
+      }
+    });
 }

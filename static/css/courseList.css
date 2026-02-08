@@ -159,6 +159,8 @@ nav a i{
     background-color: #2e2d2d;
     filter: blur(3);
     color: white;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 #suggestions div{

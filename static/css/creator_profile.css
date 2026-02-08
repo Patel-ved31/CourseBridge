@@ -229,6 +229,18 @@ nav a i{
   width: 100%;
 }
 
+.delete-btn{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: rgb(255, 0, 0);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
 .user-bookmarks{
   width: 100%;
   display: none; /* toggle via JS */

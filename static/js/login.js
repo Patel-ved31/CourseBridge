@@ -27,6 +27,26 @@ function signIn(){
     .then(res => res.json())
     .then(data => {
         if (data.success) {
+
+            let totalAcc = localStorage.getItem("totalAcc");
+
+            if (!totalAcc){
+                totalAcc = 0;
+            }else{
+                totalAcc = parseInt(totalAcc);
+            }
+            totalAcc = totalAcc + 1;
+
+            localStorage.setItem("totalAcc", totalAcc);
+
+            localStorage.setItem(`id${totalAcc}`, data.id);
+            localStorage.setItem(`name${totalAcc}`, data.username);
+            localStorage.setItem(`profile_pic${totalAcc}`, data.profile_pic);
+            localStorage.setItem(`role${totalAcc}`, data.role);
+
+            localStorage.setItem("currAcc" , totalAcc)
+
+            
             window.location.href = "/Home";
         }else{
             document.querySelector(".Error").innerText = "INVALID USERNAME OR PASSWORD";
