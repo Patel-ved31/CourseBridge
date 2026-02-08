@@ -344,15 +344,34 @@ def courseList():
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute(
-        """
-        SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
-        FROM courses as t2 INNER JOIN users as t1
-        on t1.id = t2.creator_id
-        WHERE t2.title ILIKE %s
-        """,
-        ("%" + query + "%" ,)
-    )
+    # Check if the query matches a specific course title (e.g. from suggestion click)
+    cursor.execute("SELECT category FROM courses WHERE title ILIKE %s", (query,))
+    exact_match = cursor.fetchone()
+
+    if exact_match:
+        category = exact_match[0]
+        # If exact match found, show courses from the same category as well
+        cursor.execute(
+            """
+            SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
+            FROM courses as t2 INNER JOIN users as t1
+            on t1.id = t2.creator_id
+            WHERE t2.category = %s OR t2.title ILIKE %s
+            ORDER BY CASE WHEN t2.title ILIKE %s THEN 0 ELSE 1 END
+            """,
+            (category, "%" + query + "%", "%" + query + "%")
+        )
+    else:
+        # General search: check title, description, and category
+        cursor.execute(
+            """
+            SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id
+            FROM courses as t2 INNER JOIN users as t1
+            on t1.id = t2.creator_id
+            WHERE t2.title ILIKE %s OR t2.description ILIKE %s OR t2.category ILIKE %s
+            """,
+            ("%" + query + "%" , "%" + query + "%", "%" + query + "%")
+        )
 
     courses = cursor.fetchall()
 
@@ -933,6 +952,35 @@ def changePass():
 
     return  jsonify({"message": "True"})
 
+@app.route("/changeProfilePic", methods=["POST"])
+def changeProfilePic():
+    if 'profile_pic' not in request.files:
+        return jsonify({"message": "No file part"})
+    
+    file = request.files['profile_pic']
+    
+    if file.filename == '':
+        return jsonify({"message": "No selected file"})
+        
+    if file and allowed_file(file.filename):
+        try:
+            user_id = session["id"]
+            filename = secure_filename(f"{user_id}.png")
+            file.save(os.path.join(UPLOAD_FOLDER_PROFILE, filename))
+
+            conn = get_db()
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET profile_pic = %s WHERE id = %s", (filename, user_id))
+            conn.commit()
+            conn.close()
+
+            session["profile_pic"] = filename
+            return jsonify({"message": "True"})
+        except Exception as e:
+            return jsonify({"message": "Error uploading file"})
+    
+    return jsonify({"message": "Invalid file type"})
+
 @app.route("/deleteAccount" , methods=["POST"])
 def deleteAccount():
     conn = get_db()
@@ -1027,5 +1075,3 @@ if __name__ == "__main__":
 
 
     
-
-

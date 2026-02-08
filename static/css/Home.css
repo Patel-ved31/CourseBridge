@@ -293,7 +293,7 @@ nav .logout i{
     width: 15%;
     height: 100px;
     /* background-color: rgba(170, 0, 255, 0.666); */
-    background-color:#dadada;
+    background: linear-gradient(135deg, #2563eb , #9333ea 60%);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -304,7 +304,7 @@ nav .logout i{
     font-size: 22px;
     letter-spacing: 2px;
     line-height: 30px;
-    color: black;
+    color: rgb(255, 255, 255);
     transition: all 0.3s ease;
     border: 1px solid rgb(5, 0, 7);
     text-align: center;

@@ -134,12 +134,13 @@ i {
 .photo-box i {
   position: absolute;
   bottom: 10px;
-  right: -10px;
-  background: #dc63f1;
+  right: -30px;
+  background: transparent;
   padding: 8px;
-  border-radius: 50%;
-  color: black;
+  border-radius: 0 50vh 50vh 0vh;
+  cursor: pointer;
   font: 1.2rem;
+  color: white;
 }
 
 /* INFO ROW */
@@ -169,6 +170,7 @@ i {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  color: white;
 }
 
 /* FORMS */

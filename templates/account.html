@@ -87,7 +87,10 @@
          </div>
 
          <div class="change-profilePic card" style="display: none;">
-
+            <h2>   <i class="bi bi-person-circle"></i>  Change Profile Picture</h2>
+            <input type="file" id="newProfilePic" accept="image/*" class="new-password"> <br>
+            <p class="pic-error" style="color: red; margin-top: 10px;"></p>
+            <button type="button" class="save" onclick="changeProfilePic()" >Change</button>
          </div>
 
          <div class="delete-acc card" style="display: none;">
@@ -105,5 +108,6 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/account.js') }}"></script>
+    
   </body>
 </html>

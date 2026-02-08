@@ -156,3 +156,34 @@ function deleteAccount(){
         });
     }
 }
+
+function changeProfilePic() {
+    const fileInput = document.getElementById('newProfilePic');
+    const file = fileInput.files[0];
+    const errorMsg = document.querySelector('.pic-error');
+
+    if (!file) {
+        errorMsg.innerText = "Please select a file";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('profile_pic', file);
+
+    fetch('/changeProfilePic', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.message === "True") {
+            location.reload();
+        } else {
+            errorMsg.innerText = data.message;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        errorMsg.innerText = "Something went wrong";
+    });
+}
