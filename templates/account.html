@@ -19,17 +19,20 @@
         <h1 class="logo">CourseBridge</h1>
 
         <nav class="menu">
-          <button class="menu-item active s s1"  data-key="overview">Overview</button>
-          <button class="menu-item s s2"  data-key="name">Username</button>
+          <button class="menu-item active s s1" data-key="overview">
+            Overview
+          </button>
+          <button class="menu-item s s2" data-key="name">Username</button>
           <button class="menu-item s s3" data-key="password">Password</button>
-          <button class="menu-item s s4"  data-key="profile">
+          <button class="menu-item s s4" data-key="profile">
             Profile Picture
           </button>
-          <button class="menu-item s s5"  data-key="delete" style="color: red;">Delete Account</button>
-          
+          <button class="menu-item s s5" data-key="delete" style="color: red">
+            Delete Account
+          </button>
         </nav>
 
-        <a href="{{ url_for('Home') }}" class="exit">
+        <a href="{{ url_for('user.Home') }}" class="exit">
           <span><i id="arrow" class="bi bi-box-arrow-left"></i></span>
           <span>Exit</span>
         </a>
@@ -38,76 +41,114 @@
       <main class="content">
         <h1>Manage Account</h1>
         <!-- overview -->
-         <div class="overview card">
-            <div class="photo-box" onclick="show('changePhoto')">
-                <img src="{{ url_for('static', filename='uploads/profilePIC/' + profile_pic ) }}" alt="">
-                <i class="bi bi-pencil"></i>
+        <div class="overview card">
+          <div class="photo-box" onclick="show('changePhoto')">
+            <img
+              src="{{ url_for('static', filename='uploads/profilePIC/' + profile_pic ) }}"
+              alt=""
+            />
+            <i class="bi bi-pencil"></i>
+          </div>
+
+          <div class="box">
+            <p>Username :</p>
+            <div class="username field" onclick="show('changeName')">
+              {{username}}
+              <i class="bi bi-pencil"></i>
             </div>
+          </div>
 
-            <div class="box">
-                <p>Username : </p>
-                <div class="username field" onclick="show('changeName')"> {{username}}
-                    <i class="bi bi-pencil"></i>
-                </div>
+          <div class="box">
+            <p>Password :</p>
+            <div class="password field" onclick="show('changePassWord')">
+              {{ password }}
+              <i class="bi bi-pencil"></i>
             </div>
+          </div>
 
-            <div class="box">
-                <p>Password :</p>
-                <div class="password field" onclick="show('changePassWord')"> {{ password }} 
-                    <i class="bi bi-pencil"></i>
-                </div>
+          <div class="box">
+            <p>Email :</p>
+            <div class="email field">{{email}}</div>
+          </div>
 
-            </div>
+          <div class="box">
+            <p>Role :</p>
+            <div class="role field">{{role}}</div>
+          </div>
+        </div>
 
-            <div class="box">
-                <p>Email : </p>
-                <div class="email field"> {{email}} 
-                </div>
-            </div>
+        <div class="change-name card" style="display: none">
+          <h2><i class="bi bi-person-fill"></i> Change Username</h2>
+          <input type="text" class="new-username" placeholder="New Username" />
+          <br />
+          <p class="name-error" style="color: red; margin-top: 10px"></p>
+          <button type="button" class="save" onclick="changeName()">
+            Change
+          </button>
+        </div>
 
-            <div class="box">
-                <p>Role : </p>
-                <div class="role field">{{role}}</div>
-            </div>
-         </div>
+        <div class="change-password card" style="display: none">
+          <h2><i class="bi bi-key-fill"></i> Change Password</h2>
+          <input
+            type="password"
+            class="new-password"
+            placeholder="New Password"
+          />
+          <br />
+          <input
+            type="password"
+            class="new-password renter"
+            placeholder="Renter New Password"
+          />
+          <br />
+          <p class="password-error" style="color: red; margin-top: 10px"></p>
+          <button type="button" class="save" onclick="changePassword()">
+            Change
+          </button>
+        </div>
 
-         <div class="change-name card" style="display: none;">
-            <h2>   <i class="bi bi-person-fill"></i>  Change Username</h2>
-            <input type="text" class="new-username" placeholder="New Username"> <br>
-            <p class="name-error" style="color: red; margin-top: 10px;"></p>
-            <button type="button" class="save" onclick="changeName()" >Change</button>
-         </div>
+        <div class="change-profilePic card" style="display: none">
+          <h2><i class="bi bi-person-circle"></i> Change Profile Picture</h2>
+          <input
+            type="file"
+            id="newProfilePic"
+            accept="image/*"
+            class="new-password"
+          />
+          <br />
+          <p class="pic-error" style="color: red; margin-top: 10px"></p>
+          <button type="button" class="save" onclick="changeProfilePic()">
+            Change
+          </button>
+        </div>
 
-         <div class="change-password card" style="display: none;">
-            <h2>   <i class="bi bi-key-fill"></i>  Change Password</h2>
-            <input type="password" class="new-password" placeholder="New Password"> <br>
-            <input type="password" class="new-password renter" placeholder="Renter New Password"> <br>
-            <p class="password-error" style="color: red; margin-top: 10px;"></p>
-            <button type="button" class="save" onclick="changePassword()" >Change</button>
-         </div>
-
-         <div class="change-profilePic card" style="display: none;">
-            <h2>   <i class="bi bi-person-circle"></i>  Change Profile Picture</h2>
-            <input type="file" id="newProfilePic" accept="image/*" class="new-password"> <br>
-            <p class="pic-error" style="color: red; margin-top: 10px;"></p>
-            <button type="button" class="save" onclick="changeProfilePic()" >Change</button>
-         </div>
-
-         <div class="delete-acc card" style="display: none;">
-            <h2> <i class="bi bi-trash3"></i>  Delete Account</h2>
-            <ul>
-                <li>Once you delete your account, there is no going back. Please be certain.</li>
-                <li>Your profile, courses, and any other associated data will be permanently removed.</li>
-                <li>Please ensure you have backed up any important information before proceeding.</li>
-            </ul>
-            <button type="button" class="delete-button save" onclick="deleteAccount()" >Delete Account</button>
-         </div>
-
+        <div class="delete-acc card" style="display: none">
+          <h2><i class="bi bi-trash3"></i> Delete Account</h2>
+          <ul>
+            <li>
+              Once you delete your account, there is no going back. Please be
+              certain.
+            </li>
+            <li>
+              Your profile, courses, and any other associated data will be
+              permanently removed.
+            </li>
+            <li>
+              Please ensure you have backed up any important information before
+              proceeding.
+            </li>
+          </ul>
+          <button
+            type="button"
+            class="delete-button save"
+            onclick="deleteAccount()"
+          >
+            Delete Account
+          </button>
+        </div>
       </main>
-
     </div>
 
     <script src="{{ url_for('static', filename='js/account.js') }}"></script>
-    
   </body>
 </html>

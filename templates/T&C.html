@@ -1,54 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Terms & Conditions | CourseBridge</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>Terms & Conditions | CourseBridge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/T&C.css') }}">
-   <!-- <link rel="stylesheet" href="style.css"> -->
-</head>
-<body>
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/T&C.css') }}"
+    />
+    <!-- <link rel="stylesheet" href="style.css"> -->
+  </head>
+  <body>
+    <div class="terms-container">
+      <!-- LEFT SIDEBAR -->
+      <aside class="terms-sidebar">
+        <h2 class="logo">CourseBridge</h2>
 
-<div class="terms-container">
+        <ul id="termsMenu">
+          <li data-key="overview" class="active">Overview</li>
+          <li data-key="eligibility">Eligibility</li>
+          <li data-key="accounts">Accounts</li>
+          <li data-key="courses">Courses</li>
+          <li data-key="reviews">Reviews</li>
+          <li data-key="bookmarks">Bookmarks</li>
+          <li data-key="prohibited">Prohibited</li>
+          <li data-key="termination">Termination</li>
+          <li data-key="liability">Liability</li>
+          <li data-key="updates">Updates</li>
+        </ul>
 
-  <!-- LEFT SIDEBAR -->
-  <aside class="terms-sidebar">
-    <h2 class="logo">CourseBridge</h2>
+        <a class="exit-btn" href="{{ url_for('views.FirstPage') }}">
+          <span><i id="arrow" class="bi bi-box-arrow-left"></i></span>
+          <span>Exit</span>
+        </a>
+      </aside>
 
-    <ul id="termsMenu">
-      <li data-key="overview" class="active">Overview</li>
-      <li data-key="eligibility">Eligibility</li>
-      <li data-key="accounts">Accounts</li>
-      <li data-key="courses">Courses</li>
-      <li data-key="reviews">Reviews</li>
-      <li data-key="bookmarks">Bookmarks</li>
-      <li data-key="prohibited">Prohibited</li>
-      <li data-key="termination">Termination</li>
-      <li data-key="liability">Liability</li>
-      <li data-key="updates">Updates</li>
-    </ul>
-
-    <a class="exit-btn" href="{{ url_for('FirstPage') }}">
-        <span><i id="arrow" class="bi bi-box-arrow-left"></i></span>
-        <span>Exit</span>
-    </a>
-  </aside>
-
-  <!-- RIGHT CONTENT -->
-  <main class="terms-content">
-    <div id="contentBox">
-      <!-- JS injects content here -->
+      <!-- RIGHT CONTENT -->
+      <main class="terms-content">
+        <div id="contentBox">
+          <!-- JS injects content here -->
+        </div>
+      </main>
     </div>
-  </main>
 
-</div>
-
-<script src="{{ url_for('static', filename='js/T&C.js') }}"></script>
- <!-- <script src="script.js"></script> -->
-</body>
+    <script src="{{ url_for('static', filename='js/T&C.js') }}"></script>
+    <!-- <script src="script.js"></script> -->
+  </body>
 </html>

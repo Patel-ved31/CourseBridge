@@ -85,6 +85,7 @@ nav a:hover {
     background-color: #2e2d2d;
     color: white;
     width: 200px;
+    letter-spacing: 3px;
 }
 
 .dropdown-item{

@@ -17,9 +17,8 @@ searchInput.addEventListener("keyup", (e) => {
     return;
   }
 
-  if(e.key === "Enter" ){
-    window.location.href =
-      `/courseList?course=${encodeURIComponent(value)}`;
+  if (e.key === "Enter") {
+    window.location.href = `/courseList?course=${encodeURIComponent(value)}`;
   }
 
   // send typed text to flask
@@ -31,7 +30,6 @@ searchInput.addEventListener("keyup", (e) => {
     .then((data) => {
       // clear old results
       suggestionsBox.innerHTML = "";
-
 
       // loop through each result
       data.forEach((item) => {
@@ -58,142 +56,144 @@ document.getElementById("suggestions").addEventListener("click", function (e) {
   if (e.target.tagName === "DIV") {
     const course = e.target.innerText.trim();
 
-    window.location.href =
-      `/courseList?course=${encodeURIComponent(course)}`;
+    window.location.href = `/courseList?course=${encodeURIComponent(course)}`;
   }
 });
 
-document.querySelector(".bookmark").addEventListener("click", function() {
-    icon = this.querySelector(".bookmark i");
-    if (this.dataset.value === "0") {
-        fetch("/add-bookmark", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                course_id: this.dataset.courseId
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            icon.classList.remove("bi-bookmark");
-            icon.classList.add("bi-bookmark-fill");
-            this.dataset.value = "1";
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    } else {
-        fetch("/remove-bookmark", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                course_id: this.dataset.courseId
-            })
-        }) 
-        .then(res => res.json())
-        .then(data => {
-            icon.classList.remove("bi-bookmark-fill");
-            icon.classList.add("bi-bookmark");
-            this.dataset.value = "0";
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    }
+document.querySelector(".bookmark").addEventListener("click", function () {
+  icon = this.querySelector(".bookmark i");
+  if (this.dataset.value === "0") {
+    fetch("/add-bookmark", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        course_id: this.dataset.courseId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        icon.classList.remove("bi-bookmark");
+        icon.classList.add("bi-bookmark-fill");
+        this.dataset.value = "1";
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } else {
+    fetch("/remove-bookmark", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        course_id: this.dataset.courseId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        icon.classList.remove("bi-bookmark-fill");
+        icon.classList.add("bi-bookmark");
+        this.dataset.value = "0";
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 });
 
-document.querySelectorAll(".star .bi").forEach( icon => {
-    icon.addEventListener("click", function() {
-        let star = parseInt(this.dataset.value);
+document.querySelectorAll(".star .bi").forEach((icon) => {
+  icon.addEventListener("click", function () {
+    let star = parseInt(this.dataset.value);
 
-        document.querySelectorAll(".bi").forEach( s => {
-            if (s.dataset.value <= star) {
-                s.classList.remove("bi-star");
-                s.classList.add("bi-star-fill");
-            } else {
-                s.classList.remove("bi-star-fill");
-                s.classList.add("bi-star");
-            }
-        });
+    document.querySelectorAll(".bi").forEach((s) => {
+      if (s.dataset.value <= star) {
+        s.classList.remove("bi-star");
+        s.classList.add("bi-star-fill");
+      } else {
+        s.classList.remove("bi-star-fill");
+        s.classList.add("bi-star");
+      }
+    });
+  });
+});
+
+document.querySelector("#submit-review").addEventListener("click", function () {
+  let stars = document.querySelectorAll(".bi-star-fill").length;
+  let reviewText = document.querySelector("#review-text").value;
+  let courseId = document.querySelector(".review").dataset.value;
+
+  fetch("/submit-review", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      course_id: courseId,
+      rating: stars,
+      comment: reviewText,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      location.reload();
+    })
+    .catch((err) => {
+      console.error(err);
     });
 });
 
-document.querySelector("#submit-review").addEventListener("click", function() {
-    let stars = document.querySelectorAll(".bi-star-fill").length;
-    let reviewText = document.querySelector("#review-text").value;
-    let courseId = document.querySelector(".review").dataset.value;
-
-    fetch("/submit-review", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            course_id: courseId,
-            rating: stars,
-            comment: reviewText
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        location.reload();
-    })
-    .catch(err => {
-        console.error(err);
-    }); 
-});
-
-
-function fullPage(x){
-    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+function fullPage(x) {
+  window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }
 
-function goToHome(){
+function goToHome() {
   window.location.href = `/Home`;
 }
 
-function sub(x){
-    let creator_id = parseInt(x.dataset.value);
+function sub(x) {
+  let creator_id = parseInt(x.dataset.value);
 
-    fetch("/sub", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            creator_id : creator_id
-        })
+  fetch("/sub", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      creator_id: creator_id,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message === "subscription done") {
+        x.classList.add("already-sub");
+        x.classList.remove("not-sub");
+
+        x.innerText = "Subscribed";
+
+        location.reload();
+      } else {
+        alert(data.message);
+      }
     })
-    .then(res => res.json())
-    .then(data => {
-        x.classList.add("already-sub")
-        x.classList.remove("not-sub")
-
-        x.innerText = "Subscribed"
-
-        location.reload()
-    })
-    .catch(err => {
-        console.error(err);
-    }); 
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
-function unsub(x){
-    let creator_id = parseInt(x.dataset.value);
+function unsub(x) {
+  let creator_id = parseInt(x.dataset.value);
 
-    fetch("/unsub", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            creator_id : creator_id
-        })
+  fetch("/unsub", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      creator_id: creator_id,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      x.classList.remove("already-sub");
+      x.classList.add("not-sub");
+
+      x.innerText = "Subscribe";
+
+      location.reload();
     })
-    .then(res => res.json())
-    .then(data => {
-        x.classList.remove("already-sub")
-        x.classList.add("not-sub")
-
-        x.innerText = "Subscribe"
-
-        location.reload()
-    })
-    .catch(err => {
-        console.error(err);
-    }); 
+    .catch((err) => {
+      console.error(err);
+    });
 }

@@ -93,8 +93,6 @@ function logout(){
   let currAcc = (localStorage.getItem("currAcc"));
   currAcc = parseInt(currAcc)
 
-  
-
   let totalAcc = localStorage.getItem("totalAcc");
 
   totalAcc = parseInt(totalAcc);

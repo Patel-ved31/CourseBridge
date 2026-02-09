@@ -1,60 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-
-    <img class="img-gradient" src="{{ url_for('static', filename='css/gradient.png') }}" alt="...">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <img
+      class="img-gradient"
+      src="{{ url_for('static', filename='css/gradient.png') }}"
+      alt="..."
+    />
 
     <div class="layer-blur"></div>
 
     <div class="container">
-        <header>
-            <h1 class="logo">CourseBridge</h1>
+      <header>
+        <h1 class="logo">CourseBridge</h1>
 
-            <nav>
-                <a href="{{ url_for('about') }}">About</a>
-                <a href="{{ url_for('Docs') }}">Documentation</a>
-                <a href="{{ url_for('T_C') }}">Terms & Condition</a>
-            </nav>
+        <nav>
+          <a href="{{ url_for('views.about') }}">About</a>
+          <a href="{{ url_for('views.Docs') }}">Documentation</a>
+          <a href="{{ url_for('views.T_C') }}">Terms & Condition</a>
+        </nav>
 
-            <a class="btn-signUp" href="{{ url_for('signUp') }}">SIGN UP</a>
-        </header>
-        <main>
-            <div class="content">
-                <div class="tag-box">
-                    <div class="tag">EduConnect &wedbar;</div>
-                </div>
-                <h1>
-                    <span class="fixed-text">A Platform to <span class="typed-wrap">
-                    <span class="auto-type" style="color: #6600c5;"></span>
-                    </span></span> 
-                    <p style="color: white;">and Grow Together.</p>
-                </h1>
+        <a class="btn-signUp" href="{{ url_for('auth.signUp') }}">SIGN UP</a>
+      </header>
+      <main>
+        <div class="content">
+          <div class="tag-box">
+            <div class="tag">EduConnect &wedbar;</div>
+          </div>
+          <h1>
+            <span class="fixed-text"
+              >A Platform to
+              <span class="typed-wrap">
+                <span class="auto-type" style="color: #6600c5"></span> </span
+            ></span>
+            <p style="color: white">and Grow Together.</p>
+          </h1>
 
-                <p class="description">
-                    A digital learning platform where creators publish courses and learners discover skills to grow
-                </p>
+          <p class="description">
+            A digital learning platform where creators publish courses and
+            learners discover skills to grow
+          </p>
 
-                <div class="button">
-                    <a href="{{ url_for('select_account') }}" class="btn-signIn">GetStarted &gt;</a>
-                </div>
-            </div>
-        </main>
+          <div class="button">
+            <a href="{{ url_for('auth.select_account') }}" class="btn-signIn"
+              >GetStarted &gt;</a
+            >
+          </div>
+        </div>
+      </main>
 
-    
-    <spline-viewer class="design-3d" url="https://prod.spline.design/PvdCRAnsIjNFoGHY/scene.splinecode"></spline-viewer>
-
+      <spline-viewer
+        class="design-3d"
+        url="https://prod.spline.design/PvdCRAnsIjNFoGHY/scene.splinecode"
+      ></spline-viewer>
     </div>
 
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/@splinetool/viewer@1.12.28/build/spline-viewer.js"
+    ></script>
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
+  </body>
 </html>

@@ -22,7 +22,7 @@
     <div class="layer-blur"></div>
 
     <div class="back-btn">
-      <a href="{{ url_for('FirstPage') }}" class="arrow"> Home</a>
+      <a href="{{ url_for('views.FirstPage') }}" class="arrow"> Home</a>
     </div>
 
     <div class="auth-container">
@@ -60,7 +60,8 @@
           <button type="button" onclick="signIn()">Login</button>
 
           <p class="switch">
-            Don’t have an account? <a href="{{ url_for('signUp') }}">Sign up</a>
+            Don’t have an account?
+            <a href="{{ url_for('auth.signUp') }}">Sign up</a>
           </p>
         </form>
       </div>

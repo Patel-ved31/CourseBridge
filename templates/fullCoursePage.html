@@ -31,7 +31,7 @@
           </div>
 
           <nav>
-            <a href="{{ url_for('FirstPage') }}" class="logout">
+            <a href="{{ url_for('views.FirstPage') }}" class="logout">
               <i class="bi bi-box-arrow-right"> </i>
               <p>logout</p>
             </a>
@@ -48,17 +48,44 @@
         </div>
         <div class="course-content">
           <h2 class="course-title">{{title}}</h2>
-          <div class="user-details"  >
-            <div class="photo" data-value="{{creator_id}}" onclick="fullPage(this)">
-            <img  src="{{ url_for('static', filename='uploads/profilePIC/' + creator_id + '.png') }}" alt="..">
+          <div class="user-details">
+            <div
+              class="photo"
+              data-value="{{creator_id}}"
+              onclick="fullPage(this)"
+            >
+              <img
+                src="{{ url_for('static', filename='uploads/profilePIC/' + creator_id + '.png') }}"
+                alt=".."
+              />
             </div>
-            <div data-value="{{creator_id}}" onclick="fullPage(this)" class="user-name" >{{creator_name}}</div>
+            <div
+              data-value="{{creator_id}}"
+              onclick="fullPage(this)"
+              class="user-name"
+            >
+              {{creator_name}}
+            </div>
 
             <div class="subscription">
               {% if already_subscription %}
-              <button type="button" class="already-sub" data-value="{{creator_id}}" onclick="unsub(this)">Subscribed</button>
+              <button
+                type="button"
+                class="already-sub"
+                data-value="{{creator_id}}"
+                onclick="unsub(this)"
+              >
+                Subscribed
+              </button>
               {% else %}
-              <button type="button" class="not-sub" onclick="sub(this)" data-value="{{creator_id}}">Subscribe</button>
+              <button
+                type="button"
+                class="not-sub"
+                onclick="sub(this)"
+                data-value="{{creator_id}}"
+              >
+                Subscribe
+              </button>
               {% endif %}
             </div>
           </div>
@@ -67,17 +94,30 @@
             <div class="price-box">₹ {{price}}</div>
 
             {% if price == 0 %}
-            <a class="enroll-btn" href="{{course_link}}" target="_blank">Watch Now</a>
+            <a class="enroll-btn" href="{{course_link}}" target="_blank"
+              >Watch Now</a
+            >
             {% else %}
-            <a class="enroll-btn"  href="{{course_link}}" target="_blank">Enroll Now</a>
-            {% endif %} 
-            {% if is_bookmarked %}
-            <button type="button" class="bookmark" data-course-id="{{course_id}}" data-value="1">
+            <a class="enroll-btn" href="{{course_link}}" target="_blank"
+              >Enroll Now</a
+            >
+            {% endif %} {% if is_bookmarked %}
+            <button
+              type="button"
+              class="bookmark"
+              data-course-id="{{course_id}}"
+              data-value="1"
+            >
               <i class="bi bi-bookmark-fill"></i>
               <p>Bookmark</p>
             </button>
             {% else %}
-            <button type="button" class="bookmark"  data-course-id="{{course_id}}" data-value="0">
+            <button
+              type="button"
+              class="bookmark"
+              data-course-id="{{course_id}}"
+              data-value="0"
+            >
               <i class="bi bi-bookmark"></i>
               <p>Bookmark</p>
             </button>
@@ -113,11 +153,14 @@
             ></textarea>
             <button id="submit-review">Submit Review</button>
           </div>
-         {% else %}
+          {% else %}
           <!-- user already review box -->
           <div class="review-container already-reviewed">
             <div class="photo">
-              <img src="{{ url_for('static', filename='uploads/profilePIC/' + user_photo ) }}" alt="..">
+              <img
+                src="{{ url_for('static', filename='uploads/profilePIC/' + user_photo ) }}"
+                alt=".."
+              />
             </div>
 
             <div class="review-item">
@@ -126,14 +169,14 @@
                 <div class="review-rating">
                   {% for i in range( user_review[1]) %}
                   <i class="bi bi-star-fill"></i>
-                  {% endfor %} {% for i in range(5 -  user_review[1]) %}
+                  {% endfor %} {% for i in range(5 - user_review[1]) %}
                   <i class="bi bi-star"></i>
                   {% endfor %}
                 </div>
               </div>
 
               <div class="review-text">
-                <p>{{  user_review[2] }}</p>
+                <p>{{ user_review[2] }}</p>
               </div>
             </div>
           </div>
@@ -143,7 +186,10 @@
             {% for review in reviews %}
             <div class="review-container">
               <div class="photo">
-                <img src="{{ url_for('static', filename='uploads/profilePIC/' + review[3] ) }}" alt="..">
+                <img
+                  src="{{ url_for('static', filename='uploads/profilePIC/' + review[3] ) }}"
+                  alt=".."
+                />
               </div>
 
               <div class="review-item">

@@ -8,40 +8,40 @@ const sections = {
 
 const buttons = document.querySelectorAll(".menu-item");
 
-buttons.forEach(btn => {
+buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    buttons.forEach(b => b.classList.remove("active"));
+    buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
-    Object.values(sections).forEach(sec => sec.style.display = "none");
+    Object.values(sections).forEach((sec) => (sec.style.display = "none"));
     sections[btn.dataset.key].style.display = "block";
   });
 });
 
 /* DEFAULT */
-Object.values(sections).forEach(sec => sec.style.display = "none");
+Object.values(sections).forEach((sec) => (sec.style.display = "none"));
 sections.overview.style.display = "block";
 
-let s = document.querySelectorAll(".s")
+let s = document.querySelectorAll(".s");
 
 /* EDIT MODES */
 function show(type) {
-  Object.values(sections).forEach(sec => sec.style.display = "none");
+  Object.values(sections).forEach((sec) => (sec.style.display = "none"));
 
   if (type === "changeName") {
-    document.querySelector(".change-name").style.display = "block"
-   s.forEach(btn => btn.classList.remove("active"));
-   document.querySelector(".s2").classList.add("active")
-};
+    document.querySelector(".change-name").style.display = "block";
+    s.forEach((btn) => btn.classList.remove("active"));
+    document.querySelector(".s2").classList.add("active");
+  }
   if (type === "changePassWord") {
-    document.querySelector(".change-password").style.display = "block"
-    s.forEach(btn => btn.classList.remove("active"));
-   document.querySelector(".s3").classList.add("active")
-  };
-  if (type === "changePhoto"){ 
-    document.querySelector(".change-profilePic").style.display = "block"
-    s.forEach(btn => btn.classList.remove("active"));
-   document.querySelector(".s4").classList.add("active")
+    document.querySelector(".change-password").style.display = "block";
+    s.forEach((btn) => btn.classList.remove("active"));
+    document.querySelector(".s3").classList.add("active");
+  }
+  if (type === "changePhoto") {
+    document.querySelector(".change-profilePic").style.display = "block";
+    s.forEach((btn) => btn.classList.remove("active"));
+    document.querySelector(".s4").classList.add("active");
   }
 }
 
@@ -60,10 +60,10 @@ function isValidUsername(name) {
   return true;
 }
 
-function changeName(){
-    let name = document.querySelector(".new-username").value;
+function changeName() {
+  let name = document.querySelector(".new-username").value;
 
-    if (name.length === 0) {
+  if (name.length === 0) {
     document.querySelector(".name-error").innerText =
       "Username cannot be empty";
     return;
@@ -76,114 +76,150 @@ function changeName(){
   }
 
   fetch("/changeName", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            newName : name,
-        })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      newName: name,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message === "True") {
+        let currAcc = localStorage.getItem("currAcc");
+        
+        localStorage.setItem(`name${currAcc}`, name);
+
+        location.reload();
+      } else {
+        document.querySelector(".name-error").innerText = data.message;
+      }
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.message === "True"){
-            location.reload()
-        }else{
-            document.querySelector(".name-error").innerText =
-            data.message;
-            
-        }
-    })
-    .catch(err => {
-        console.error(err);
-    }); 
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
-function changePassword(){
-    let password = document.querySelector(".new-password").value;
-    let renter = document.querySelector(".renter").value;
+function changePassword() {
+  let password = document.querySelector(".new-password").value;
+  let renter = document.querySelector(".renter").value;
 
-    if (password !== renter){
-        document.querySelector(".password-error").innerText = "Both PassWord Not Match"
-        return;
-    }
+  if (password !== renter) {
+    document.querySelector(".password-error").innerText =
+      "Both PassWord Not Match";
+    return;
+  }
 
-    if (password.length < 4){
-        document.querySelector(".password-error").innerText = "Password length must be more then 4"
-        return;
-    }
-    fetch("/changePass", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            newPass : password,
-        })
+  if (password.length < 4) {
+    document.querySelector(".password-error").innerText =
+      "Password length must be more then 4";
+    return;
+  }
+  fetch("/changePass", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      newPass: password,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message === "True") {
+        location.reload();
+      } else {
+        document.querySelector(".password-error").innerText = data.message;
+        password.value = "";
+        renter.value = "";
+      }
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.message === "True"){
-            location.reload()
-        }else{
-            document.querySelector(".password-error").innerText =
-            data.message;
-            password.value = "";
-            renter.value = ""
-        }
-    })
-    .catch(err => {
-        console.error(err);
-    }); 
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
+function deleteAccount() {
+  let confirmation = confirm(
+    "Are you sure you want to delete your account? This action cannot be undone.",
+  );
 
-function deleteAccount(){
-    let confirmation = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+  if (confirmation) {
+    fetch("/deleteAccount", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "True") {
+          let currAcc = localStorage.getItem("currAcc");
+          currAcc = parseInt(currAcc);
 
-    if (confirmation) {
-        fetch("/deleteAccount", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-        })
-        .then(res => res.json()) 
-        .then(data => {
-            if(data.message === "True"){
-                alert("Your account has been deleted.");
-                window.location.href = "/";
-            }else{
-                alert("There was an error deleting your account. Please try again later.");
-            } 
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    }
+          let totalAcc = localStorage.getItem("totalAcc");
+
+          totalAcc = parseInt(totalAcc);
+
+          localStorage.removeItem("currAcc");
+
+          for (let i = currAcc; i < totalAcc; i++) {
+            name = localStorage.getItem(`name${i + 1}`);
+            profile_pic = localStorage.getItem(`profile_pic${i + 1}`);
+            role = localStorage.getItem(`role${i + 1}`);
+            id = localStorage.getItem(`id${i + 1}`);
+
+            localStorage.setItem(`name${i}`, name);
+            localStorage.setItem(`profile_pic${i}`, profile_pic);
+            localStorage.setItem(`role${i}`, role);
+            localStorage.setItem(`id${i}`, id);
+          }
+
+          localStorage.removeItem(`id${totalAcc}`);
+          localStorage.removeItem(`name${totalAcc}`);
+          localStorage.removeItem(`profile_pic${totalAcc}`);
+          localStorage.removeItem(`role${totalAcc}`);
+
+          totalAcc = totalAcc - 1;
+          localStorage.setItem("totalAcc", totalAcc);
+
+          alert("Your account has been deleted.");
+
+          window.location.href = "/";
+        } else {
+          alert(
+            "There was an error deleting your account. Please try again later.",
+          );
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 }
 
 function changeProfilePic() {
-    const fileInput = document.getElementById('newProfilePic');
-    const file = fileInput.files[0];
-    const errorMsg = document.querySelector('.pic-error');
+  const fileInput = document.getElementById("newProfilePic");
+  const file = fileInput.files[0];
+  const errorMsg = document.querySelector(".pic-error");
 
-    if (!file) {
-        errorMsg.innerText = "Please select a file";
-        return;
-    }
+  if (!file) {
+    errorMsg.innerText = "Please select a file";
+    return;
+  }
 
-    const formData = new FormData();
-    formData.append('profile_pic', file);
+  const formData = new FormData();
+  formData.append("profile_pic", file);
 
-    fetch('/changeProfilePic', {
-        method: 'POST',
-        body: formData
+  fetch("/changeProfilePic", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message === "True") {
+        location.reload();
+      } else {
+        errorMsg.innerText = data.message;
+      }
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.message === "True") {
-            location.reload();
-        } else {
-            errorMsg.innerText = data.message;
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        errorMsg.innerText = "Something went wrong";
+    .catch((err) => {
+      console.error(err);
+      errorMsg.innerText = "Something went wrong";
     });
 }
