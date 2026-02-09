@@ -41,10 +41,33 @@ body {
   overflow: hidden;
 }
 
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-100px) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes blockFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 header {
   position: absolute;
   top: 20px;
   left: 50px;
+  animation: fadeIn 1s ease-out 0.8s forwards;
+  opacity: 0;
 }
 header h1 {
   font-size: 3rem;
@@ -81,24 +104,26 @@ header h1 {
 
 /* RIGHT */
 .auth-right {
-  flex: 1;
-  padding: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
   position: absolute;
   top: 12%;
-  right: 100px;
+  right: 5%; /* Use percentage for better scaling */
   border-radius: 50px;
-  width: 700px;
-  height: 650px;
+  width: 45%; /* Use percentage */
+  max-width: 700px; /* But have a max width */
+  min-height: 650px; /* Use min-height instead of fixed height */
+  padding: 4vw; /* Use viewport units for padding */
   box-shadow: 0 0 15px white;
   background: linear-gradient(
     135deg,
     rgba(124, 58, 237, 0.12),
     rgba(0, 0, 0, 1)
   );
+  animation: slideInUp 1s ease-out 0.5s forwards;
+  opacity: 0;
 }
 
 h1 {
@@ -120,6 +145,11 @@ input {
   border-radius: 10px;
   color: #fff;
   font-size: 1rem;
+}
+
+/* Animation for form blocks */
+.email-varify, .otp-box, .detail-form {
+  animation: blockFadeIn 0.5s ease-out forwards;
 }
 
 #floatingEmail {
@@ -163,7 +193,7 @@ span i {
   color: #a855f7;
 }
 
-.back{
+.back {
   position: relative;
   top: -200px;
   color: #a855f7;
@@ -246,7 +276,6 @@ button:hover {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
 }
 .role-box div input {
   transform: translateY(8px) scale(1.5);
@@ -255,7 +284,7 @@ button:hover {
 
 .role-box div label {
   color: #fff;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 #floatingUsername,
@@ -299,6 +328,8 @@ button:hover {
   left: -400px;
   bottom: -50px;
   z-index: -1;
+  animation: slideInFromLeft 1.5s ease-out forwards;
+  opacity: 0;
 }
 
 .submit-btn {
@@ -321,6 +352,8 @@ button:hover {
   position: absolute;
   top: 20px;
   right: 40px;
+  animation: fadeIn 1s ease-out 0.8s forwards;
+  opacity: 0;
 }
 
 .arrow {

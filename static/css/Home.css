@@ -17,6 +17,23 @@ body{
     position: relative;
     overflow: hidden;
 }
+
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 .head-part{
     position: fixed;
     top: 0;
@@ -32,6 +49,8 @@ header{
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    animation: fadeIn 1s ease-out 0.5s forwards;
+    opacity: 0;
 }
 header h1 {
   font-size: 3rem;
@@ -198,6 +217,8 @@ nav .logout i{
     position: relative;
     z-index: -1;
     /* color: transparent; */
+    animation: slideInUp 1s ease-out 0.2s forwards;
+    opacity: 0;
 }
 
 .user-text{
@@ -238,7 +259,8 @@ nav .logout i{
     border-radius: 50px;
     background: linear-gradient(to right , #656565 , #7f42a7 , #6600c5 , #5300a0 , #757575 , #656565);
     background-size: 200%;
-    animation: animationGradient 2.5s linear infinite;
+    animation: animationGradient 2.5s linear infinite, slideInUp 1s ease-out 0.8s forwards;
+    opacity: 0;
     box-shadow: 0 0  15px rgba(255, 255, 255, 0.3);
     padding: 0.5rem 2rem;
     transition: 0.4s ease;
@@ -310,7 +332,10 @@ nav .logout i{
     text-align: center;
     font-weight: 500;
     cursor: pointer;
+    animation: slideInUp 0.8s ease-out 1.2s forwards;
+    opacity: 0;
 }
+
 .box:hover{
     transform: scale(1.05);
     background-color: whitesmoke;

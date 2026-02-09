@@ -17,6 +17,18 @@ body{
     position: relative;
     overflow: hidden;
 }
+
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .head-part{
     position: fixed;
     top: 0;
@@ -34,6 +46,8 @@ header{
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    animation: fadeIn 1s ease-out 0.5s forwards;
+    opacity: 0;
 }
 header h1 {
   font-size: 3rem;
@@ -127,6 +141,8 @@ nav a i{
   position: fixed;
   top: 30px;
   height: 50px;
+  animation: slideInUp 0.8s ease-out 0.2s forwards;
+  opacity: 0;
 }
 
 .search-icon {
@@ -200,6 +216,8 @@ nav a i{
     overflow: hidden;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
+    animation: slideInUp 0.8s ease-out 0.5s forwards;
+    opacity: 0;
 }
 .box:hover{
     transform: translateY(-5px);

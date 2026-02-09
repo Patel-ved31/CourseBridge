@@ -43,11 +43,45 @@ body {
   z-index: -1;
 }
 
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 /* ---------------- HEADER ---------------- */
 header {
   position: absolute;
   top: 20px;
   left: 50px;
+  animation: fadeIn 1s ease-out 0.8s forwards;
+  opacity: 0;
 }
 
 header h1 {
@@ -65,6 +99,8 @@ header h1 {
   top: 20px;
   right: 40px;
   z-index: 100;
+  animation: fadeIn 1s ease-out 0.8s forwards;
+  opacity: 0;
 }
 
 .arrow {
@@ -91,6 +127,8 @@ header h1 {
   left: -400px;
   bottom: -50px;
   z-index: -1;
+  animation: slideInFromLeft 1.5s ease-out forwards;
+  opacity: 0;
 }
 
 /* ---------------- RIGHT LOGIN CARD ---------------- */
@@ -106,6 +144,8 @@ header h1 {
     rgba(0, 0, 0, 0.95)
   );
   box-shadow: 0 0 40px #5a2ca0;
+  animation: slideInUp 1s ease-out 0.5s forwards;
+  opacity: 0;
 }
 
 .auth-right h1 {

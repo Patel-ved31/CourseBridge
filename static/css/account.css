@@ -21,6 +21,17 @@ body {
   height: 100vh;
 }
 
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 /* LAYOUT */
 .layout {
   display: flex;
@@ -35,6 +46,7 @@ body {
   padding: 24px;
   display: flex;
   flex-direction: column;
+  animation: slideInLeft 0.8s ease-out forwards;
 }
 
 .logo {
@@ -101,6 +113,8 @@ i {
 .content h1 {
   font-size: 2.2rem;
   margin-bottom: 30px;
+  animation: fadeIn 1s ease-out 0.2s forwards;
+  opacity: 0;
 }
 
 /* CARD */
@@ -110,7 +124,8 @@ i {
   padding: 30px;
   margin-bottom: 30px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-  animation: fade 0.4s ease;
+  animation: fade 0.8s ease-out 0.4s forwards;
+  opacity: 0;
 }
 
 @keyframes fade {

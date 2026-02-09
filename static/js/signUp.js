@@ -1,4 +1,19 @@
 function otp(input, e) {
+  // Handle backspace for a smoother experience
+  if (e.key == "Backspace") {
+    // If the current input is empty and the user hits backspace,
+    // move focus to the previous input.
+    if (input.value.length === 0) {
+      const prev = input.previousElementSibling;
+      alert(prev);
+      if (prev) {
+        prev.focus();
+      }
+    }
+    // Let the default backspace action (deleting the character) happen.
+    return;
+  }
+
   if (input.value.length === 1) {
     input.value = "";
     // return;
@@ -12,7 +27,12 @@ function otp(input, e) {
   setTimeout(() => {
     if (input.value.length === 1) {
       const next = input.nextElementSibling;
-      if (next) next.focus();
+      if (next) {
+        next.focus();
+      } else {
+        // If it's the last input, automatically verify.
+        verifyOTP();
+      }
     }
   }, 0);
 }
@@ -49,42 +69,50 @@ function startTimer() {
 }
 
 /* ---------------- SEND OTP ---------------- */
-function sendOTP() {
-  let x = document.querySelector(".send-otp-btn");
-  x.innerText = "Sending.....";
-
+async function sendOTP() {
+  const sendOtpBtn = document.querySelector(".send-otp-btn");
+  const errorEl = document.querySelector(".Error");
   const email = document.getElementById("floatingEmail").value;
 
+  sendOtpBtn.innerText = "Sending.....";
+  errorEl.innerText = ""; // Clear previous errors
+
   if (!email || !email.includes("@")) {
-    document.querySelector(".Error").innerText = "Enter valid email";
-    x.innerText = "Send OTP";
+    errorEl.innerText = "Enter valid email";
+    sendOtpBtn.innerText = "Send OTP";
     return;
   }
 
-  fetch("/check-email", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        fetch("/send-otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        })
-          .then((res) => res.json())
-          .then(() => {
-            document.querySelector(".email-varify").style.display = "none";
-            document.querySelector(".otp-box").style.display = "block";
-            startTimer();
-          });
-      } else {
-        document.querySelector(".Error").innerText = "this email already exist";
-        x.innerText = "Send OTP";
-      }
+  try {
+    const checkEmailRes = await fetch("/check-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
     });
+    const checkEmailData = await checkEmailRes.json();
+
+    if (checkEmailData.success) {
+      // Email is not taken, now send the OTP
+      await fetch("/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      // Assuming send-otp is successful, show the OTP box
+      document.querySelector(".email-varify").style.display = "none";
+      document.querySelector(".otp-box").style.display = "block";
+      document.getElementById("one").focus();
+      startTimer();
+    } else {
+      errorEl.innerText = "This email already exists";
+      sendOtpBtn.innerText = "Send OTP";
+    }
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    errorEl.innerText = "An unexpected error occurred. Please try again.";
+    sendOtpBtn.innerText = "Send OTP";
+  }
 }
 
 /* ---------------- VERIFY OTP ---------------- */
@@ -97,8 +125,11 @@ function verifyOTP() {
     document.getElementById("five").value +
     document.getElementById("six").value;
 
+  const errorEl = document.querySelector(".otp-box .error");
+  errorEl.innerText = "";
+
   if (otp.length !== 6) {
-    alert("Please enter complete OTP");
+    errorEl.innerText = "Please enter a complete 6-digit OTP.";
     return;
   }
 
@@ -116,7 +147,13 @@ function verifyOTP() {
         document.querySelector(".otp-box").style.display = "none";
         document.querySelector(".detail-form").style.display = "block";
       } else {
-        alert("Invalid OTP");
+        errorEl.innerText = "Invalid OTP. Please try again.";
+        const otpInputs = document.querySelectorAll(".otp-number input");
+        otpInputs.forEach((input) => {
+          input.value = "";
+        });
+        // Focus the first input box for better UX
+        otpInputs[0].focus();
       }
     });
 }
@@ -202,13 +239,12 @@ function submitForm(event) {
     .then((res) => res.json())
     .then((data) => {
       if (data.message) {
-
         let totalAcc = localStorage.getItem("totalAcc");
 
-        if (!totalAcc){
-            totalAcc = 0;
-        }else{
-            totalAcc = parseInt(totalAcc);
+        if (!totalAcc) {
+          totalAcc = 0;
+        } else {
+          totalAcc = parseInt(totalAcc);
         }
         totalAcc = totalAcc + 1;
 
@@ -219,17 +255,16 @@ function submitForm(event) {
         localStorage.setItem(`profile_pic${totalAcc}`, data.profile_pic);
         localStorage.setItem(`role${totalAcc}`, data.role);
 
-        localStorage.setItem("currAcc" , totalAcc)
+        localStorage.setItem("currAcc", totalAcc);
 
         window.location.href = `/Home`;
       }
     });
 }
 
-let againEmail = document.querySelector(".back")
+let againEmail = document.querySelector(".back");
 
 againEmail.addEventListener("click", () => {
-
   document.querySelector(".send-otp-btn").innerText = "Send OTP";
 
   document.querySelector(".email-varify").style.display = "block";

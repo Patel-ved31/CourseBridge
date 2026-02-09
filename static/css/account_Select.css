@@ -73,6 +73,21 @@ html {
   }
 }
 
+
+header {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+}
+header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 50px;
+}
+
 /* 3. SHALLOW ANIMATED LINE */
 .svg-container {
   position: absolute;
