@@ -8,11 +8,19 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='css/account_Select.css') }}"
     />
+     <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 </head>
 <body>
     <div class="ambient-glow"></div>
 
     <div class="floor-light"></div>
+
+    <div class="back-btn">
+      <a href="{{ url_for('views.FirstPage') }}" class="arrow"> <i class="bi bi-box-arrow-left"></i> Back to Home</a>
+    </div>
 
     <h1 class="title">Who's using?</h1>
 

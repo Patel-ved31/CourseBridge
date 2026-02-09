@@ -178,6 +178,28 @@ h1 {
   color:white ;
 }
 
+
+.back-btn {
+  background-color: transparent;
+  padding: 0.5rem 2rem;
+  border: none;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}
+
+.arrow{
+  color: #dadada;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.arrow:hover {
+  color: white;
+}
+
 @media (max-width: 768px) {
   body {
     height: auto;

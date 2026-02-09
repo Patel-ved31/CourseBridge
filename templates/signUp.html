@@ -22,7 +22,7 @@
     <div class="layer-blur"></div>
 
     <div class="back-btn">
-      <a href="{{ url_for('views.FirstPage') }}" class="arrow"> Home</a>
+      <a href="{{ url_for('views.FirstPage') }}" class="arrow"> <i class="bi bi-box-arrow-left"></i> Back to Home</a>
     </div>
 
     <div class="auth-container">
@@ -60,6 +60,11 @@
 
         <!-- STEP 2 : OTP VERIFY -->
         <div class="otp-box" style="display: none">
+
+          <div class="back">
+            <i class="bi bi-box-arrow-left"></i> Back to Email Verification
+          </div>
+
           <div class="otp-number">
             <input
               type="text"

@@ -225,3 +225,13 @@ function submitForm(event) {
       }
     });
 }
+
+let againEmail = document.querySelector(".back")
+
+againEmail.addEventListener("click", () => {
+
+  document.querySelector(".send-otp-btn").innerText = "Send OTP";
+
+  document.querySelector(".email-varify").style.display = "block";
+  document.querySelector(".otp-box").style.display = "none";
+});
