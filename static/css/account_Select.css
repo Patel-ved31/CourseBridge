@@ -177,3 +177,23 @@ h1 {
   letter-spacing: 0.5px;
   color:white ;
 }
+
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    overflow-y: auto;
+  }
+  h1 {
+    position: relative;
+    top: 0;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+  }
+  .profiles {
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 30px;
+    padding-bottom: 50px;
+  }
+}

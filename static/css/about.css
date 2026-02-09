@@ -2,11 +2,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto;
 }
 
 body {
-   background: linear-gradient(
+  background: linear-gradient(
     180deg,
     rgba(15, 23, 42, 0.92),
     rgba(2, 6, 23, 0.95)
@@ -26,7 +31,7 @@ body {
   width: 310px;
   background: rgba(2, 6, 23, 0.85);
   backdrop-filter: blur(14px);
-  border-right: 1px solid rgba(255,255,255,0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -60,31 +65,31 @@ body {
 }
 
 .menu-item:hover {
-  background: rgba(99,102,241,0.15);
+  background: rgba(99, 102, 241, 0.15);
 }
 
 .menu-item.active {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
-  box-shadow: 0 0 20px rgba(99,102,241,0.6);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
 }
 
 .exit {
-    margin-top: auto;
-    position: absolute;
-    bottom: 8%;
-    left: 30%;
-    cursor: pointer;
-    text-decoration: none;
-    color: #e0e7ff;
-    font-size: 1.5rem;
+  margin-top: auto;
+  position: absolute;
+  bottom: 8%;
+  left: 30%;
+  cursor: pointer;
+  text-decoration: none;
+  color: #e0e7ff;
+  font-size: 1.5rem;
 }
-.exit span{
-    margin: 5px;
+.exit span {
+  margin: 5px;
 }
 .exit span i {
-    color: #b595ff;
-    font-size: 2rem;
+  color: #b595ff;
+  font-size: 2rem;
 }
 
 /* CONTENT */
@@ -101,11 +106,11 @@ body {
 
 .card {
   background: rgb(29, 44, 80);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .card h3 {
@@ -135,17 +140,54 @@ body {
   width: 100%;
   height: 250px;
   background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .team-row-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 0px 20px rgba(99, 101, 241, 0.705);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+  .exit {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+  }
+  .content {
+    padding: 20px;
+  }
+  .team-row-card {
+    flex-direction: column;
+    height: auto;
+  }
+  .team-photo {
+    width: 100%;
+    height: 250px;
+  }
+  .team-details h3,
+  .team-details .role {
+    transform: none;
+  }
+  .team-details h3 {
+    margin-top: 10px;
+  }
 }
 
 /* LEFT IMAGE (≈25%) */
@@ -189,4 +231,3 @@ body {
   color: #cbd5f5;
   line-height: 1.6;
 }
-

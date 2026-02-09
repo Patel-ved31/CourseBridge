@@ -468,3 +468,47 @@ input[type="file"]::file-selector-button {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
 }
+
+@media screen and (max-width: 1024px) {
+    .head-part {
+        position: relative;
+        height: auto;
+    }
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+    header h1 {
+        margin-left: 0;
+        transform: none;
+        height: auto;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    nav {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .user-details {
+        flex-direction: column;
+        height: auto;
+        padding: 30px;
+        text-align: center;
+        gap: 20px;
+    }
+    .photo { margin: 0 auto; }
+    .user-name { font-size: 2rem; }
+    .heading { flex-direction: column; gap: 20px; }
+    .box { flex-direction: column; height: auto; }
+    .course-img {
+        width: 100%;
+        height: 200px;
+        border-radius: 20px 20px 0 0;
+    }
+    .course-content { padding: 20px; text-align: center; }
+    .form-row { flex-direction: column; gap: 0; }
+}

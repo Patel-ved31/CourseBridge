@@ -159,7 +159,7 @@ nav a i{
     background-color: #2e2d2d;
     filter: blur(3);
     color: white;
-    max-height: 600px;
+    max-height: 550px;
     overflow-y: auto;
 }
 
@@ -254,4 +254,75 @@ nav a i{
     font-size: 24px;
     cursor: pointer;
     padding: 10px;
+}
+
+@media screen and (max-width: 1350px) {
+    .head-part {
+        position: relative;
+        height: auto;
+    }
+
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+
+    header h1 {
+        margin-left: 0;
+        transform: none;
+        height: auto;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    nav {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .dropdown-menu {
+        position: relative;
+        top: 0;
+    }
+
+    .search-box {
+        position: relative;
+        top: 0;
+        margin: 20px auto;
+        width: 90%;
+        border-radius: 15px;
+    }
+
+    #suggestions {
+        position: relative;
+        top: 0;
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .content {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .box {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .course-img {
+        width: 100%;
+        height: 250px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .course-content {
+        text-align: center;
+        margin: 20px;
+    }
 }

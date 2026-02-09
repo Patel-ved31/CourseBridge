@@ -2,25 +2,36 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
 }
 
-.img-gradient{
-    position: absolute;
-    top: 0;
-    right: 0;
-    opacity: 0.5;
-    z-index: -1;
+.img-gradient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.5;
+  z-index: -1;
 }
-.layer-blur{
-    height: 0;
-    width: 30rem;
-    position: absolute;
-    top: 20%;
-    right: 0;
-    box-shadow: 0 0 700px 15px white;
-    rotate: -30deg;
-    z-index: -1;
+.layer-blur {
+  height: 0;
+  width: 30rem;
+  position: absolute;
+  top: 20%;
+  right: 0;
+  box-shadow: 0 0 700px 15px white;
+  rotate: -30deg;
+  z-index: -1;
 }
 
 body {
@@ -30,10 +41,10 @@ body {
   overflow: hidden;
 }
 
-header{
-    position: absolute;
-    top: 20px;
-    left: 50px;
+header {
+  position: absolute;
+  top: 20px;
+  left: 50px;
 }
 header h1 {
   font-size: 3rem;
@@ -85,10 +96,9 @@ header h1 {
   box-shadow: 0 0 15px white;
   background: linear-gradient(
     135deg,
-    rgba(124,58,237,0.12),
-    rgba(0,0,0,1)
+    rgba(124, 58, 237, 0.12),
+    rgba(0, 0, 0, 1)
   );
-
 }
 
 h1 {
@@ -112,7 +122,7 @@ input {
   font-size: 1rem;
 }
 
-#floatingEmail{
+#floatingEmail {
   width: 100%;
   padding: 12px 10px;
   margin-bottom: 28px;
@@ -124,11 +134,11 @@ input {
   transition: all 0.2s ease-in;
 }
 
-#floatingEmail:focus{
+#floatingEmail:focus {
   border-color: #a855f7;
 }
 
-.send-otp-btn{
+.send-otp-btn {
   width: 100%;
   padding: 14px;
   margin: 15px 0;
@@ -141,11 +151,11 @@ input {
   font-size: 16px;
 }
 
-span{
+span {
   position: relative;
 }
 
-span i{
+span i {
   position: absolute;
   transform: translateY(10px);
   font-size: 25px;
@@ -153,7 +163,7 @@ span i{
   color: #a855f7;
 }
 
-.otp-box{
+.otp-box {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -161,14 +171,14 @@ span i{
   width: 100%;
 }
 
-.otp-number{
+.otp-number {
   display: flex;
   margin-bottom: 20px;
   gap: 20px;
   caret-color: transparent;
 }
 
-.otp-number input{
+.otp-number input {
   text-align: center;
   width: 45px;
   height: 50px;
@@ -204,14 +214,14 @@ button:hover {
   border: 1px solid #a855f7;
 }
 
-.role-box{
+.role-box {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   padding: 20px;
 }
 
-.role-box div{
+.role-box div {
   display: flex;
   gap: 20px;
   font-size: 25px;
@@ -219,13 +229,13 @@ button:hover {
   justify-content: center;
   cursor: pointer;
 }
-.role-box div input{
-  transform: translateY(8px)  scale(1.5);
+.role-box div input {
+  transform: translateY(8px) scale(1.5);
   cursor: pointer;
 }
 
-#floatingUsername ,
-#floatingPassword{
+#floatingUsername,
+#floatingPassword {
   width: 100%;
   padding: 12px 50px;
   margin-bottom: 28px;
@@ -237,12 +247,10 @@ button:hover {
   transition: all 0.2s ease-in;
 }
 
-
-#floatingUsername:focus ,
+#floatingUsername:focus,
 #floatingPassword:focus {
   border-color: #a855f7;
 }
-
 
 .Error,
 .UserNameError,
@@ -262,11 +270,11 @@ button:hover {
   color: #a855f7;
   text-decoration: none;
 }
-.design-3d{
-    position: absolute;
-    left: -400px;
-    bottom: -50px;
-    z-index: -1;
+.design-3d {
+  position: absolute;
+  left: -400px;
+  bottom: -50px;
+  z-index: -1;
 }
 
 .submit-btn {
@@ -282,7 +290,7 @@ button:hover {
   font-size: 16px;
 }
 
-.back-btn{
+.back-btn {
   background-color: transparent;
   padding: 0.5rem 2rem;
   border: none;
@@ -291,14 +299,14 @@ button:hover {
   right: 40px;
 }
 
-.arrow{
-  color: #Dadada;
+.arrow {
+  color: #dadada;
   text-decoration: none;
-  font-size: 1rem ;
-  transition: background-color .3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.arrow:hover{
+.arrow:hover {
   color: white;
 }
 
@@ -322,6 +330,51 @@ input[type="file"]::file-selector-button {
   cursor: pointer;
 }
 
-.form-group label{
+.form-group label {
   font-size: 1.3rem;
+}
+
+@media (max-width: 1024px) {
+  body {
+    height: auto;
+    overflow-y: auto;
+  }
+  .auth-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .auth-left {
+    display: none;
+  }
+  .auth-right {
+    position: relative;
+    width: 90%;
+    margin: 50px auto;
+    top: 0;
+    right: 0;
+    height: auto;
+    padding: 40px;
+  }
+  header {
+    position: relative;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+  }
+  header h1 {
+    margin-left: 0;
+  }
+  .back-btn {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin: 10px auto;
+    display: block;
+    width: fit-content;
+  }
+  .design-3d {
+    display: none;
+  }
 }
