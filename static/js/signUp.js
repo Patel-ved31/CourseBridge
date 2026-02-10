@@ -1,8 +1,5 @@
 function otp(input, e) {
-  // Handle backspace for a smoother experience
   if (e.key == "Backspace") {
-    // If the current input is empty and the user hits backspace,
-    // move focus to the previous input.
     if (input.value.length === 0) {
       const prev = input.previousElementSibling;
       alert(prev);
@@ -10,7 +7,6 @@ function otp(input, e) {
         prev.focus();
       }
     }
-    // Let the default backspace action (deleting the character) happen.
     return;
   }
 
@@ -78,6 +74,14 @@ async function sendOTP() {
   errorEl.innerText = ""; // Clear previous errors
 
   if (!email || !email.includes("@")) {
+    errorEl.innerText = "Enter valid email";
+    sendOtpBtn.innerText = "Send OTP";
+    return;
+  }
+
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+  if (!emailRegex.test(email)){
     errorEl.innerText = "Enter valid email";
     sendOtpBtn.innerText = "Send OTP";
     return;

@@ -86,7 +86,10 @@ header h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: 50px;
+  cursor: pointer;
 }
+
+
 
 /* 3. SHALLOW ANIMATED LINE */
 .svg-container {
@@ -201,6 +204,7 @@ h1 {
   position: absolute;
   top: 20px;
   right: 40px;
+  z-index: 2;
 }
 
 .arrow{

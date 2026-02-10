@@ -38,21 +38,6 @@ body{
     overflow: hidden;
 }
 
-/* ---------------- ANIMATIONS ---------------- */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInFromRight {
-  from { opacity: 0; transform: translateX(100px) scale(0.9); }
-  to { opacity: 1; transform: translateX(0) scale(1); }
-}
 
 /* header */
 header{
@@ -64,6 +49,12 @@ header{
     animation: fadeIn 1s ease-out 0.5s forwards;
     opacity: 0;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 header h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -122,6 +113,11 @@ main{
     z-index: 999;
     animation: slideInUp 1s ease-out 0.5s forwards;
     opacity: 0;
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .tag-box{
@@ -196,6 +192,14 @@ main{
     animation: slideInFromRight 1.5s ease-out forwards;
     opacity: 0;
 }
+
+/* ---------------- ANIMATIONS ---------------- */
+
+@keyframes slideInFromRight {
+  from { opacity: 0; transform: translateX(100px) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
 
 /* ===========================
    TABLET (≤ 1024px)
