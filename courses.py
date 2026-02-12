@@ -29,6 +29,7 @@ def search():
     conn.close()
     return jsonify(result)
 
+# serach By category
 @courses_bp.route("/categoryList")
 def categoryList():
 
@@ -57,6 +58,7 @@ def categoryList():
 
     return render_template("courseList.html", courses=courses, bookmarks=[b[0] for b in bookmarks], subscriptions=subscriptions)
 
+# search by course
 @courses_bp.route("/courseList")
 def courseList():
 
@@ -96,6 +98,7 @@ def courseList():
 
     return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
+# go to all course
 @courses_bp.route("/all_courses")
 def all_courses():
 
@@ -116,6 +119,7 @@ def all_courses():
 
     return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
+# to add course
 @courses_bp.route("/add-course", methods=["POST"])
 def add_course():
     title = request.form.get("title")
@@ -145,6 +149,7 @@ def add_course():
     conn.close()
     return jsonify({"message": "Course added successfully ✅"})
 
+# delete course
 @courses_bp.route("/delete-course", methods=["POST"])
 def deleteCourse():
 
@@ -165,6 +170,7 @@ def deleteCourse():
     conn.close()
     return jsonify({"message": "True"})
 
+# go to full course
 @courses_bp.route("/fullCoursePage")
 def full_course():
 
@@ -216,6 +222,7 @@ def full_course():
 
     return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), user_photo=user_photo, already_subscription = already_sub)
 
+# fo to course by that creator
 @courses_bp.route("/creatorCourse")
 def creator_course():
 

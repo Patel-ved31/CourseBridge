@@ -61,7 +61,7 @@ document.getElementById("suggestions").addEventListener("click", function (e) {
 });
 
 document.querySelector(".bookmark").addEventListener("click", function () {
-  icon = this.querySelector(".bookmark i");
+  icon = document.querySelector(".bookmark i");
   if (this.dataset.value === "0") {
     fetch("/add-bookmark", {
       method: "POST",
@@ -103,7 +103,7 @@ document.querySelectorAll(".star .bi").forEach((icon) => {
   icon.addEventListener("click", function () {
     let star = parseInt(this.dataset.value);
 
-    document.querySelectorAll(".bi").forEach((s) => {
+    document.querySelectorAll(".star .bi").forEach((s) => {
       if (s.dataset.value <= star) {
         s.classList.remove("bi-star");
         s.classList.add("bi-star-fill");
