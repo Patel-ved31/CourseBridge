@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify, render_template, session
 import random
 import smtplib
 import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from werkzeug.utils import secure_filename
 from db import get_db
 from utils import EMAIL, PASSWORD, UPLOAD_FOLDER_PROFILE, allowed_file
@@ -85,11 +87,26 @@ def send_otp():
     saved_otp = str(random.randint(100000, 999999))
     print(saved_otp)
 
-    message = f"Your OTP is {saved_otp}"
+    msg = MIMEMultipart()
+    msg['From'] = EMAIL
+    msg['To'] = email
+    msg['Subject'] = "CourseBridge Verification OTP"
+
+    html_content = f"""
+    <div style="font-family: Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+        <h2 style="color: #a855f7; text-align: center;">CourseBridge</h2>
+        <p style="font-size: 16px; color: #333;">Hello,</p>
+        <p style="font-size: 16px; color: #333;">Your One-Time Password (OTP) for verification is:</p>
+        <div style="background-color: #f3f4f6; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; border-radius: 6px; margin: 20px 0;">{saved_otp}</div>
+        <p style="font-size: 14px; color: #666;">This code is valid for a short time. Please do not share it with anyone.</p>
+    </div>
+    """
+    msg.attach(MIMEText(html_content, 'html'))
+
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
         server.login(EMAIL, PASSWORD)
-        server.sendmail(EMAIL, email, message)
+        server.sendmail(EMAIL, email, msg.as_string())
 
     return jsonify({"message": "success"})
 
