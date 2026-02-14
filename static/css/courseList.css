@@ -1,53 +1,74 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-body{
-    background-color: #000;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
+body {
+  background-color: #000000;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
-.container1{
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
-    position: relative;
-    overflow: hidden;
+.container1 {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
 /* ---------------- ANIMATIONS ---------------- */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.head-part{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100px;
-    background-color: black;
-    z-index: 1000;
+.head-part {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  background-color: black;
+  z-index: 1000;
 }
-header{
-    padding: 1rem 5rem;
-    z-index: 999;
-    color: #dadada;
-    height: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    animation: fadeIn 1s ease-out 0.5s forwards;
-    opacity: 0;
+header {
+  padding: 1rem 5rem;
+  z-index: 999;
+  color: #dadada;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  opacity: 0;
 }
 header h1 {
   font-size: 3rem;
@@ -60,72 +81,82 @@ header h1 {
   height: 100px;
   transform: translateY(20px);
 }
-nav{
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    margin-left: -5%;
+nav {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-left: -5%;
 }
 
-nav a{
-    font-size: 1rem;
-    letter-spacing: 0.1rem;
-    transition: color 0.2s ease;
-    text-decoration: none;
-    color: inherit;
+nav a {
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  transition: color 0.2s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
-nav a:hover{
-    color: #a7a7a7;
-}
-
-.dropdown-menu{
-    background-color: #2e2d2d;
-    color: white;
-    width: 200px;
-}
-
-.dropdown-item{
-    background-color: #2e2d2d;
-    border-radius: 20px;
-}
-
-.dropdown-item:hover{
-    background-color: #5300a0;
-}
-
-#sub-toggle{
-  color: #dadada;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  transform: translateY(8px);
-  margin-right: 6px ;
-  font-size: 1.3rem;
-}
-
-#sub-toggle:hover{
+nav a:hover {
   color: #a7a7a7;
 }
 
-nav a i{
-    font-size: 2rem;
-    color: rgb(170, 0, 255) ;
-    transform: scaleY(1.3);
+.dropdown-menu {
+  background-color: #2e2d2d;
+  color: white;
+  width: 200px;
 }
 
-.logout{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+.dropdown-item {
+  background-color: #2e2d2d;
+  border-radius: 20px;
 }
 
-.logout p{
-    transform: translateY(8px);
+.dropdown-item:hover {
+  background-color: #5300a0;
 }
 
+#sub-toggle {
+  color: #dadada;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  transform: translateY(8px);
+  margin-right: 6px;
+  font-size: 1.3rem;
+}
 
-.search{
-    width: 90%;
+#sub-toggle:hover {
+  color: #a7a7a7;
+}
+
+nav a i {
+  font-size: 2rem;
+  color: rgb(170, 0, 255);
+  transform: scaleY(1.3);
+}
+
+.logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout p {
+  transform: translateY(8px);
+}
+
+.search {
+  width: 90%;
 }
 
 .search-box {
@@ -134,7 +165,7 @@ nav a i{
   background: #111;
   border: 1px solid #333;
   padding: 10px 16px;
-  width :45%;
+  width: 45%;
   margin-left: 40px;
   border-radius: 15px;
   background-color: #262626;
@@ -165,73 +196,72 @@ nav a i{
   color: #888;
 }
 
-#suggestions{
-    position: absolute;
-    top: 80px;
-    z-index: 999;
-    color: black;
-    margin-left: 40px;
-    width: 45%;
-    background-color: #2e2d2d;
-    filter: blur(3);
-    color: white;
-    max-height: 550px;
-    overflow-y: auto;
+#suggestions {
+  position: absolute;
+  top: 80px;
+  z-index: 999;
+  color: black;
+  margin-left: 40px;
+  width: 45%;
+  background-color: #2e2d2d;
+  filter: blur(3);
+  color: white;
+  max-height: 550px;
+  overflow-y: auto;
 }
 
-#suggestions div{
-    padding: 8px;
-    cursor: pointer;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    font-size: 20px;
-    transition: all 0.3s ease-in;
+#suggestions div {
+  padding: 8px;
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  font-size: 20px;
+  transition: all 0.3s ease-in;
 }
 
-#suggestions div:hover{
-    background-color: #5b5959;
+#suggestions div:hover {
+  background-color: #5b5959;
 }
-.content{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
+.content {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  padding: 2rem 5rem;
+  margin-top: 100px;
 }
-.box{
-    margin: 10px;
-    width: 90%;
-    background-color: white;
-    height: 220px;
-    display: flex;
-    gap: 30px;
-    background-color: rgba(255, 255, 255, 0.105); /* Glass card */
-    border: 1px solid rgba(255, 255, 255, 0.273);
-    color: white;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    overflow: hidden;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    animation: slideInUp 0.8s ease-out 0.5s forwards;
-    opacity: 0;
+.box {
+  width: 100%;
+  background-color: white;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.105); /* Glass card */
+  border: 1px solid rgba(255, 255, 255, 0.273);
+  color: white;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  animation: slideInUp 0.8s ease-out 0.5s forwards;
+  opacity: 0;
+  position: relative;
 }
-.box:hover{
-    transform: translateY(-5px);
-    background-color: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.2);
+.box:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .course-img {
-  width: 350px;
-  /* min-width: 320px; */
-  /* height: 100%; */
+  width: 100%;
+  height: 240px;
   background-color: pink;
   overflow: hidden;
-  border-radius: 20px 0 0 20px;
+  border-radius: 20px 20px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,107 +270,112 @@ nav a i{
 .course-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;   /* 🔥 THIS IS THE KEY */
+  object-fit: cover; /* 🔥 THIS IS THE KEY */
 }
 
-.course-content{
-    margin: 20px;
+.course-content {
+  margin: 10px 20px;
 }
 
-.course-title{
-    font-size: 30px;
-    margin: 20px 0;
+.course-title {
+  font-size: 22px;
+  margin: 5px 0;
 }
-.course-des{
-    font-size: 18px;
-    color: #dadada;
-    margin: 20px 0;
+.course-des {
+  font-size: 15px;
+  color: #dadada;
+  margin: 5px 0;
 }
-.course-price{
-    font-size: 22px;
-    color: #00ff0d;
-    margin: 20px 0;
+.course-price {
+  font-size: 18px;
+  color: #00ff0d;
+  margin: 5px 0;
 }
 
-.bookmark{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
+.bookmark {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
 }
 
 @media screen and (max-width: 1350px) {
-    .head-part {
-        position: relative;
-        height: auto;
-    }
+  .head-part {
+    position: relative;
+    height: auto;
+  }
 
-    header {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-    }
+  header {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+  }
 
-    header h1 {
-        margin-left: 0;
-        transform: none;
-        height: auto;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+  header h1 {
+    margin-left: 0;
+    transform: none;
+    height: auto;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-    nav {
-        margin-left: 0;
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
+  nav {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
 
-    .dropdown-menu {
-        position: relative;
-        top: 0;
-    }
+  .dropdown-menu {
+    position: relative;
+    top: 0;
+  }
 
-    .search-box {
-        position: relative;
-        top: 0;
-        margin: 20px auto;
-        width: 90%;
-        border-radius: 15px;
-    }
+  .search-box {
+    position: relative;
+    top: 0;
+    margin: 20px auto;
+    width: 90%;
+    border-radius: 15px;
+  }
 
-    #suggestions {
-        position: relative;
-        top: 0;
-        margin: 0 auto;
-        width: 90%;
-    }
+  #suggestions {
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    width: 90%;
+  }
 
-    .content {
-        margin-top: 20px;
-    }
+  .content {
+    margin-top: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+  }
 }
 
 @media screen and (max-width: 900px) {
-    .box {
-        flex-direction: column;
-        height: auto;
-    }
+  .content {
+    grid-template-columns: 1fr;
+  }
+  .box {
+    flex-direction: column;
+    height: auto;
+  }
 
-    .course-img {
-        width: 100%;
-        height: 250px;
-        border-radius: 20px 20px 0 0;
-    }
+  .course-img {
+    width: 100%;
+    height: 250px;
+    border-radius: 20px 20px 0 0;
+  }
 
-    .course-content {
-        text-align: center;
-        margin: 20px;
-    }
+  .course-content {
+    text-align: center;
+    margin: 20px;
+  }
 }

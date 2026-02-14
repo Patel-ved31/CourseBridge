@@ -314,8 +314,7 @@ nav .logout i{
     text-decoration: none;
     width: 15%;
     height: 100px;
-    /* background-color: rgba(170, 0, 255, 0.666); */
-    background: linear-gradient(135deg, #2563eb , #9333ea 60%);
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -328,7 +327,7 @@ nav .logout i{
     line-height: 30px;
     color: rgb(255, 255, 255);
     transition: all 0.3s ease;
-    border: 1px solid rgb(5, 0, 7);
+    border: 1px solid rgb(255, 255, 255);
     text-align: center;
     font-weight: 500;
     cursor: pointer;
@@ -338,7 +337,8 @@ nav .logout i{
 
 .box:hover{
     transform: scale(1.05);
-    background-color: whitesmoke;
+    background: linear-gradient(135deg, #2563eb , #9333ea 60%);
+    box-shadow: 0 0 30px blue;
 }
 
 .icons{
