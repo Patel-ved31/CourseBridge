@@ -20,7 +20,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  opacity: 0.5;
+  opacity: 0.1;
   z-index: -1;
 }
 .layer-blur {
@@ -29,15 +29,15 @@
   position: absolute;
   top: 20%;
   right: 0;
-  box-shadow: 0 0 700px 15px white;
+  box-shadow: 0 0 700px 15px rgba(0,0,0,0.1);
   rotate: -30deg;
   z-index: -1;
 }
 
 body {
   height: 100vh;
-  background: #000;
-  color: #fff;
+  background: #fff;
+  color: #333;
   overflow: hidden;
 }
 
@@ -72,7 +72,7 @@ header {
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: 50px;
@@ -116,12 +116,9 @@ header h1 {
   max-width: 700px; /* But have a max width */
   min-height: 650px; /* Use min-height instead of fixed height */
   padding: 4vw; /* Use viewport units for padding */
-  box-shadow: 0 0 15px white;
-  background: linear-gradient(
-    135deg,
-    rgba(124, 58, 237, 0.12),
-    rgba(0, 0, 0, 1)
-  );
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  background: #fff;
+  border: 1px solid #eee;
   animation: slideInUp 1s ease-out 0.5s forwards;
   opacity: 0;
 }
@@ -132,7 +129,7 @@ h1 {
 }
 
 .sub-text {
-  color: #aaa;
+  color: #666;
   margin-bottom: 30px;
 }
 
@@ -141,9 +138,9 @@ input {
   padding: 14px;
   margin-bottom: 12px;
   background: transparent;
-  border: 1px solid #333;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  color: #fff;
+  color: #333;
   font-size: 1rem;
 }
 
@@ -158,8 +155,8 @@ input {
   margin-bottom: 28px;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #444;
-  color: #fff;
+  border-bottom: 2px solid #ddd;
+  color: #333;
   font-size: 18px;
   transition: all 0.2s ease-in;
 }
@@ -204,7 +201,7 @@ span i {
 }
 
 .back:hover {
-  color: white;
+  color: #000;
 }
 
 .back i {
@@ -231,7 +228,7 @@ span i {
   width: 45px;
   height: 50px;
   border: none;
-  border: 2px solid #ffffffa2;
+  border: 2px solid #ddd;
 }
 
 input:focus {
@@ -283,7 +280,7 @@ button:hover {
 }
 
 .role-box div label {
-  color: #fff;
+  color: #333;
   cursor: pointer;
 }
 
@@ -294,8 +291,8 @@ button:hover {
   margin-bottom: 28px;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #444;
-  color: #fff;
+  border-bottom: 2px solid #ddd;
+  color: #333;
   font-size: 16px;
   transition: all 0.2s ease-in;
 }
@@ -357,22 +354,22 @@ button:hover {
 }
 
 .arrow {
-  color: #dadada;
+  color: #555;
   text-decoration: none;
   font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
 .arrow:hover {
-  color: white;
+  color: #000;
 }
 
 input[type="file"] {
   padding: 10px;
-  background: rgba(255, 255, 255, 0.112);
+  background: #f3f4f6;
   border-radius: 12px;
   width: 100%;
-  color: #cbd5e1;
+  color: #4b5563;
   margin: 20px 4px;
   font-size: 0.9rem;
 }

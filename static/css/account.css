@@ -12,12 +12,8 @@
 }
 
 body {
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.92),
-    rgba(2, 6, 23, 0.95)
-  );
-  color: #e5e7eb;
+  background: #f3f4f6;
+  color: #1f2937;
   height: 100vh;
 }
 
@@ -41,8 +37,8 @@ body {
 /* SIDEBAR */
 .sidebar {
   width: 300px;
-  background: rgba(2, 6, 23, 0.9);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -52,7 +48,7 @@ body {
 .logo {
   font-size: 2.4rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -67,7 +63,7 @@ body {
 .menu-item {
   padding: 14px 18px;
   background: transparent;
-  color: #cbd5f5;
+  color: #4b5563;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -76,7 +72,7 @@ body {
 }
 
 .menu-item:hover {
-  background: rgba(99, 102, 241, 0.15);
+  background: #f3f4f6;
 }
 
 .menu-item.active {
@@ -87,7 +83,7 @@ body {
 
 .exit {
   margin-top: auto;
-  color: #ffffff;
+  color: #4b5563;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -119,11 +115,12 @@ i {
 
 /* CARD */
 .card {
-  background: rgb(29, 44, 80);
+  background: #fff;
   border-radius: 18px;
   padding: 30px;
   margin-bottom: 30px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
   animation: fade 0.8s ease-out 0.4s forwards;
   opacity: 0;
 }
@@ -178,16 +175,17 @@ i {
 
 .box p {
   width: 180px;
-  color: #f2f5ff;
+  color: #4b5563;
   font-size: 1.5rem;
 }
 
 .field {
   flex: 1;
-  background: rgba(2, 6, 23, 0.9);
+  background: #f9fafb;
   padding: 14px 18px;
   border-radius: 10px;
   position: relative;
+  border: 1px solid #e5e7eb;
 }
 
 .field i {
@@ -196,17 +194,17 @@ i {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: white;
+  color: #6b7280;
 }
 
 /* FORMS */
 input {
   width: 100%;
   padding: 14px;
-  background: rgba(4, 10, 41, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
-  color: white;
+  color: #1f2937;
 }
 
 .new-username,
@@ -238,7 +236,7 @@ button.save {
 
 .delete-acc ul li {
   margin-bottom: 13px;
-  color: #cbd5f5;
+  color: #4b5563;
   font-size: 1.05rem;
 }
 

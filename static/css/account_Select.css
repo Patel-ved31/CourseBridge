@@ -1,5 +1,5 @@
 :root {
-  --bg-deep: #020612;
+  --bg-deep: #f8fafc;
   --jio-blue: #0084ff;
   --hotstar-pink: #ff007a;
   --ambient-purple: rgba(86, 22, 122, 0.25);
@@ -18,7 +18,7 @@ html {
   justify-content: center;
   overflow: hidden;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: white;
+  color: #1e293b;
   box-sizing: border-box;
 }
 
@@ -31,7 +31,7 @@ html {
   height: 100%;
   background: radial-gradient(
     circle at 50% 120%,
-    var(--ambient-purple) 0%,
+    rgba(86, 22, 122, 0.05) 0%,
     transparent 70%
   );
   opacity: 0;
@@ -48,8 +48,8 @@ html {
   height: 50%;
   background: radial-gradient(
     circle at center,
-    rgba(0, 132, 255, 0.3) 0%,
-    rgba(255, 0, 122, 0.2) 30%,
+    rgba(0, 132, 255, 0.1) 0%,
+    rgba(255, 0, 122, 0.1) 30%,
     transparent 70%
   );
   filter: blur(70px);
@@ -82,7 +82,7 @@ header {
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: 50px;
@@ -153,7 +153,7 @@ h1 {
 
 .profile-card:hover {
   transform: translateY(-12px);
-  color: white;
+  color: #000;
 }
 
 .avatar {
@@ -161,9 +161,9 @@ h1 {
   height: 110px;
   border-radius: 50%;
   margin-bottom: 18px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,7 +172,7 @@ h1 {
 }
 
 .avatar:hover {
-  box-shadow: 0 0 20px white;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
 
@@ -185,7 +185,7 @@ h1 {
 
 .avatar.add {
   font-size: 2.5rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: #cbd5e1;
 }
 
 .name {
@@ -193,7 +193,7 @@ h1 {
   opacity: 0.6;
   font-weight: 500;
   letter-spacing: 0.5px;
-  color:white ;
+  color: #334155;
 }
 
 
@@ -208,7 +208,7 @@ h1 {
 }
 
 .arrow{
-  color: #dadada;
+  color: #64748b;
   text-decoration: none;
   font-size: 1rem;
   cursor: pointer;
@@ -216,7 +216,7 @@ h1 {
 }
 
 .arrow:hover {
-  color: white;
+  color: #0f172a;
 }
 
 @media (max-width: 768px) {

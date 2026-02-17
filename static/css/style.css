@@ -5,8 +5,8 @@
 }
 body{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: black;
-    color: #e7e7e7;
+    background-color: #fff;
+    color: #333;
     min-height: 100vh;
     line-height: 1.5;
 }
@@ -24,7 +24,7 @@ body{
     position: absolute;
     top: 20%;
     right: 0;
-    box-shadow: 0 0 700px 15px white;
+    box-shadow: 0 0 700px 15px rgba(0,0,0,0.1);
     rotate: -30deg;
     z-index: -1;
 }
@@ -58,7 +58,7 @@ header{
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: -50px;
@@ -77,15 +77,16 @@ nav a{
     transition: color 0.2s ease;
     text-decoration: none;
     color: inherit;
+    color: #111;
 }
 
 nav a:hover{
-    color: #a7a7a7;
+    color: #666;
 }
 
 .btn-signUp{
-    background-color: #a7a7a7;
-    color: black;
+    background-color: #1f2937;
+    color: #fff;
     padding: .8rem 2rem;
     border-radius: 50px;
     border: none;
@@ -96,7 +97,7 @@ nav a:hover{
     cursor: pointer;
 }
 .btn-signUp:hover{
-    background-color: white;
+    background-color: #374151;
 }
 
 /* main */
@@ -140,7 +141,7 @@ main{
 .tag-box .tag{
     position: absolute;
     inset: 3px 3px 3px 3px;
-    background-color: black;
+    background-color: #fff;
     border-radius: 50px;
     display: flex;
     justify-content: center;
@@ -158,7 +159,8 @@ main{
     font-weight: 600;
     letter-spacing: 0.1em;
     margin: 2rem 0;
-    text-shadow: 0 0 10px rgba(128, 128, 128, 0.614);
+    text-shadow: none;
+    color: #111;
 }
 
 .description{
@@ -166,22 +168,23 @@ main{
     letter-spacing: 0.05em;
     margin-bottom: 8%;
     max-width: 35rem;
-    color: gray;
+    color: #666;
 }
 
 .btn-signIn{
     text-decoration: none;
-    background-color: lightgray;
-    color: black;
+    background-color: #272525;
+    color: #ffffff;
     padding: 0.6rem 2.5rem;
     border-radius: 50px;
     font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     transition: background-color 0.2s ease;
+    border: 1px solid #ddd;
 }
 .btn-signIn:hover{
-    background-color: gray;
+    background-color: #8a8b8d;
 }
 
 .design-3d{

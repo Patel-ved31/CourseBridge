@@ -23,7 +23,7 @@
     
     
   </head>
-  <body style="background-color: black;">
+  <body>
     <div class="user-name" data-value="{{ name }}"></div>
     <div class="user-id" data-value="{{ id }}"></div>
     <div class="user-role" data-value="{{ role }}"></div>
@@ -57,7 +57,7 @@
               </button>
               <ul class="dropdown-menu  ">
                 {% for Subscription in subscriptions %}
-                <li><button class="dropdown-item text-light fs-5 p-2" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
+                <li><button class="dropdown-item text-dark fs-5 p-2" onclick="goToFullPage(this)" type="button" data-value="{{ Subscription[1] }}"> {{ Subscription[0] }}</button></li>
                 {% endfor %}
               </ul>
             </div>

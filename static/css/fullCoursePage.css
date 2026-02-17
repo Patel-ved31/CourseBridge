@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 body{
-    background-color: #000;
+    background-color: #f9fafb;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     width: 100vw;
     height: 100vh;
@@ -39,13 +39,13 @@ body{
     top: 0;
     width: 100%;
     height: 100px;
-    background-color: #000000;
+    background-color: #f9fafb;
     z-index: 999;
 }
 header{
     padding: 1rem 5rem;
     z-index: 999;
-    color: #dadada;
+    color: #333;
     height: 100px;
     display: flex;
     justify-content: space-between;
@@ -57,7 +57,7 @@ header{
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: -50px;
@@ -80,7 +80,7 @@ nav a{
 }
 
 nav a:hover{
-    color: #a7a7a7;
+    color: #666;
 }
 
 
@@ -103,21 +103,23 @@ nav a i{
 
 .search{
     width: 90%;
+    margin-left: 50px;
 }
 
 .search-box {
   display: flex;
   align-items: center;
-  background: #111;
-  border: 1px solid #333;
+  background: #fff;
+  border: 1px solid #ddd;
   padding: 10px 16px;
   width :45%;
   margin-left: 40px;
   border-radius: 15px 15px 0 0;
-  background-color: #262626;
+  background-color: #ffffff;
   position: fixed;
   top: 30px;
   height: 50px;
+  border: 2px solid #a855f7;
 }
 
 .search-icon {
@@ -130,7 +132,7 @@ nav a i{
   background: transparent;
   border: none;
   outline: none;
-  color: #fff;
+  color: #333;
   width: 90%;
   font-size: 20px;
   height: 30px;
@@ -147,17 +149,13 @@ nav a i{
     color: black;
     margin-left: 40px;
     width: 45%;
-    background-color: #2e2d2d;
+    background-color: #ffffff;
     filter: blur(3);
-    color: white;
+    color: #333;
     max-height: 550px;
     overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-
-/* .search:has(#suggestions:hover) .search-box {
-    border-radius: 15px 15px 0 0;
-} */
-
 
 #suggestions div{
     padding: 8px;
@@ -171,13 +169,13 @@ nav a i{
 
 #suggestions div:hover{
     /* background-color: #f0f0f0; */
-    background-color: #5b5959;
+    background-color: #f3f4f6;
 }
 .course{
     margin-top: 120px;
     padding: 20px;
     border-radius: 10px;
-    color: white;
+    color: #1f2937;
 }
 .course-img{
     width: 50%;
@@ -194,7 +192,7 @@ nav a i{
     height: 100%;
     border-radius: 10px;
     object-fit: cover;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     position: relative;
     top: 0px;
     left: 0px;
@@ -234,8 +232,8 @@ nav a i{
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: rgb(0, 0, 0);
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  border: 2px solid #e5e7eb;
 }
 
 .photo img{
@@ -243,8 +241,8 @@ nav a i{
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid rgb(0, 0, 0);
-  background-color: rgb(0, 0, 0);
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
   position: relative;
   top: 0;
   left: 0;
@@ -254,11 +252,11 @@ nav a i{
 .user-name{
     font-size: 1.5rem;
     font-weight: 600;
-    color: #dadadab5;
+    color: #4b5563;
 }
 
 .user-name:hover{
-    color: white;
+    color: #000;
 }
 
 .already-sub , .not-sub{
@@ -269,17 +267,17 @@ nav a i{
     padding: 10px 20px;
     border-radius: 15px;
     cursor: pointer;
-    background-color: #dadada;
+    background-color: #f3f4f6;
     /* transition: all 0.3s ease-in; */
-    border: 2px solid white;
-    color: black;
+    border: 2px solid #333;
+    color: #333;
 }
 
 
 .already-sub{
     background-color: transparent;
-    color: white;
-    border: 2px solid white;
+    color: #333;
+    border: 2px solid #333;
 }
 
 .buttons{
@@ -303,8 +301,10 @@ nav a i{
 .price-box{
     width: 140px;
     text-align: center;
-    background-color: #222;
-    color: #1eff00;
+    background-color: #fff;
+    color: #16a34a;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .enroll-btn{
@@ -319,22 +319,24 @@ nav a i{
 
 .bookmark{
     width: 200px;
-    background-color: #222;
-    color: #dadada;
+    background-color: #fff;
+    color: #333;
     display: flex;
     gap: 20px;
     font-size: 1.25rem;
     cursor: pointer;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 hr{
     margin: 30px -10px 10px -10px;
-    border: 0.5px solid #52525273;
+    border: 0.5px solid #e5e7eb;
 }
 
 .course-desc{
     font-size: 1.2rem;
     line-height: 1.6;
-    color: #cccccc;
+    color: #4b5563;
 }
 
 .course-desc h3{
@@ -344,11 +346,11 @@ hr{
 
 .course-desc p{
     margin-bottom: 15px;
-    color: #a5a5a5;
+    color: #6b7280;
 }
 
 .already-reviewed{
-    border: 1px solid #dadada81;
+    border: 1px solid #e5e7eb;
     height: auto;
     width: 100%;
 }
@@ -358,13 +360,15 @@ hr{
     aspect-ratio: 1;
     border-radius: 50%;
     margin-right: 20px;
-    border: 1px solid #ffffff;
+    border: 1px solid #e5e7eb;
 }
 .review-container{
     margin-top: 20px;
     padding: 20px;
     border-radius: 10px;
-    background-color: #121212;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -376,7 +380,7 @@ hr{
 .reviewer-name{
     font-size: 1.2rem;
     font-weight: 600;
-    color: #dadada;
+    color: #333;
     display: flex;
     gap: 30px;
 }
@@ -389,7 +393,7 @@ hr{
 
 .review-text{
     font-size: 1rem;
-    color: #c4c4c4;
+    color: #4b5563;
 }
 
 .review-rating i{
@@ -399,7 +403,7 @@ hr{
 
 .review-text p{
     font-size: 1.1rem;
-    color: #a5a5a5;
+    color: #6b7280;
     font-weight: 500;
 }
 
@@ -430,8 +434,8 @@ textarea {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #555;   /* only bottom border */
-  color: white;
+  border-bottom: 2px solid #ddd;   /* only bottom border */
+  color: #333;
   padding: 10px 5px;
   font-size: 16px;
   resize: none;
@@ -443,7 +447,7 @@ textarea:focus {
 }
 
 textarea {
-  border-bottom: 2px solid #555;
+  border-bottom: 2px solid #ddd;
   transition: border-color 0.3s ease;
 }
 

@@ -11,12 +11,8 @@
 }
 
 body {
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.92),
-    rgba(2, 6, 23, 0.95)
-  );
-  color: #e5e7eb;
+  background: #f3f4f6;
+  color: #1f2937;
   height: 100vh;
   font-size: 1.1rem;
 }
@@ -29,9 +25,8 @@ body {
 /* SIDEBAR */
 .sidebar {
   width: 310px;
-  background: rgba(2, 6, 23, 0.85);
-  backdrop-filter: blur(14px);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -40,7 +35,7 @@ body {
 .logo {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
@@ -54,7 +49,7 @@ body {
 
 .menu-item {
   background: transparent;
-  color: #dcdcdc;
+  color: #4b5563;
   border: none;
   text-align: left;
   padding: 14px 16px;
@@ -65,7 +60,7 @@ body {
 }
 
 .menu-item:hover {
-  background: rgba(99, 102, 241, 0.15);
+  background: #f3f4f6;
 }
 
 .menu-item.active {
@@ -81,7 +76,7 @@ body {
   left: 30%;
   cursor: pointer;
   text-decoration: none;
-  color: #e0e7ff;
+  color: #4b5563;
   font-size: 1.5rem;
 }
 .exit span {
@@ -105,17 +100,17 @@ body {
 }
 
 .card {
-  background: rgb(29, 44, 80);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .card h3 {
   margin-bottom: 20px;
-  color: #ffffff;
+  color: #1f2937;
   font-size: 1.7rem;
 }
 
@@ -125,7 +120,7 @@ body {
 
 .card li {
   margin-bottom: 8px;
-  color: #cbd5f5;
+  color: #4b5563;
 }
 
 .team-column {
@@ -139,11 +134,11 @@ body {
   display: flex;
   width: 100%;
   height: 250px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -194,7 +189,7 @@ body {
 .team-photo {
   /* width: 20%; */
   min-width: 250px;
-  background: #020617;
+  background: #f1f5f9;
 }
 
 .team-photo img {
@@ -214,20 +209,20 @@ body {
 
 .team-details h3 {
   font-size: 1.7rem;
-  color: #e0e7ff;
+  color: #1f2937;
   margin-bottom: 12px;
   transform: translateY(-20px);
 }
 
 .team-details .role {
   font-size: 1.2rem;
-  color: #a5b4fc;
+  color: #4f46e5;
   margin-bottom: 12px;
   transform: translateY(-10px);
 }
 
 .team-details .bio {
   font-size: 0.95rem;
-  color: #cbd5f5;
+  color: #4b5563;
   line-height: 1.6;
 }

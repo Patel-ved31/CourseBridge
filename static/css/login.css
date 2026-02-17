@@ -19,8 +19,8 @@
 /* ---------------- BACKGROUND EFFECTS ---------------- */
 body {
   height: 100vh;
-  background: #000;
-  color: #fff;
+  background: #fff;
+  color: #333;
   overflow: hidden;
 }
 
@@ -28,7 +28,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  opacity: 0.5;
+  opacity: 0.1;
   z-index: -1;
 }
 
@@ -38,7 +38,7 @@ body {
   position: absolute;
   top: 20%;
   right: 0;
-  box-shadow: 0 0 700px 15px white;
+  box-shadow: 0 0 700px 15px rgba(0,0,0,0.1);
   rotate: -30deg;
   z-index: -1;
 }
@@ -87,7 +87,7 @@ header {
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  background: linear-gradient(to right, #111, #555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: 50px;
@@ -104,14 +104,14 @@ header h1 {
 }
 
 .arrow {
-  color: #dadada;
+  color: #555;
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.3s ease;
 }
 
 .arrow:hover {
-  color: white;
+  color: #000;
 }
 
 /* ---------------- MAIN CONTAINER ---------------- */
@@ -138,12 +138,9 @@ header h1 {
   top: 15%;
   padding: 80px;
   border-radius: 50px;
-  background: linear-gradient(
-    135deg,
-    rgba(90, 44, 160, 0.1),
-    rgba(0, 0, 0, 0.95)
-  );
-  box-shadow: 0 0 40px #5a2ca0;
+  background: #fff;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  border: 1px solid #eee;
   animation: slideInUp 1s ease-out 0.5s forwards;
   opacity: 0;
 }
@@ -154,7 +151,7 @@ header h1 {
 }
 
 .sub-text {
-  color: #aaa;
+  color: #666;
   margin-bottom: 40px;
 }
 
@@ -170,15 +167,15 @@ input[type="password"] {
   margin-bottom: 28px;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #444;
-  color: #fff;
+  border-bottom: 2px solid #ddd;
+  color: #333;
   font-size: 18px;
   transition: all 0.3s ease-in;
   border-radius: 10px;
 }
 
 input::placeholder {
-  color: #888;
+  color: #999;
 }
 
 input:focus {
@@ -221,7 +218,7 @@ button:hover {
 }
 
 .switch a {
-  color: #a855f7;
+  color: #7c3aed;
   text-decoration: none;
 }
 
@@ -294,10 +291,10 @@ button:hover {
 
 input[type="file"] {
   padding: 10px;
-  background: rgba(255, 255, 255, 0.112);
+  background: #f3f4f6;
   border-radius: 12px;
   width: 100%;
-  color: #cbd5e1;
+  color: #4b5563;
   margin: 20px 4px;
   font-size: 0.9rem;
 }
