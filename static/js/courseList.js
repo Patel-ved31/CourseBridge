@@ -113,6 +113,12 @@ document.querySelectorAll(".box").forEach( box => {
     } );
 });
 
+function removeSugg(){
+  suggestionsBox.innerHTML = "";
+  suggestionsBox.style.border = "0";
+}
+
+
 function goToFullPage(x){
     window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }

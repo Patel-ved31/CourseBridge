@@ -24,18 +24,30 @@
               <span class="search-icon">
                 <i class="bi bi-search"></i>
               </span>
-              <input type="text" id="search" placeholder="Search course" />
+              <input
+                type="text"
+                id="search"
+                onblur="removeSugg()"
+                placeholder="Search course"
+              />
             </div>
 
             <div id="suggestions"></div>
           </div>
 
           <nav>
-            <a href="{{ url_for('views.FirstPage') }}" class="logout">
-              <i class="bi bi-box-arrow-right"> </i>
-              <p>logout</p>
-            </a>
+            {% if already_reported %}
+            <button type="button" class="report-btn" disabled>
+              <i class="bi bi-check-circle-fill"></i> Reported
+            </button>
+            {% else %}
+            <button type="button" onclick="displayReportModal()" class="report-btn">
+              <i class="bi bi-flag-fill"></i> Report
+            </button>
+            {% endif %}
           </nav>
+ 
+          
         </header>
       </div>
 
@@ -122,7 +134,11 @@
               <p>Bookmark</p>
             </button>
             {% endif %}
+
+            
           </div>
+
+          
         </div>
 
         <hr />
@@ -133,7 +149,7 @@
         </div>
 
         <hr />
-        
+
         <div class="review" data-value="{{ course_id }}">
           <h1>Reviews</h1>
           {% if not already_review %}
@@ -214,6 +230,28 @@
         </div>
       </div>
     </div>
+
+    <div id="reportModal" class="modal-overlay" style="display: none;">
+            <div class="modal-box">
+                <h2>Report Course</h2>
+                <p>Select reasons for reporting this course:</p>
+                <div class="report-grid">
+                    <div class="report-opt" data-value="Copyright" onclick="addOpt(this)">Copyright</div>
+                    <div class="report-opt" data-value="Fake Link" onclick="addOpt(this)">Fake Link</div>
+                    <div class="report-opt" data-value="Spam" onclick="addOpt(this)">Spam</div>
+                    <div class="report-opt" data-value="Harassment" onclick="addOpt(this)">Harassment</div>
+                    <div class="report-opt" data-value="Misleading" onclick="addOpt(this)">Misleading</div>
+                    <div class="report-opt" data-value="Poor Quality" onclick="addOpt(this)">Poor Quality</div>
+                    <div class="report-opt" data-value="Inappropriate" onclick="addOpt(this)">Inappropriate</div>
+                    <div class="report-opt" data-value="Other" onclick="addOpt(this)">Other</div>
+                </div>
+                <textarea id="reportDesc" placeholder="Please describe why you are reporting this course..." rows="4"></textarea>
+                <div class="modal-actions">
+                    <button onclick="cancleReport()" id="cancelReport">Cancel</button>
+                    <button id="sendReport" onclick="sendReport()">Send Report</button>
+                </div>
+            </div>
+        </div>
 
     <script src="{{ url_for('static', filename='js/fullCoursePage.js') }}"></script>
   </body>

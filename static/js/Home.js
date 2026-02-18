@@ -123,4 +123,86 @@ function logout(){
   window.location.href = `/`;
 }
 
+function removeSugg(){
+  suggestionsBox.innerHTML = "";
+  suggestionsBox.style.border = "0";
+}
 
+// ---------- NOTIFICATIONS (Navbar) ----------
+document.addEventListener("DOMContentLoaded", () => {
+    const nav = document.querySelector("nav");
+    if (nav) {
+        const notifBtn = document.createElement("div");
+        notifBtn.className = "notif-wrapper";
+        notifBtn.innerHTML = `
+            <i class="bi bi-bell-fill notif-icon"></i>
+            <span class="notif-badge" style="display:none"></span>
+            <div class="notif-dropdown">
+                <div class="notif-header">Notifications <span id="markRead">Mark all read</span></div>
+                <div class="notif-list"></div>
+            </div>
+        `;
+        // Insert before logout
+        const logout = nav.querySelector(".logout");
+        if (logout) nav.insertBefore(notifBtn, logout);
+        else nav.appendChild(notifBtn);
+
+        const badge = notifBtn.querySelector(".notif-badge");
+        const list = notifBtn.querySelector(".notif-list");
+        const dropdown = notifBtn.querySelector(".notif-dropdown");
+        const markReadBtn = notifBtn.querySelector("#markRead");
+
+        // Toggle Dropdown
+        notifBtn.querySelector(".notif-icon").addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        // Fetch Notifications
+        function fetchNotifs() {
+            fetch("/notifications")
+            .then(res => res.json())
+            .then(data => {
+                list.innerHTML = "";
+                const unreadCount = data.filter(n => !n.is_read).length;
+                
+                if (unreadCount > 0) {
+                    badge.style.display = "block";
+                    badge.innerText = unreadCount;
+                } else {
+                    badge.style.display = "none";
+                }
+
+                if (data.length === 0) {
+                    list.innerHTML = "<div class='no-notif'>No notifications</div>";
+                } else {
+                    data.forEach(n => {
+                        const item = document.createElement("div");
+                        item.className = `notif-item ${n.is_read ? 'read' : 'unread'}`;
+                        item.innerText = n.message;
+                        list.appendChild(item);
+                    });
+                }
+            });
+        }
+
+        // Mark Read
+        markReadBtn.addEventListener("click", () => {
+            fetch("/mark-read", { method: "POST" })
+            .then(() => {
+                fetchNotifs();
+            });
+        });
+
+        // Initial Fetch
+        fetchNotifs();
+        // Poll every 30 seconds
+        setInterval(fetchNotifs, 30000);
+
+        // Close dropdown on click outside
+        document.addEventListener("click", () => {
+            dropdown.style.display = "none";
+        });
+        dropdown.addEventListener("click", (e) => e.stopPropagation());
+    }
+});

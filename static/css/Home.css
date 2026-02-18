@@ -521,3 +521,69 @@ nav .logout i {
     font-size: 1.3rem;
   }
 }
+
+/* ---------- NOTIFICATIONS ---------- */
+.notif-wrapper {
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.notif-icon {
+    font-size: 1.5rem;
+    color: #6b7280;
+}
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+.notif-dropdown {
+    position: absolute;
+    top: 40px;
+    right: -50px;
+    width: 300px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    display: none;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    z-index: 2000;
+}
+.notif-header {
+    padding: 10px 15px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+#markRead {
+    color: #3b82f6;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+.notif-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.notif-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.9rem;
+    color: #374151;
+}
+.notif-item.unread {
+    background: #eff6ff;
+}
+.no-notif {
+    padding: 20px;
+    text-align: center;
+    color: #9ca3af;
+}

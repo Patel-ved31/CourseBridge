@@ -38,6 +38,7 @@
                 autocorrect="off"
                 autocapitalize="off"
                 spellcheck="false"
+                onblur="removeSugg()"
               />
             </div>
 
@@ -74,10 +75,7 @@
                 {% endfor %}
               </ul>
             </div>
-            <a href="{{ url_for('views.FirstPage') }}" class="logout">
-              <i class="bi bi-box-arrow-right"> </i>
-              <p>logout</p>
-            </a>
+            
           </nav>
         </header>
       </div>

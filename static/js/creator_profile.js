@@ -141,3 +141,29 @@ function goToHome(){
 function goToFullPage(x){
     window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }
+
+// Add Cancel Button to Form
+const addCourseForm = document.getElementById("addCourseForm");
+if (addCourseForm) {
+    const cancelBtn = document.createElement("button");
+    cancelBtn.innerText = "Cancel";
+    cancelBtn.type = "button";
+    cancelBtn.classList.add("cancel-btn");
+
+    const submitBtn = addCourseForm.querySelector(".submit-btn");
+    if (submitBtn) {
+        const btnContainer = document.createElement("div");
+        btnContainer.classList.add("btn-container");
+        submitBtn.parentNode.insertBefore(btnContainer, submitBtn);
+        btnContainer.appendChild(submitBtn);
+        btnContainer.appendChild(cancelBtn);
+    } else {
+        addCourseForm.appendChild(cancelBtn);
+    }
+
+    cancelBtn.addEventListener("click", () => {
+        document.querySelector(".main-section").style.display = "block";
+        document.querySelector(".add-course").style.display = "none";
+        addCourseForm.reset();
+    });
+}

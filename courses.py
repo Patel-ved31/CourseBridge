@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, render_template, session
 import os
 from werkzeug.utils import secure_filename
 from db import get_db
-from utils import UPLOAD_FOLDER, allowed_file
+from utils import UPLOAD_FOLDER, UPLOAD_FOLDER_PROFILE, allowed_file
 
 courses_bp = Blueprint('courses', __name__)
 
@@ -199,6 +199,10 @@ def full_course():
 
     is_bookmarked = True if cursor.fetchone() else False
 
+    # Check if user has already reported this course
+    cursor.execute("SELECT id FROM reports WHERE user_id = %s AND course_id = %s", (session.get("id"), course_id))
+    already_reported = True if cursor.fetchone() else False
+
     cursor.execute("""SELECT t1.username , t2.rating , t2.comment , t1.profile_pic 
                    FROM review as t2 INNER JOIN users as t1 
                    on t1.id = t2.user_id WHERE t2.course_id = %s AND t1.id = %s""", 
@@ -219,8 +223,7 @@ def full_course():
     
     reviews = cursor.fetchall()
     conn.close()
-
-    return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), user_photo=user_photo, already_subscription = already_sub)
+    return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), user_photo=user_photo, already_subscription = already_sub, already_reported=already_reported)
 
 # fo to course by that creator
 @courses_bp.route("/creatorCourse")
@@ -245,3 +248,208 @@ def creator_course():
     conn.close()
     
     return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
+
+# ---------- REPORTING SYSTEM ----------
+@courses_bp.route("/report-course", methods=["POST"])
+def report_course():
+    data = request.json
+    course_id = data.get("course_id")
+    categories = data.get("categories") # List
+    description = data.get("description")
+
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Check if user has already reported this course
+    cursor.execute("SELECT id FROM reports WHERE user_id = %s AND course_id = %s", (session["id"], course_id))
+    if cursor.fetchone():
+        conn.close()
+        return jsonify({"message": "You have already reported this course."}), 409
+
+    # Ensure tables exist (for this implementation)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS reports (
+        id SERIAL PRIMARY KEY, user_id INTEGER, course_id INTEGER, 
+        categories TEXT, description TEXT, status TEXT DEFAULT 'pending', 
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS notifications (
+        id SERIAL PRIMARY KEY, user_id INTEGER, message TEXT, 
+        is_read BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
+
+    cursor.execute("INSERT INTO reports (user_id, course_id, categories, description) VALUES (%s, %s, %s, %s)",
+                   (session["id"], course_id, ",".join(categories), description))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Report submitted successfully"})
+
+# ---------- ADMIN DASHBOARD ----------
+@courses_bp.route("/admin")
+def admin_page():
+    # In production, verify admin role here
+    return render_template("admin.html")
+
+@courses_bp.route("/admin/data")
+def admin_data():
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Fetch Reports
+    cursor.execute("""SELECT r.id, r.categories, r.description, r.status, u.username, c.title, c.id, c.creator_id, c.course_link 
+                      FROM reports r JOIN users u ON r.user_id = u.id JOIN courses c ON r.course_id = c.id 
+                      WHERE r.status = 'pending' ORDER BY r.created_at DESC""")
+    reports = cursor.fetchall()
+    
+    # Fetch Users
+    cursor.execute("SELECT id, username, email, role FROM users")
+    users = cursor.fetchall()
+    
+    # Fetch Courses
+    cursor.execute("SELECT c.id, c.title, u.username FROM courses c JOIN users u ON c.creator_id = u.id")
+    courses = cursor.fetchall()
+    conn.close()
+
+    return jsonify({
+        "reports": [{"id": r[0], "categories": r[1], "description": r[2], "status": r[3], "reporter": r[4], "course_title": r[5], "course_id": r[6], "creator_id": r[7], "link": r[8]} for r in reports],
+        "users": [{"id": u[0], "username": u[1], "email": u[2], "role": u[3]} for u in users],
+        "courses": [{"id": c[0], "title": c[1], "creator": c[2]} for c in courses]
+    })
+
+@courses_bp.route("/admin/action", methods=["POST"])
+def admin_action():
+    data = request.json
+    action = data.get("action")
+    report_id = data.get("report_id")
+    course_id = data.get("course_id")
+    creator_id = data.get("creator_id")
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    if action == "delete_course":
+        cursor.execute("DELETE FROM courses WHERE id = %s", (course_id,))
+        cursor.execute("DELETE FROM reports WHERE course_id = %s", (course_id,))
+        cursor.execute("UPDATE reports SET status = 'resolved' WHERE id = %s", (report_id,))
+    elif action == "delete_creator":
+        cursor.execute("DELETE FROM users WHERE id = %s", (creator_id,))
+        cursor.execute("DELETE FROM courses WHERE creator_id = %s", (creator_id,))
+        cursor.execute("UPDATE reports SET status = 'resolved' WHERE id = %s", (report_id,))
+    elif action == "ignore":
+        cursor.execute("UPDATE reports SET status = 'resolved' WHERE id = %s", (report_id,))
+
+    # Notify Reporter
+    cursor.execute("SELECT user_id FROM reports WHERE id = %s", (report_id,))
+    res = cursor.fetchone()
+    if res:
+        cursor.execute("INSERT INTO notifications (user_id, message) VALUES (%s, %s)", (res[0], f"Your report for course ID {course_id} has been reviewed."))
+    
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Action taken"})
+
+# ---------- NOTIFICATIONS ----------
+@courses_bp.route("/notifications")
+def get_notifications():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, message, is_read FROM notifications WHERE user_id = %s ORDER BY created_at DESC", (session["id"],))
+    data = cursor.fetchall()
+    conn.close()
+    return jsonify([{"id": n[0], "message": n[1], "is_read": n[2]} for n in data])
+
+@courses_bp.route("/mark-read", methods=["POST"])
+def mark_read():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE notifications SET is_read = TRUE WHERE user_id = %s", (session["id"],))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True})
+
+@courses_bp.route("/admin/delete_course", methods=["POST"])
+def admin_delete_course():
+    # In a real app, you'd verify admin role here
+    data = request.json
+    course_id = data.get("course_id")
+    if not course_id:
+        return jsonify({"message": "Course ID is required"}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    try:
+        # Delete thumbnail file
+        thumbnail_filename = f"{course_id}.png"
+        thumbnail_path = os.path.join(UPLOAD_FOLDER, thumbnail_filename)
+        if os.path.exists(thumbnail_path):
+            os.remove(thumbnail_path)
+
+        # Delete from DB
+        cursor.execute("DELETE FROM reports WHERE course_id = %s", (course_id,))
+        cursor.execute("DELETE FROM review WHERE course_id = %s", (course_id,))
+        cursor.execute("DELETE FROM bookmarks WHERE course_id = %s", (course_id,))
+        cursor.execute("DELETE FROM courses WHERE id = %s", (course_id,))
+        
+        conn.commit()
+        return jsonify({"message": f"Course {course_id} and related data deleted."})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"message": f"An error occurred: {e}"}), 500
+    finally:
+        conn.close()
+
+@courses_bp.route("/admin/delete_user", methods=["POST"])
+def admin_delete_user():
+    # In a real app, you'd verify admin role here
+    data = request.json
+    user_id = data.get("user_id")
+    if not user_id:
+        return jsonify({"message": "User ID is required"}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    try:
+        # 1. Delete user's profile picture
+        profile_pic_filename = f"{user_id}.png"
+        profile_pic_path = os.path.join(UPLOAD_FOLDER_PROFILE, profile_pic_filename)
+        if os.path.exists(profile_pic_path):
+            os.remove(profile_pic_path)
+
+        # 2. Get all courses created by the user to delete their thumbnails
+        cursor.execute("SELECT id FROM courses WHERE creator_id = %s", (user_id,))
+        courses_to_delete = cursor.fetchall()
+        for course_row in courses_to_delete:
+            course_id_to_delete = course_row[0]
+            thumbnail_filename = f"{course_id_to_delete}.png"
+            thumbnail_path = os.path.join(UPLOAD_FOLDER, thumbnail_filename)
+            if os.path.exists(thumbnail_path):
+                os.remove(thumbnail_path)
+
+        # 3. Delete records referencing the user's courses
+        cursor.execute("DELETE FROM reports WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
+        cursor.execute("DELETE FROM review WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
+        cursor.execute("DELETE FROM bookmarks WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
+
+        # 4. Delete records referencing the user directly
+        cursor.execute("DELETE FROM reports WHERE user_id = %s", (user_id,))
+        cursor.execute("DELETE FROM review WHERE user_id = %s", (user_id,))
+        cursor.execute("DELETE FROM bookmarks WHERE user_id = %s", (user_id,))
+        cursor.execute("DELETE FROM subscription WHERE user_id = %s OR creator_id = %s", (user_id, user_id))
+        
+        # 5. Delete the user's courses
+        cursor.execute("DELETE FROM courses WHERE creator_id = %s", (user_id,))
+        
+        # 6. Finally, delete the user
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+
+        cursor.execute("DELETE FROM notifications WHERE user_id = %s", (user_id,))
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+        
+        cursor.execute("DELETE FROM courses WHERE creator_id = %s", (user_id,))
+
+        cursor.execute("INSERT INTO deletedUser (user_id) VALUES (%s)", (user_id,))
+        
+        conn.commit()
+        return jsonify({"message": f"User {user_id} and all related data deleted."})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"message": f"An error occurred: {e}"}), 500
+    finally:
+        conn.close()

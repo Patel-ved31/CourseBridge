@@ -31,6 +31,15 @@ def set_details() :
     role = request.json["role"]
     profile_pic = request.json["profile_pic"]
 
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM deletedUser WHERE user_id = %s", (id,))
+    if cursor.fetchone():
+        return jsonify( {"success" : False , "message" : "This account has been deleted by admin due to some reasons"} )
+    
+    conn.close()
+
     session["username"] = name
     session["id"] = id
     session["role"] = role

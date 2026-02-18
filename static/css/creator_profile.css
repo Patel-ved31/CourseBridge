@@ -471,10 +471,15 @@ input[type="file"]::file-selector-button {
   margin-right: 15px;
   cursor: pointer;
 }
-.submit-btn {
-  width: 100%;
-  padding: 16px;
+.btn-container {
+  display: flex;
+  gap: 15px;
   margin-top: 10px;
+}
+.submit-btn {
+  flex: 1;
+  padding: 16px;
+  margin-top: 0;
   background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: #fff;
   border: none;
@@ -487,6 +492,25 @@ input[type="file"]::file-selector-button {
 .submit-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 16px;
+  margin-top: 0;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cancel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
 }
 
 @media screen and (max-width: 1024px) {

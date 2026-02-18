@@ -238,7 +238,8 @@ nav a i {
 }
 .box {
   width: 100%;
-  background-color: #ffffff;
+  /* background-color: #d9d9d9; */
+  background-color: rgba(217, 253, 255, 0.292);
   height: auto;
   display: flex;
   flex-direction: column;
@@ -262,32 +263,36 @@ nav a i {
 
 .course-img {
   width: 100%;
-  height: 240px;
-  background-color: pink;
+  height: 250px;
+  background-color: transparent;
   overflow: hidden;
   border-radius: 20px 20px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 13px;
 }
 
 .course-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 🔥 THIS IS THE KEY */
+  aspect-ratio: 1/1;
+  border-radius: 20px 20px 0 0;
 }
 
 .course-content {
-  margin: 10px 20px;
+  margin: 7px 20px 10px 20px;
 }
 
 .course-title {
   font-size: 22px;
   margin: 5px 0;
+  color: black;
+  font-weight: 600;
 }
 .course-des {
   font-size: 15px;
-  color: #666;
+  color: #3a3a3a;
   margin: 5px 0;
 }
 .course-price {

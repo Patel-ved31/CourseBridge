@@ -59,6 +59,8 @@ profile.forEach(profile => {
                 localStorage.setItem("currAcc" , x)
                 window.location.href = "/Home";
             }else{
+                alert(data.message)
+                return;
             }
         });
         });
