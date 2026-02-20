@@ -17,9 +17,8 @@ searchInput.addEventListener("keyup", (e) => {
     return;
   }
 
-  if(e.key === "Enter" ){
-    window.location.href =
-      `/courseList?course=${encodeURIComponent(value)}`;
+  if (e.key === "Enter") {
+    window.location.href = `/courseList?course=${encodeURIComponent(value)}`;
   }
 
   // send typed text to flask
@@ -32,7 +31,6 @@ searchInput.addEventListener("keyup", (e) => {
       // clear old results
       suggestionsBox.innerHTML = "";
 
-
       // loop through each result
       data.forEach((item) => {
         // create new div
@@ -43,8 +41,7 @@ searchInput.addEventListener("keyup", (e) => {
 
         // when user clicks suggestion
         div.onclick = () => {
-          searchInput.value = item;
-          suggestionsBox.innerHTML = "";
+          window.location.href = `/courseList?course=${encodeURIComponent(item)}`;
         };
 
         // add div to suggestions box
@@ -53,8 +50,7 @@ searchInput.addEventListener("keyup", (e) => {
     });
 });
 
-
-document.querySelectorAll(".box").forEach(box => {
+document.querySelectorAll(".box").forEach((box) => {
   box.addEventListener("click", () => {
     const category = box.dataset.value;
     if (category == "other") {
@@ -65,33 +61,24 @@ document.querySelectorAll(".box").forEach(box => {
   });
 });
 
-function profile(){
+function profile() {
   let name = document.querySelector(".user-name").dataset.value;
   let role = document.querySelector(".user-role").dataset.value;
 
-  if(role === "Creator"){
+  if (role === "Creator") {
     window.location.href = `/creator_profile`;
-  }else{
+  } else {
     window.location.href = `/learner_profile`;
   }
 }
-// console.log(document.querySelectorAll("#suggestions > div"))
-document.getElementById("suggestions").addEventListener("click", function (e) {
-  if (e.target.tagName === "DIV") {
-    const course = e.target.innerText.trim();
 
-    window.location.href =
-      `/courseList?course=${encodeURIComponent(course)}`;
-  }
-});
-
-function goToFullPage(x){
-    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+function goToFullPage(x) {
+  window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }
 
-function logout(){
-  let currAcc = (localStorage.getItem("currAcc"));
-  currAcc = parseInt(currAcc)
+function logout() {
+  let currAcc = localStorage.getItem("currAcc");
+  currAcc = parseInt(currAcc);
 
   let totalAcc = localStorage.getItem("totalAcc");
 
@@ -109,7 +96,6 @@ function logout(){
     localStorage.setItem(`profile_pic${i}`, profile_pic);
     localStorage.setItem(`role${i}`, role);
     localStorage.setItem(`id${i}`, id);
-
   }
 
   localStorage.removeItem(`id${totalAcc}`);
@@ -123,9 +109,12 @@ function logout(){
   window.location.href = `/`;
 }
 
-function removeSugg(){
-  suggestionsBox.innerHTML = "";
-  suggestionsBox.style.border = "0";
+function removeSugg() {
+  // Add a small delay to allow click events on suggestions to fire
+  setTimeout(() => {
+    suggestionsBox.innerHTML = "";
+    suggestionsBox.style.border = "0";
+  }, 150);
 }
 
 // // ---------- NOTIFICATIONS (Navbar) ----------
@@ -165,7 +154,7 @@ function removeSugg(){
 //             .then(data => {
 //                 list.innerHTML = "";
 //                 const unreadCount = data.filter(n => !n.is_read).length;
-                
+
 //                 if (unreadCount > 0) {
 //                     badge.style.display = "block";
 //                     badge.innerText = unreadCount;

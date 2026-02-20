@@ -1,17 +1,17 @@
 1. action.py
-    - add-bookmark
-    - remove-bookmark
-    - sub
-    - unsub
-    - submit-review
+    - add-bookmark ✅
+    - remove-bookmark ✅
+    - sub ✅
+    - unsub ✅
+    - submit-review ✅
 
 2. course.py
-    - search
-    - categoryList
+    - search ✅
+    - categoryList 
     - courseList
     - all_courses
-    - add-course
-    - delete-course
+    - add-course ✅
+    - delete-course ✅
 
     - fullCoursePage
     
@@ -24,16 +24,16 @@
     - admin/delete_user
 
 3. auth.py
-    - set-details
-    - check-details
-    - check-email
-    - send-otp
-    - varify-otp
-    - register
+    - set-details ✅
+    - check-details ✅
+    - check-email ✅
+    - send-otp 
+    - varify-otp ✅
+    - register ✅
 
 4. user.py
-    - Home
-    - creator_profile
+    - Home ✅
+    - creator_profile 
     - learner_profile
     - manageAcc
     - changeProfilePic

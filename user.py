@@ -7,9 +7,9 @@ from supabase import create_client, Client
 
 user_bp = Blueprint('user', __name__)
 
-# It's best practice to initialize the client once and import it.
-SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" # Replace with your actual Supabase URL or use environment variables
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4" # Replace with your actual Supabase key or use environment variables
+
+SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
@@ -73,10 +73,15 @@ def creator_profile():
 def learner_profile():
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("SELECT t1.username , t2.creator_id FROM subscription as t2 INNER JOIN users as t1 ON t1.id = t2.creator_id where t2.user_id = %s", (session["id"],))
+
     subscriptions = cursor.fetchall()
+
     cursor.execute("SELECT t1.username , t1.id  , t2.title , t2.price , t2.thumbnail , t2.id FROM courses as t2 INNER JOIN users as t1 on t1.id = t2.creator_id INNER JOIN bookmarks as t3 on t3.course_id = t2.id WHERE t3.user_id = %s", (session["id"],))
+
     bookmarks = cursor.fetchall()
+
     conn.close()
     return render_template("learner_profile.html" , name=session["username"] , bookmarks=bookmarks,profile=session["profile_pic"],subscriptions=subscriptions)
 
@@ -96,32 +101,45 @@ def learner_profile():
 def manageAcc():
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("SELECT password , email FROM users WHERE id = %s", (session["id"],))
     details=cursor.fetchone()
+
     conn.close()
     return render_template("account.html" , username=session["username"], password = details[0], profile_pic = session["profile_pic"], email = details[1], role = session["role"])
 
 @user_bp.route("/changeName" , methods=["POST"])
 def changeName():
     name = request.json["newName"]
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("SELECT * from users where username = %s", (name , ))
+
     if cursor.fetchone() : return  jsonify({"message": "UserName Not available"})
+
     cursor.execute("UPDATE users SET username = %s WHERE id = %s", (name , session["id"]))
+
     conn.commit()
     conn.close()
+
     session["username"] = name
     return  jsonify({"message": "True"})
 
 @user_bp.route("/changePass" , methods=["POST"])
 def changePass():
     password = request.json["newPass"]
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("SELECT * from users where password = %s", (password , ))
+
     if cursor.fetchone() : return  jsonify({"message": "Passworde Not available"})
+
     cursor.execute("UPDATE users SET password = %s WHERE id = %s", (password , session["id"]))
+
     conn.commit()
     conn.close()
     return  jsonify({"message": "True"})
@@ -130,12 +148,13 @@ def changePass():
 def changeProfilePic():
     if 'profile_pic' not in request.files: return jsonify({"message": "No file part"})
     file = request.files['profile_pic']
+
     if file.filename == '': return jsonify({"message": "No selected file"})
+
     if file and allowed_file(file.filename):
         try:
             user_id = session["id"]
             
-            # --- Supabase Upload Logic ---
             file_path = f"public/{user_id}.png"
             file.seek(0)
             supabase.storage.from_("profile-pictures").upload(
@@ -148,6 +167,7 @@ def changeProfilePic():
             conn = get_db()
             cursor = conn.cursor()
             cursor.execute("UPDATE users SET profile_pic = %s WHERE id = %s", (public_url, user_id))
+
             conn.commit()
             conn.close()
             session["profile_pic"] = public_url
@@ -163,35 +183,31 @@ def deleteAccount():
     user_id = session["id"]
 
     try:
-        # --- Supabase Deletion ---
-        # 1. Delete user's profile picture
+        
+        
         profile_pic_path = f"public/{user_id}.png"
         supabase.storage.from_("profile-pictures").remove([profile_pic_path])
 
-        # 2. Delete thumbnails for all courses created by the user
+        
+        
         cursor.execute("SELECT id FROM courses WHERE creator_id = %s", (user_id,))
         courses_to_delete = cursor.fetchall()
         if courses_to_delete:
             thumbnail_paths = [f"public/{course[0]}.png" for course in courses_to_delete]
             supabase.storage.from_("course-thumbnails").remove(thumbnail_paths)
 
-        # --- Database Deletion (ordered to respect dependencies) ---
-        # 3. Delete records referencing the user's courses
         cursor.execute("DELETE FROM reports WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
         cursor.execute("DELETE FROM review WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
         cursor.execute("DELETE FROM bookmarks WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
 
-        # 4. Delete records referencing the user directly
+        
         cursor.execute("DELETE FROM reports WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM review WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM bookmarks WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM subscription WHERE user_id = %s OR creator_id = %s", (user_id, user_id))
-        cursor.execute("DELETE FROM notifications WHERE user_id = %s", (user_id,))
         
-        # 5. Delete the user's courses
         cursor.execute("DELETE FROM courses WHERE creator_id = %s", (user_id,))
         
-        # 6. Finally, delete the user
         cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         conn.commit()
     finally:

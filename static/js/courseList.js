@@ -17,9 +17,8 @@ searchInput.addEventListener("keyup", (e) => {
     return;
   }
 
-  if(e.key === "Enter" ){
-    window.location.href =
-      `/courseList?course=${encodeURIComponent(value)}`;
+  if (e.key === "Enter") {
+    window.location.href = `/courseList?course=${encodeURIComponent(value)}`;
   }
 
   // send typed text to flask
@@ -32,7 +31,6 @@ searchInput.addEventListener("keyup", (e) => {
       // clear old results
       suggestionsBox.innerHTML = "";
 
-
       // loop through each result
       data.forEach((item) => {
         // create new div
@@ -43,8 +41,7 @@ searchInput.addEventListener("keyup", (e) => {
 
         // when user clicks suggestion
         div.onclick = () => {
-          searchInput.value = item;
-          suggestionsBox.innerHTML = "";
+          window.location.href = `/courseList?course=${encodeURIComponent(item)}`;
         };
 
         // add div to suggestions box
@@ -53,76 +50,68 @@ searchInput.addEventListener("keyup", (e) => {
     });
 });
 
-// console.log(document.querySelectorAll("#suggestions > div"))
-document.getElementById("suggestions").addEventListener("click", function (e) {
-  if (e.target.tagName === "DIV") {
-    const course = e.target.innerText.trim();
-
-    window.location.href =
-      `/courseList?course=${encodeURIComponent(course)}`;
-  }
-});
-
-document.querySelectorAll(".bookmark").forEach( bookmarkBtn => {
-  bookmarkBtn.addEventListener( "click" , () => {
+document.querySelectorAll(".bookmark").forEach((bookmarkBtn) => {
+  bookmarkBtn.addEventListener("click", () => {
     const icon = bookmarkBtn.querySelector("i");
-    if( bookmarkBtn.dataset.value === "1" ){
+    if (bookmarkBtn.dataset.value === "1") {
       fetch("/add-bookmark", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            course_id: bookmarkBtn.parentElement.dataset.value,
-        })
+          course_id: bookmarkBtn.parentElement.dataset.value,
+        }),
       })
-      .then(res => res.json())
-        .then(data => {
-            icon.classList.remove("bi-bookmark");
-            icon.classList.add("bi-bookmark-fill");
-            bookmarkBtn.dataset.value = "2";
+        .then((res) => res.json())
+        .then((data) => {
+          icon.classList.remove("bi-bookmark");
+          icon.classList.add("bi-bookmark-fill");
+          bookmarkBtn.dataset.value = "2";
         })
-      .catch(err => {
+        .catch((err) => {
           console.error(err);
-      });
-    }else{
-        fetch("/remove-bookmark", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                course_id: bookmarkBtn.parentElement.dataset.value
-            })
+        });
+    } else {
+      fetch("/remove-bookmark", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          course_id: bookmarkBtn.parentElement.dataset.value,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          icon.classList.remove("bi-bookmark-fill");
+          icon.classList.add("bi-bookmark");
+          bookmarkBtn.dataset.value = "1";
         })
-        .then(res => res.json())
-        .then(data => {
-            icon.classList.remove("bi-bookmark-fill");
-            icon.classList.add("bi-bookmark");
-            bookmarkBtn.dataset.value = "1";
-        })
-        .catch(err => {
-            console.error(err);
+        .catch((err) => {
+          console.error(err);
         });
     }
-    } );
+  });
 });
 
-document.querySelectorAll(".box").forEach( box => {
-  box.addEventListener( "click" , () => {
-    if(event.target.classList.contains("bookmark") || event.target.classList.contains("bi") ){
-        return;
+document.querySelectorAll(".box").forEach((box) => {
+  box.addEventListener("click", (event) => {
+    if (event.target.closest(".bookmark")) {
+      return;
     }
-    window.location.href =`/fullCoursePage?course_id=${encodeURIComponent(box.dataset.value)}`;
-    } );
+    window.location.href = `/fullCoursePage?course_id=${encodeURIComponent(box.dataset.value)}`;
+  });
 });
 
-function removeSugg(){
-  suggestionsBox.innerHTML = "";
-  suggestionsBox.style.border = "0";
+function removeSugg() {
+  // Add a small delay to allow click events on suggestions to fire
+  setTimeout(() => {
+    suggestionsBox.innerHTML = "";
+    suggestionsBox.style.border = "0";
+  }, 150);
 }
 
-
-function goToFullPage(x){
-    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+function goToFullPage(x) {
+  window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }
 
-function goToHome(){
+function goToHome() {
   window.location.href = `/Home`;
 }

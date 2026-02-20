@@ -7,9 +7,8 @@ from supabase import create_client, Client
 
 courses_bp = Blueprint('courses', __name__)
 
-# It's best practice to initialize the client once and import it.
-SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" # Replace with your actual Supabase URL or use environment variables
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4" # Replace with your actual Supabase key or use environment variables
+SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" 
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @courses_bp.route("/courses", methods=["GET"])
@@ -183,19 +182,16 @@ def add_course():
     
     course_id = cursor.fetchone()[0]
 
-    # --- Supabase Upload Logic ---
-    # 1. Define a unique path for the file in the bucket.
     file_path = f"public/{course_id}.png"
 
-    # 2. Upload the file content.
-    image.seek(0) # Ensure file pointer is at the beginning
+   
+    image.seek(0) 
     supabase.storage.from_("course-thumbnails").upload(
         file=image.read(),
         path=file_path,
         file_options={"content-type": image.content_type, "upsert": "true"} # Overwrite if exists
     )
 
-    # 3. Get the public URL and save it to the database.
     public_url = supabase.storage.from_("course-thumbnails").get_public_url(file_path)
     cursor.execute("UPDATE courses SET thumbnail = %s WHERE id = %s", (public_url, course_id))
 
@@ -220,6 +216,10 @@ def deleteCourse():
 
     cursor.execute("DELETE FROM review WHERE course_id = %s", (course_id,))
     conn.commit()
+
+    cursor.execute("DELETE FROM reports WHERE course_id = %s", (course_id,))
+    conn.commit()
+
 
     conn.close()
     return jsonify({"message": "True"})
@@ -249,7 +249,7 @@ def full_course():
 
     conn = get_db()
     cursor = conn.cursor()
-
+    # course details
     cursor.execute("""SELECT t1.username, t2.title, t2.description, t2.category, t2.price, t2.thumbnail, t2.course_link, t2.creator_id, t1.profile_pic
                    FROM courses as t2 INNER JOIN users as t1 
                    on t1.id = t2.creator_id WHERE t2.id = %s""", 
@@ -259,6 +259,7 @@ def full_course():
     creator_photo = course[8] if course else None
     already_sub = False
 
+    # user subscribe that creator or not
     cursor.execute("""SELECT t1.user_id , t1.creator_id 
                    FROM subscription as t1 INNER JOIN courses as t2 
                    ON t1.creator_id = t2.creator_id WHERE t1.user_id = %s AND t2.id = %s""",
@@ -266,6 +267,7 @@ def full_course():
     
     if cursor.fetchone(): already_sub = True
 
+    # Check if user has already bookmarked this course
     cursor.execute("SELECT id FROM bookmarks WHERE user_id = %s AND course_id = %s", (session.get("id"),course_id))
 
     is_bookmarked = True if cursor.fetchone() else False
@@ -274,6 +276,7 @@ def full_course():
     cursor.execute("SELECT id FROM reports WHERE user_id = %s AND course_id = %s", (session.get("id"), course_id))
     already_reported = True if cursor.fetchone() else False
 
+    # check user already give review this course
     cursor.execute("""SELECT t1.username , t2.rating , t2.comment , t1.profile_pic 
                    FROM review as t2 INNER JOIN users as t1 
                    on t1.id = t2.user_id WHERE t2.course_id = %s AND t1.id = %s""", 
@@ -287,6 +290,7 @@ def full_course():
 
     user_photo = session.get("profile_pic") if user_review else None
 
+    # get all reviews of that course
     cursor.execute("""SELECT t1.username , t2.rating , t2.comment , t1.profile_pic 
                    FROM review as t2 INNER JOIN users as t1 
                    on t1.id = t2.user_id WHERE t2.course_id = %s AND t1.id != %s""", 
@@ -373,9 +377,6 @@ def report_course():
         categories TEXT, description TEXT, status TEXT DEFAULT 'pending', 
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
     
-    cursor.execute("""CREATE TABLE IF NOT EXISTS notifications (
-        id SERIAL PRIMARY KEY, user_id INTEGER, message TEXT, 
-        is_read BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
 
     cursor.execute("INSERT INTO reports (user_id, course_id, categories, description) VALUES (%s, %s, %s, %s)",
                    (session["id"], course_id, ",".join(categories), description))
@@ -445,42 +446,22 @@ def admin_action():
     if action == "delete_course":
         cursor.execute("DELETE FROM courses WHERE id = %s", (course_id,))
         cursor.execute("DELETE FROM reports WHERE course_id = %s", (course_id,))
+        cursor.execute("DELETE FROM review WHERE course_id = %s", (course_id,))
+        cursor.execute("DELETE FROM bookmarks WHERE course_id = %s", (course_id,))
+    
         cursor.execute("UPDATE reports SET status = 'resolved' WHERE id = %s", (report_id,))
     elif action == "delete_creator":
         cursor.execute("DELETE FROM users WHERE id = %s", (creator_id,))
         cursor.execute("DELETE FROM courses WHERE creator_id = %s", (creator_id,))
+        cursor.execute("DELETE FROM subscription WHERE creator_id = %s", (creator_id,))
         cursor.execute("UPDATE reports SET status = 'resolved' WHERE id = %s", (report_id,))
     elif action == "ignore":
         cursor.execute("UPDATE reports SET status = 'resolved' WHERE id = %s", (report_id,))
 
-    # Notify Reporter
-    cursor.execute("SELECT user_id FROM reports WHERE id = %s", (report_id,))
-    res = cursor.fetchone()
-    if res:
-        cursor.execute("INSERT INTO notifications (user_id, message) VALUES (%s, %s)", (res[0], f"Your report for course ID {course_id} has been reviewed."))
-    
     conn.commit()
     conn.close()
     return jsonify({"message": "Action taken"})
 
-# ---------- NOTIFICATIONS ----------
-# @courses_bp.route("/notifications")
-# def get_notifications():
-#     conn = get_db()
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT id, message, is_read FROM notifications WHERE user_id = %s ORDER BY created_at DESC", (session["id"],))
-#     data = cursor.fetchall()
-#     conn.close()
-#     return jsonify([{"id": n[0], "message": n[1], "is_read": n[2]} for n in data])
-
-# @courses_bp.route("/mark-read", methods=["POST"])
-# def mark_read():
-#     conn = get_db()
-#     cursor = conn.cursor()
-#     cursor.execute("UPDATE notifications SET is_read = TRUE WHERE user_id = %s", (session["id"],))
-#     conn.commit()
-#     conn.close()
-#     return jsonify({"success": True})
 
 @courses_bp.route("/admin/delete_course", methods=["POST"])
 def admin_delete_course():
@@ -547,13 +528,12 @@ def admin_delete_user():
         cursor.execute("DELETE FROM review WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM bookmarks WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM subscription WHERE user_id = %s OR creator_id = %s", (user_id, user_id))
-        cursor.execute("DELETE FROM notifications WHERE user_id = %s", (user_id,))
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         
         # 5. Delete the user's courses
         cursor.execute("DELETE FROM courses WHERE creator_id = %s", (user_id,))
         
         # 6. Finally, delete the user
-
         cursor.execute("INSERT INTO deletedUser (user_id) VALUES (%s)", (user_id,))
         
         conn.commit()

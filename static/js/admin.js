@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.getElementById("reports-table-body");
     tbody.innerHTML = "";
     reports.forEach((r) => {
-      // Find creator info
+      
       const courseInfo = adminData.courses.find((c) => c.id === r.course_id);
       const creatorName = courseInfo ? courseInfo.creator : "N/A";
 

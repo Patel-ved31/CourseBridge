@@ -7,9 +7,12 @@ actions_bp = Blueprint('actions', __name__)
 def add_bookmark():
     course_id = request.json["course_id"]
     user_id = session["id"]
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("INSERT INTO bookmarks (user_id, course_id) VALUES (%s, %s)", (user_id, course_id))
+
     conn.commit()
     conn.close()
     return jsonify({"message": "Course bookmarked successfully ✅"})
@@ -18,9 +21,12 @@ def add_bookmark():
 def remove_bookmark():
     course_id = request.json["course_id"]
     user_id = session["id"]
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("DELETE FROM bookmarks WHERE user_id = %s AND course_id = %s", (user_id, course_id))
+
     conn.commit()
     conn.close()
     return jsonify({"message": "Bookmark removed successfully ✅"})
@@ -29,10 +35,14 @@ def remove_bookmark():
 def sub():
     creator_id = request.json["creator_id"]
     user_id = session["id"]
+
     if int(creator_id) == int(user_id): return jsonify({"message": "You cannot subscribe to your own account"})
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("INSERT INTO subscription (user_id, creator_id) VALUES (%s, %s)", (user_id, creator_id))
+
     conn.commit()
     conn.close()
     return jsonify({"message": "subscription done"})
@@ -41,9 +51,12 @@ def sub():
 def unsub():
     creator_id = request.json["creator_id"]
     user_id = session["id"]
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("DELETE FROM subscription WHERE user_id = %s AND creator_id =%s", (user_id, creator_id))
+    
     conn.commit()
     conn.close()
     return jsonify({"message": "unsubscription done"})

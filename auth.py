@@ -11,9 +11,8 @@ from supabase import create_client, Client
 
 auth_bp = Blueprint('auth', __name__)
 
-# It's best practice to initialize the client once and import it.
-SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" # Replace with your actual Supabase URL or use environment variables
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4" # Replace with your actual Supabase key or use environment variables
+SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" 
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4" 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 saved_otp = ""
@@ -34,7 +33,7 @@ def signUp():
 
 # ==================================================================
 # account_select.html
-@auth_bp.route("/set-details" , methods=["POST"])    # ✅
+@auth_bp.route("/set-details" , methods=["POST"])  
 def set_details() :
     name = request.json["username"]
     id = request.json["id"]
@@ -197,11 +196,10 @@ def submit():
         cursor.execute("INSERT INTO users (username, email, password, role) VALUES (%s, %s, %s, %s) RETURNING id", (name, email, password, role))
         user_id = cursor.fetchone()[0]
 
-        # --- Supabase Upload Logic ---
-        # 1. Define a unique path for the file in the bucket.
+       
         file_path = f"public/{user_id}.png"
         
-        # 2. Upload the file content.
+        
         profile.seek(0) 
         supabase.storage.from_("profile-pictures").upload(
             file=profile.read(),
@@ -209,7 +207,7 @@ def submit():
             file_options={"content-type": profile.content_type, "upsert": "true"} # Overwrite if exists
         )
 
-        # 3. Get the public URL and save it to the database.
+       
         public_url = supabase.storage.from_("profile-pictures").get_public_url(file_path)
 
         cursor.execute("UPDATE users SET profile_pic = %s WHERE id = %s", (public_url, user_id))

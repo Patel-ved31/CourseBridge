@@ -18,19 +18,19 @@ document.querySelectorAll(".bookmark").forEach((bookmarkBtn) => {
   });
 });
 
-document.querySelectorAll(".box").forEach( box => {
-  box.addEventListener( "click" , () => {
-    if(event.target.classList.contains("bookmark") || event.target.classList.contains("bi") ){
-        return;
+document.querySelectorAll(".box").forEach((box) => {
+  box.addEventListener("click", (event) => {
+    if (event.target.closest(".bookmark")) {
+      return;
     }
-    window.location.href =`/fullCoursePage?course_id=${encodeURIComponent(box.dataset.value)}`;
-    } );
+    window.location.href = `/fullCoursePage?course_id=${encodeURIComponent(box.dataset.value)}`;
+  });
 });
 
-function goToHome(){
+function goToHome() {
   window.location.href = `/Home`;
 }
 
-function goToFullPage(x){
-    window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
+function goToFullPage(x) {
+  window.location.href = `/creatorCourse?creator=${encodeURIComponent(parseInt(x.dataset.value))}`;
 }
