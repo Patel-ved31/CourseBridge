@@ -69,10 +69,13 @@ def categoryList():
     
     category = request.args.get("category")
 
-    cursor.execute("""SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id 
-                   FROM courses as t2 INNER JOIN users as t1 
-                   on t1.id = t2.creator_id WHERE t2.category ILIKE %s""", 
-                   ("%" + category + "%" ,))
+    cursor.execute("""SELECT t1.username, t1.id, t2.title, t2.price, t2.thumbnail, t2.id, COALESCE(AVG(r.rating), 0)
+                      FROM courses as t2
+                      INNER JOIN users as t1 ON t1.id = t2.creator_id
+                      LEFT JOIN review as r ON r.course_id = t2.id
+                      WHERE t2.category ILIKE %s
+                      GROUP BY t2.id, t1.username, t1.id""",
+                   ("%" + category + "%",))
 
     courses = cursor.fetchall()
 
@@ -105,16 +108,23 @@ def courseList():
 
         category = exact_match[0]
 
-        cursor.execute("""SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id 
-                       FROM courses as t2 INNER JOIN users as t1 
-                       on t1.id = t2.creator_id WHERE t2.category = %s OR t2.title ILIKE %s ORDER BY CASE WHEN t2.title ILIKE %s THEN 0 ELSE 1 END""",
-                         (category, "%" + query + "%", "%" + query + "%"))
+        cursor.execute("""SELECT t1.username, t1.id, t2.title, t2.price, t2.thumbnail, t2.id, COALESCE(AVG(r.rating), 0)
+                          FROM courses as t2
+                          INNER JOIN users as t1 ON t1.id = t2.creator_id
+                          LEFT JOIN review as r ON r.course_id = t2.id
+                          WHERE t2.category = %s OR t2.title ILIKE %s
+                          GROUP BY t2.id, t1.username, t1.id, t2.title
+                          ORDER BY CASE WHEN t2.title ILIKE %s THEN 0 ELSE 1 END""",
+                       (category, "%" + query + "%", "%" + query + "%"))
     else:
-        cursor.execute("""SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id 
-                       FROM courses as t2 INNER JOIN users as t1 
-                       on t1.id = t2.creator_id WHERE t2.title ILIKE %s OR t2.description ILIKE %s OR t2.category ILIKE %s""", 
-                       ("%" + query + "%" , "%" + query + "%", "%" + query + "%"))
-        
+        cursor.execute("""SELECT t1.username, t1.id, t2.title, t2.price, t2.thumbnail, t2.id, COALESCE(AVG(r.rating), 0)
+                          FROM courses as t2
+                          INNER JOIN users as t1 ON t1.id = t2.creator_id
+                          LEFT JOIN review as r ON r.course_id = t2.id
+                          WHERE t2.title ILIKE %s OR t2.description ILIKE %s OR t2.category ILIKE %s
+                          GROUP BY t2.id, t1.username, t1.id""",
+                       ("%" + query + "%", "%" + query + "%", "%" + query + "%"))
+
     courses = cursor.fetchall()
 
     cursor.execute("SELECT course_id FROM bookmarks where user_id = %s", (session["id"],))
@@ -134,7 +144,11 @@ def all_courses():
 
     subscriptions = cursor.fetchall()
 
-    cursor.execute("SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id FROM courses as t2 INNER JOIN users as t1 on t1.id = t2.creator_id")
+    cursor.execute("""SELECT t1.username, t1.id, t2.title, t2.price, t2.thumbnail, t2.id, COALESCE(AVG(r.rating), 0)
+                      FROM courses as t2
+                      INNER JOIN users as t1 ON t1.id = t2.creator_id
+                      LEFT JOIN review as r ON r.course_id = t2.id
+                      GROUP BY t2.id, t1.username, t1.id""")
 
     courses = cursor.fetchall()
 
@@ -257,6 +271,9 @@ def full_course():
     
     course = cursor.fetchone()
     creator_photo = course[8] if course else None
+    is_creator = False
+    if course and str(course[7]) == str(session.get("id")):
+        is_creator = True
     already_sub = False
 
     # user subscribe that creator or not
@@ -298,7 +315,7 @@ def full_course():
     
     reviews = cursor.fetchall()
     conn.close()
-    return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), creator_photo=creator_photo, user_photo=user_photo, already_subscription = already_sub, already_reported=already_reported)
+    return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), creator_photo=creator_photo, user_photo=user_photo, already_subscription = already_sub, already_reported=already_reported, is_creator=is_creator)
 
 
 
@@ -329,10 +346,13 @@ def creator_course():
     subscriptions = cursor.fetchall()
     creator = request.args.get("creator")
     
-    cursor.execute("""SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id 
-                   FROM courses as t2 INNER JOIN users as t1 
-                   on t1.id = t2.creator_id WHERE t2.creator_id = %s""", (creator ,))
-    
+    cursor.execute("""SELECT t1.username, t1.id, t2.title, t2.price, t2.thumbnail, t2.id, COALESCE(AVG(r.rating), 0)
+                      FROM courses as t2
+                      INNER JOIN users as t1 ON t1.id = t2.creator_id
+                      LEFT JOIN review as r ON r.course_id = t2.id
+                      WHERE t2.creator_id = %s
+                      GROUP BY t2.id, t1.username, t1.id""", (creator,))
+
     courses = cursor.fetchall()
     cursor.execute("SELECT course_id FROM bookmarks where user_id = %s", (session["id"],))
     
@@ -365,6 +385,13 @@ def report_course():
     conn = get_db()
     cursor = conn.cursor()
     
+    # Check if user is creator
+    cursor.execute("SELECT creator_id FROM courses WHERE id = %s", (course_id,))
+    creator_row = cursor.fetchone()
+    if creator_row and str(creator_row[0]) == str(session.get("id")):
+        conn.close()
+        return jsonify({"message": "You cannot report your own course"}), 403
+
     # Check if user has already reported this course
     cursor.execute("SELECT id FROM reports WHERE user_id = %s AND course_id = %s", (session["id"], course_id))
     if cursor.fetchone():

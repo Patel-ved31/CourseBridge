@@ -36,7 +36,11 @@
           </div>
 
           <nav>
-            {% if already_reported %}
+            {% if is_creator %}
+            <button type="button" class="report-btn" disabled style="opacity: 0.7; cursor: not-allowed;">
+              <i class="bi bi-person-circle"></i> Your Course
+            </button>
+            {% elif already_reported %}
             <button type="button" class="report-btn" disabled>
               <i class="bi bi-check-circle-fill"></i> Reported
             </button>
