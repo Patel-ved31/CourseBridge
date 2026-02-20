@@ -2,7 +2,7 @@ function otp(input, e) {
   if (e.key == "Backspace") {
     if (input.value.length === 0) {
       const prev = input.previousElementSibling;
-      alert(prev);
+      
       if (prev) {
         prev.focus();
       }
@@ -12,7 +12,6 @@ function otp(input, e) {
 
   if (input.value.length === 1) {
     input.value = "";
-    // return;
   }
 
   if (!/^[0-9]$/.test(e.key)) {
@@ -26,7 +25,6 @@ function otp(input, e) {
       if (next) {
         next.focus();
       } else {
-        // If it's the last input, automatically verify.
         verifyOTP();
       }
     }
@@ -103,7 +101,6 @@ async function sendOTP() {
         body: JSON.stringify({ email }),
       });
 
-      // Assuming send-otp is successful, show the OTP box
       document.querySelector(".email-varify").style.display = "none";
       document.querySelector(".otp-box").style.display = "block";
       document.getElementById("one").focus();

@@ -41,20 +41,22 @@
               <i class="bi bi-check-circle-fill"></i> Reported
             </button>
             {% else %}
-            <button type="button" onclick="displayReportModal()" class="report-btn">
+            <button
+              type="button"
+              onclick="displayReportModal()"
+              class="report-btn"
+            >
               <i class="bi bi-flag-fill"></i> Report
             </button>
             {% endif %}
           </nav>
- 
-          
         </header>
       </div>
 
       <div class="course">
         <div class="course-img">
           <img
-            src="{{ url_for('static', filename='uploads/thumbnails/' + thumbnail) }}"
+            src="{{ thumbnail }}"
             alt="Course thumbnail"
           />
         </div>
@@ -66,10 +68,7 @@
               data-value="{{creator_id}}"
               onclick="fullPage(this)"
             >
-              <img
-                src="{{ url_for('static', filename='uploads/profilePIC/' + creator_id + '.png') }}"
-                alt=".."
-              />
+              <img src="{{ creator_photo }}" alt=".." />
             </div>
             <div
               data-value="{{creator_id}}"
@@ -134,11 +133,7 @@
               <p>Bookmark</p>
             </button>
             {% endif %}
-
-            
           </div>
-
-          
         </div>
 
         <hr />
@@ -173,10 +168,7 @@
           <!-- user already review box -->
           <div class="review-container already-reviewed">
             <div class="photo">
-              <img
-                src="{{ url_for('static', filename='uploads/profilePIC/' + user_photo ) }}"
-                alt=".."
-              />
+              <img src="{{ user_photo }}" alt=".." />
             </div>
 
             <div class="review-item">
@@ -202,10 +194,7 @@
             {% for review in reviews %}
             <div class="review-container">
               <div class="photo">
-                <img
-                  src="{{ url_for('static', filename='uploads/profilePIC/' + review[3] ) }}"
-                  alt=".."
-                />
+                <img src="{{ review[3] }}" alt=".." />
               </div>
 
               <div class="review-item">
@@ -231,27 +220,63 @@
       </div>
     </div>
 
-    <div id="reportModal" class="modal-overlay" style="display: none;">
-            <div class="modal-box">
-                <h2>Report Course</h2>
-                <p>Select reasons for reporting this course:</p>
-                <div class="report-grid">
-                    <div class="report-opt" data-value="Copyright" onclick="addOpt(this)">Copyright</div>
-                    <div class="report-opt" data-value="Fake Link" onclick="addOpt(this)">Fake Link</div>
-                    <div class="report-opt" data-value="Spam" onclick="addOpt(this)">Spam</div>
-                    <div class="report-opt" data-value="Harassment" onclick="addOpt(this)">Harassment</div>
-                    <div class="report-opt" data-value="Misleading" onclick="addOpt(this)">Misleading</div>
-                    <div class="report-opt" data-value="Poor Quality" onclick="addOpt(this)">Poor Quality</div>
-                    <div class="report-opt" data-value="Inappropriate" onclick="addOpt(this)">Inappropriate</div>
-                    <div class="report-opt" data-value="Other" onclick="addOpt(this)">Other</div>
-                </div>
-                <textarea id="reportDesc" placeholder="Please describe why you are reporting this course..." rows="4"></textarea>
-                <div class="modal-actions">
-                    <button onclick="cancleReport()" id="cancelReport">Cancel</button>
-                    <button id="sendReport" onclick="sendReport()">Send Report</button>
-                </div>
-            </div>
+    <div id="reportModal" class="modal-overlay" style="display: none">
+      <div class="modal-box">
+        <h2>Report Course</h2>
+        <p>Select reasons for reporting this course:</p>
+        <div class="report-grid">
+          <div class="report-opt" data-value="Copyright" onclick="addOpt(this)">
+            Copyright
+          </div>
+          <div class="report-opt" data-value="Fake Link" onclick="addOpt(this)">
+            Fake Link
+          </div>
+          <div class="report-opt" data-value="Spam" onclick="addOpt(this)">
+            Spam
+          </div>
+          <div
+            class="report-opt"
+            data-value="Harassment"
+            onclick="addOpt(this)"
+          >
+            Harassment
+          </div>
+          <div
+            class="report-opt"
+            data-value="Misleading"
+            onclick="addOpt(this)"
+          >
+            Misleading
+          </div>
+          <div
+            class="report-opt"
+            data-value="Poor Quality"
+            onclick="addOpt(this)"
+          >
+            Poor Quality
+          </div>
+          <div
+            class="report-opt"
+            data-value="Inappropriate"
+            onclick="addOpt(this)"
+          >
+            Inappropriate
+          </div>
+          <div class="report-opt" data-value="Other" onclick="addOpt(this)">
+            Other
+          </div>
         </div>
+        <textarea
+          id="reportDesc"
+          placeholder="Please describe why you are reporting this course..."
+          rows="4"
+        ></textarea>
+        <div class="modal-actions">
+          <button onclick="cancleReport()" id="cancelReport">Cancel</button>
+          <button id="sendReport" onclick="sendReport()">Send Report</button>
+        </div>
+      </div>
+    </div>
 
     <script src="{{ url_for('static', filename='js/fullCoursePage.js') }}"></script>
   </body>

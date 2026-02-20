@@ -2,9 +2,15 @@ from flask import Blueprint, request, jsonify, render_template, session
 import os
 from werkzeug.utils import secure_filename
 from db import get_db
-from utils import UPLOAD_FOLDER, UPLOAD_FOLDER_PROFILE, allowed_file
+from utils import allowed_file
+from supabase import create_client, Client
 
 courses_bp = Blueprint('courses', __name__)
+
+# It's best practice to initialize the client once and import it.
+SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" # Replace with your actual Supabase URL or use environment variables
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4" # Replace with your actual Supabase key or use environment variables
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @courses_bp.route("/courses", methods=["GET"])
 def get_courses():
@@ -19,6 +25,15 @@ def get_courses():
 
     return jsonify(course_list)
 
+
+
+
+
+
+# ==================================================================
+# Home.html 
+#  courseList.html 
+#  fullcoursepage.html
 @courses_bp.route("/search")
 def search():
     quary = request.args.get("q")
@@ -28,6 +43,16 @@ def search():
     result = [row[0] for row in cursor.fetchall() ]
     conn.close()
     return jsonify(result)
+
+
+
+
+
+
+
+
+#====================================================================
+# Home.html
 
 # serach By category
 @courses_bp.route("/categoryList")
@@ -42,6 +67,7 @@ def categoryList():
                      (session["id"],))
     
     subscriptions = cursor.fetchall()
+    
     category = request.args.get("category")
 
     cursor.execute("""SELECT t1.username , t1.id , t2.title , t2.price , t2.thumbnail , t2.id 
@@ -119,6 +145,22 @@ def all_courses():
 
     return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==================================================================
+# creator_profile.html
+
 # to add course
 @courses_bp.route("/add-course", methods=["POST"])
 def add_course():
@@ -141,9 +183,21 @@ def add_course():
     
     course_id = cursor.fetchone()[0]
 
-    filename = secure_filename(f"{course_id}.png")
-    image.save(os.path.join(UPLOAD_FOLDER, filename))
-    cursor.execute("UPDATE courses SET thumbnail = %s WHERE id = %s", (filename, course_id))
+    # --- Supabase Upload Logic ---
+    # 1. Define a unique path for the file in the bucket.
+    file_path = f"public/{course_id}.png"
+
+    # 2. Upload the file content.
+    image.seek(0) # Ensure file pointer is at the beginning
+    supabase.storage.from_("course-thumbnails").upload(
+        file=image.read(),
+        path=file_path,
+        file_options={"content-type": image.content_type, "upsert": "true"} # Overwrite if exists
+    )
+
+    # 3. Get the public URL and save it to the database.
+    public_url = supabase.storage.from_("course-thumbnails").get_public_url(file_path)
+    cursor.execute("UPDATE courses SET thumbnail = %s WHERE id = %s", (public_url, course_id))
 
     conn.commit()
     conn.close()
@@ -170,6 +224,23 @@ def deleteCourse():
     conn.close()
     return jsonify({"message": "True"})
 
+
+
+
+
+
+
+
+
+
+
+
+
+# ==================================================================
+# creator_profile.html 
+#  learner_profile.html
+#  courseList.html
+
 # go to full course
 @courses_bp.route("/fullCoursePage")
 def full_course():
@@ -179,13 +250,13 @@ def full_course():
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute("""SELECT t1.username , t2.title , t2.description , t2.category , t2.price , t2.thumbnail , t2.course_link,t2.creator_id 
+    cursor.execute("""SELECT t1.username, t2.title, t2.description, t2.category, t2.price, t2.thumbnail, t2.course_link, t2.creator_id, t1.profile_pic
                    FROM courses as t2 INNER JOIN users as t1 
                    on t1.id = t2.creator_id WHERE t2.id = %s""", 
                    (course_id,))
     
     course = cursor.fetchone()
-    
+    creator_photo = course[8] if course else None
     already_sub = False
 
     cursor.execute("""SELECT t1.user_id , t1.creator_id 
@@ -214,7 +285,7 @@ def full_course():
 
     review_details = user_review[0] if user_review else None
 
-    user_photo = str(session["id"]) + ".png" if user_review else None
+    user_photo = session.get("profile_pic") if user_review else None
 
     cursor.execute("""SELECT t1.username , t2.rating , t2.comment , t1.profile_pic 
                    FROM review as t2 INNER JOIN users as t1 
@@ -223,7 +294,24 @@ def full_course():
     
     reviews = cursor.fetchall()
     conn.close()
-    return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), user_photo=user_photo, already_subscription = already_sub, already_reported=already_reported)
+    return render_template("fullCoursePage.html", creator_name=course[0], title=course[1], description=course[2], category=course[3], price=course[4], thumbnail=course[5], course_link=course[6], is_bookmarked=is_bookmarked, reviews=reviews, course_id=course_id, user_review=review_details, already_review = already_review, creator_id=str(course[7]), creator_photo=creator_photo, user_photo=user_photo, already_subscription = already_sub, already_reported=already_reported)
+
+
+
+
+
+
+
+
+
+
+
+
+#  ==================================================================
+# fullCoursePage.html
+# Home.html
+# courseList.html
+
 
 # fo to course by that creator
 @courses_bp.route("/creatorCourse")
@@ -249,6 +337,19 @@ def creator_course():
     
     return render_template("courseList.html" , courses = courses , bookmarks=[b[0] for b in bookmarks],subscriptions=subscriptions)
 
+
+
+
+
+
+
+
+
+
+
+# ==================================================================
+# fullCoursePage.html
+
 # ---------- REPORTING SYSTEM ----------
 @courses_bp.route("/report-course", methods=["POST"])
 def report_course():
@@ -271,6 +372,7 @@ def report_course():
         id SERIAL PRIMARY KEY, user_id INTEGER, course_id INTEGER, 
         categories TEXT, description TEXT, status TEXT DEFAULT 'pending', 
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
+    
     cursor.execute("""CREATE TABLE IF NOT EXISTS notifications (
         id SERIAL PRIMARY KEY, user_id INTEGER, message TEXT, 
         is_read BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
@@ -280,6 +382,22 @@ def report_course():
     conn.commit()
     conn.close()
     return jsonify({"message": "Report submitted successfully"})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==================================================================
+# admin.html
 
 # ---------- ADMIN DASHBOARD ----------
 @courses_bp.route("/admin")
@@ -346,23 +464,23 @@ def admin_action():
     return jsonify({"message": "Action taken"})
 
 # ---------- NOTIFICATIONS ----------
-@courses_bp.route("/notifications")
-def get_notifications():
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, message, is_read FROM notifications WHERE user_id = %s ORDER BY created_at DESC", (session["id"],))
-    data = cursor.fetchall()
-    conn.close()
-    return jsonify([{"id": n[0], "message": n[1], "is_read": n[2]} for n in data])
+# @courses_bp.route("/notifications")
+# def get_notifications():
+#     conn = get_db()
+#     cursor = conn.cursor()
+#     cursor.execute("SELECT id, message, is_read FROM notifications WHERE user_id = %s ORDER BY created_at DESC", (session["id"],))
+#     data = cursor.fetchall()
+#     conn.close()
+#     return jsonify([{"id": n[0], "message": n[1], "is_read": n[2]} for n in data])
 
-@courses_bp.route("/mark-read", methods=["POST"])
-def mark_read():
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE notifications SET is_read = TRUE WHERE user_id = %s", (session["id"],))
-    conn.commit()
-    conn.close()
-    return jsonify({"success": True})
+# @courses_bp.route("/mark-read", methods=["POST"])
+# def mark_read():
+#     conn = get_db()
+#     cursor = conn.cursor()
+#     cursor.execute("UPDATE notifications SET is_read = TRUE WHERE user_id = %s", (session["id"],))
+#     conn.commit()
+#     conn.close()
+#     return jsonify({"success": True})
 
 @courses_bp.route("/admin/delete_course", methods=["POST"])
 def admin_delete_course():
@@ -375,12 +493,11 @@ def admin_delete_course():
     conn = get_db()
     cursor = conn.cursor()
     try:
-        # Delete thumbnail file
-        thumbnail_filename = f"{course_id}.png"
-        thumbnail_path = os.path.join(UPLOAD_FOLDER, thumbnail_filename)
-        if os.path.exists(thumbnail_path):
-            os.remove(thumbnail_path)
+        # Delete thumbnail file from Supabase Storage
+        thumbnail_path = f"public/{course_id}.png"
+        supabase.storage.from_("course-thumbnails").remove([thumbnail_path])
 
+        
         # Delete from DB
         cursor.execute("DELETE FROM reports WHERE course_id = %s", (course_id,))
         cursor.execute("DELETE FROM review WHERE course_id = %s", (course_id,))
@@ -406,21 +523,19 @@ def admin_delete_user():
     conn = get_db()
     cursor = conn.cursor()
     try:
-        # 1. Delete user's profile picture
-        profile_pic_filename = f"{user_id}.png"
-        profile_pic_path = os.path.join(UPLOAD_FOLDER_PROFILE, profile_pic_filename)
-        if os.path.exists(profile_pic_path):
-            os.remove(profile_pic_path)
+        # 1. Delete user's profile picture from Supabase Storage
+        profile_pic_path = f"public/{user_id}.png"
+        supabase.storage.from_("profile-pictures").remove([profile_pic_path])
 
-        # 2. Get all courses created by the user to delete their thumbnails
+        # 2. Get all courses by the user to delete their thumbnails from Supabase Storage
         cursor.execute("SELECT id FROM courses WHERE creator_id = %s", (user_id,))
         courses_to_delete = cursor.fetchall()
-        for course_row in courses_to_delete:
-            course_id_to_delete = course_row[0]
-            thumbnail_filename = f"{course_id_to_delete}.png"
-            thumbnail_path = os.path.join(UPLOAD_FOLDER, thumbnail_filename)
-            if os.path.exists(thumbnail_path):
-                os.remove(thumbnail_path)
+        if courses_to_delete:
+            thumbnail_paths_to_delete = [
+                f"public/{course_row[0]}.png" for course_row in courses_to_delete
+            ]
+            supabase.storage.from_("course-thumbnails").remove(thumbnail_paths_to_delete)
+
 
         # 3. Delete records referencing the user's courses
         cursor.execute("DELETE FROM reports WHERE course_id IN (SELECT id FROM courses WHERE creator_id = %s)", (user_id,))
@@ -432,17 +547,12 @@ def admin_delete_user():
         cursor.execute("DELETE FROM review WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM bookmarks WHERE user_id = %s", (user_id,))
         cursor.execute("DELETE FROM subscription WHERE user_id = %s OR creator_id = %s", (user_id, user_id))
+        cursor.execute("DELETE FROM notifications WHERE user_id = %s", (user_id,))
         
         # 5. Delete the user's courses
         cursor.execute("DELETE FROM courses WHERE creator_id = %s", (user_id,))
         
         # 6. Finally, delete the user
-        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
-
-        cursor.execute("DELETE FROM notifications WHERE user_id = %s", (user_id,))
-        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
-        
-        cursor.execute("DELETE FROM courses WHERE creator_id = %s", (user_id,))
 
         cursor.execute("INSERT INTO deletedUser (user_id) VALUES (%s)", (user_id,))
         

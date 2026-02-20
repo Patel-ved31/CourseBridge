@@ -6,9 +6,15 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from werkzeug.utils import secure_filename
 from db import get_db
-from utils import EMAIL, PASSWORD, UPLOAD_FOLDER_PROFILE, allowed_file
+from utils import EMAIL, PASSWORD, allowed_file
+from supabase import create_client, Client
 
 auth_bp = Blueprint('auth', __name__)
+
+# It's best practice to initialize the client once and import it.
+SUPABASE_URL = "https://kjuxgzwxpkholakapbhi.supabase.co" # Replace with your actual Supabase URL or use environment variables
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdXhnend4cGtob2xha2FwYmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzUwMTEsImV4cCI6MjA4NzA1MTAxMX0.AUSLyH-NEf91QcFGdfQ8RtLyALhnpL7TlBdJenSzhE4" # Replace with your actual Supabase key or use environment variables
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 saved_otp = ""
 
@@ -24,7 +30,11 @@ def login():
 def signUp():
     return render_template("signUp.html")
 
-@auth_bp.route("/set-details" , methods=["POST"])
+
+
+# ==================================================================
+# account_select.html
+@auth_bp.route("/set-details" , methods=["POST"])    # ✅
 def set_details() :
     name = request.json["username"]
     id = request.json["id"]
@@ -38,6 +48,10 @@ def set_details() :
     if cursor.fetchone():
         return jsonify( {"success" : False , "message" : "This account has been deleted by admin due to some reasons"} )
     
+    cursor.execute("SELECT * FROM users WHERE username = %s and id = %s", (name,id))
+    if not cursor.fetchone():
+        return jsonify( {"success" : False , "message" : "this account does not exist"} )
+    
     conn.close()
 
     session["username"] = name
@@ -47,6 +61,26 @@ def set_details() :
 
     return jsonify({"success": True, "message": "✅ Login successful" , "id": id , "username": name , "role": role , "profile_pic": profile_pic})
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ==================================================================
+# login.html
 @auth_bp.route("/check-details" , methods=["POST"])
 def check_user() :
     username = request.json["username"]
@@ -72,6 +106,24 @@ def check_user() :
     else:
         return jsonify({"success": False, "message": "❌ Invalid username or password"})
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ==================================================================
+# signUp.html
 @auth_bp.route("/check-email" , methods=["POST"] )
 def check_email() :
     email = request.json["email"]
@@ -144,11 +196,28 @@ def submit():
         cursor = conn.cursor()
         cursor.execute("INSERT INTO users (username, email, password, role) VALUES (%s, %s, %s, %s) RETURNING id", (name, email, password, role))
         user_id = cursor.fetchone()[0]
-        filename = secure_filename(f"{user_id}.png")
-        profile.save(os.path.join(UPLOAD_FOLDER_PROFILE, filename))
-        cursor.execute("UPDATE users SET profile_pic = %s WHERE id = %s", (filename, user_id))
+
+        # --- Supabase Upload Logic ---
+        # 1. Define a unique path for the file in the bucket.
+        file_path = f"public/{user_id}.png"
+        
+        # 2. Upload the file content.
+        profile.seek(0) 
+        supabase.storage.from_("profile-pictures").upload(
+            file=profile.read(),
+            path=file_path,
+            file_options={"content-type": profile.content_type, "upsert": "true"} # Overwrite if exists
+        )
+
+        # 3. Get the public URL and save it to the database.
+        public_url = supabase.storage.from_("profile-pictures").get_public_url(file_path)
+
+        cursor.execute("UPDATE users SET profile_pic = %s WHERE id = %s", (public_url, user_id))
+
         conn.commit()
-        session["username"] = name; session["id"] = user_id; session["role"] = role; session["profile_pic"] = filename
-        return jsonify({"message": True , "id": user_id , "username": name , "role": role , "profile_pic": filename})
+
+        session["username"] = name; session["id"] = user_id; session["role"] = role; session["profile_pic"] = public_url
+        
+        return jsonify({"message": True , "id": user_id , "username": name , "role": role , "profile_pic": public_url})
     except Exception: return jsonify({"message": False})
     finally: conn.close()

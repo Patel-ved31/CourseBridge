@@ -67,10 +67,7 @@
       <div class="main-section">
         <div class="user-details">
           <div class="photo">
-            <img
-              src="{{ url_for('static', filename='uploads/profilePIC/' + profile) }}"
-              alt=""
-            />
+            <img src="{{ profile }}" alt="" />
           </div>
           <div class="user-name">{{name}}</div>
         </div>
@@ -86,10 +83,7 @@
             {% for course in bookmarks %}
             <div class="course1 box" data-value="{{ course[5] }}">
               <div class="course-img">
-                <img
-                  src="{{ url_for('static', filename='uploads/thumbnails/' + course[4]) }}"
-                  alt="Course thumbnail"
-                />
+                <img src="{{ course[4] }}" alt="Course thumbnail" />
               </div>
               <div class="course-content">
                 <p class="course-title">{{course[2]}}</p>
