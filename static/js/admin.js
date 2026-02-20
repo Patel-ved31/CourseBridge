@@ -74,16 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
         <td colspan="4" class="details-cell">
             <div class="details-wrapper">
                 <div class="details-content" style="background-color: #f9fafb; border-bottom: 2px solid #e5e7eb;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <p><strong>Creator:</strong> ${creatorName} (ID: ${r.creator_id})</p>
-                        <p><strong>Course Link:</strong> <a href="${r.link}" target="_blank" style="color: #3b82f6;">View Course</a></p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                        <p style="min-width: 200px;"><strong>Creator:</strong> ${creatorName} (ID: ${r.creator_id})</p>
+                        <p style="min-width: 200px;"><strong>Course Link:</strong> <a href="${r.link}" target="_blank" style="color: #3b82f6;">View Course</a></p>
                     </div>
                     <div style="margin-bottom: 15px;">
                         <strong>Full Description:</strong>
     
-                        <p style="overflow-y: scroll; width: 600px; background: #fff; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; margin-top: 5px; white-space: pre-wrap; word-wrap: break-word; ">${r.description}</p>
+                        <p style="overflow-y: auto; max-height: 300px; width: 100%; background: #fff; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; margin-top: 5px; white-space: pre-wrap; word-wrap: break-word; ">${r.description}</p>
                     </div>
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="action-btn btn-danger" onclick="handleAction('delete_course', ${r.id}, ${r.course_id}, ${r.creator_id})">Del Course</button>
                         <button class="action-btn btn-warn" onclick="handleAction('delete_creator', ${r.id}, ${r.course_id}, ${r.creator_id})">Del Creator</button>
                         <button class="action-btn btn-success" onclick="handleAction('ignore', ${r.id}, ${r.course_id}, ${r.creator_id})">Ignore</button>

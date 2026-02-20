@@ -18,7 +18,6 @@ buttons.forEach((btn) => {
   });
 });
 
-/* DEFAULT */
 Object.values(sections).forEach((sec) => (sec.style.display = "none"));
 sections.overview.style.display = "block";
 

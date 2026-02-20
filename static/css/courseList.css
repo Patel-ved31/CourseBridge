@@ -368,6 +368,22 @@ nav a i {
   }
 }
 
+.course-rating {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 5px;
+  font-weight: bold;
+  padding: 5px 10px 0;
+  margin-right: 20px;
+}
+.rating-yellow {
+  color: #ffc107;
+}
+.rating-red {
+  color: #dc3545;
+}
+
 @media screen and (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
